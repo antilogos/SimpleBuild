@@ -1,0 +1,325 @@
+<!Doctype html>
+<html lang="en-US">
+<head>
+<!-- Horadric Helper -->
+<script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
+<!-- Style -->
+</head>
+<!-- Body -->
+<body>
+<h1>Concept</h1>
+This is just a template
+<h1>Gem</h1>
+<h2>Main setup</h2>
+<poe-item reference="primary_1_1" as-icon icon-size="md" label-text="Skill Gem"></poe-item>
+<poe-item reference="primary_1_2" as-icon icon-size="md" label-text="Support Gem"></poe-item>
+<h2>Secondary</h2>
+<poe-item reference="secondary_1_1" as-icon icon-size="md" label-text="Secondary Gem"></poe-item>
+<h2>Aura & reservation</h2>
+<poe-item reference="tertiary_1_1" as-icon icon-size="md" label-text="Aura Gem"></poe-item>
+<h1>Talent</h1>
+<h2>Ascendancy & Masteries</h2>
+<poe-passive reference="ascendancy_1" as-icon icon-size="md"></poe-passive>
+<poe-passive reference="mastery_1" as-icon icon-size="md"></poe-passive>
+<h2>Notables</h2>
+<poe-passive reference="notable_1" as-icon icon-size="md"  dim-sections="description:1,2"></poe-passive>
+<h2>Bandits & Pantheon</h2>
+<h1>Item</h1>
+<h2>Equipement</h2>
+<poe-item reference="gloves" as-icon icon-size="md" label-text="Gloves" dim-sections="description:2,6"></poe-item>
+<poe-item reference="helmet" as-icon icon-size="md" label-text="Helmet"></poe-item>
+<poe-item reference="boots" as-icon icon-size="md" label-text="Boots"></poe-item>
+<poe-item reference="chest" as-icon icon-size="md" label-text="Chest"></poe-item>
+<poe-item reference="mainhand" as-icon icon-size="md" label-text="Main Hand"></poe-item>
+<poe-item reference="offhand" as-icon icon-size="md" label-text="Off Hand"></poe-item>
+<poe-item reference="leftring" as-icon icon-size="md" label-text="Ring (left)"></poe-item>
+<poe-item reference="rightring" as-icon icon-size="md" label-text="Ring (right)"></poe-item>
+<poe-item reference="amulet" as-icon icon-size="md" label-text="Amulet"></poe-item>
+<poe-item reference="belt" as-icon icon-size="md" label-text="Belt"></poe-item>
+<h2>Jewel</h2>
+<poe-item reference="jewel_1" as-icon icon-size="md" label-text="Jewel"></poe-item>
+<h2>Flask</h2>
+<poe-item reference="flask_1" as-icon icon-size="md" label-text="Flask"></poe-item>
+</body>
+<!-- Javascript -->
+<script>
+// Script for gems come from google sheet data translation of ingame level 1 gem
+window.HoradricHelper.PathOfExile.applyConfig({reference: "primary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
+window.HoradricHelper.PathOfExile.applyConfig({reference: "primary_1_2", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
+window.HoradricHelper.PathOfExile.applyConfig({reference: "secondary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
+window.HoradricHelper.PathOfExile.applyConfig({reference: "tertiary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
+// Script for notables comes from data translation made on personnal website
+window.HoradricHelper.PathOfExile.applyConfig({"reference": "ascendancy_1",
+    "iconUrl": "Art/2DArt/SkillIcons/passives/DamageOverTimeNotable.png",
+    "data": {
+        "sections": {
+            "description": [
+                "+15% to Damage over Time Multiplier"
+            ]
+        },
+        "name": "Acrimony",
+        "type": "notable"
+    }
+});
+window.HoradricHelper.PathOfExile.applyConfig({"reference": "notable_1",
+    "iconUrl": "Art/2DArt/SkillIcons/passives/Gladiator/GLADPainForged.png",
+    "data": {
+        "sections": {
+            "description": [
+                "+10% Chance to Block Attack Damage",
+                "Cannot be Stunned by Hits you Block",
+                "Your Counterattacks deal Double Damage"
+            ]
+        },
+        "name": "Painforged",
+        "type": "ascendancy notable"
+    }
+});
+// Script for items comes from path of building
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "gloves",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Vaal Caress
+Bronzescale Gauntlets
+Armour: 146
+ArmourBasePercentile: 0.8197
+Evasion: 146
+EvasionBasePercentile: 0.8197
+Unique ID: 637fd0306c506108eb69fd4ff2a35bf33ecd665b52d5f71d1733a66d6a7e6ffb
+Item Level: 80
+Quality: 20
+Sockets: G-G-B-R
+LevelReq: 27
+Implicits: 1
++2 to Level of Socketed Curse Gems
++5 to Level of Socketed Vaal Gems
+-5 to Level of Socketed Non-Vaal Gems
+124% increased Armour and Evasion
++58 to maximum Life
++40% to Cold Resistance
+You gain Onslaught for 20 seconds on using a Vaal Skill
+Corrupted`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "helmet",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: RARE
+Havoc Visage
+Hubris Circlet
+Energy Shield: 255
+EnergyShieldBasePercentile: 0.1555
+Unique ID: 5ce7ed561025b26b52e99b8daceebd6aa11c056361c3af7d83b94db8ea0ee0c7
+Item Level: 85
+Quality: 21
+Sockets: R-R-G-B
+LevelReq: 69
+Implicits: 3
+{crafted}Hatred has 30% increased Mana Reservation Efficiency
+9% increased Mana Reservation Efficiency of Skills
++1% to maximum Lightning Resistance
+80% increased Energy Shield
+26% increased Energy Shield Recharge Rate
+8% increased Rarity of Items found
+9% increased Mana Reservation Efficiency of Skills
+{crafted}+45 to maximum Energy Shield`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "boots",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Sin Trek
+Stealth Boots
+Evasion: 469
+EvasionBasePercentile: 0.0057
+Energy Shield: 178
+EnergyShieldBasePercentile: 1
+Unique ID: f4b96ba0f975b2e0f6cab3bb1e5fb7f27f8e2907d1c129c419197c3198920db0
+Item Level: 83
+Quality: 26
+Sockets: R-B-B-G
+LevelReq: 62
+Implicits: 2
++2 to Level of Socketed Aura Gems
++62 Armour while stationary
++24 to Dexterity
++30 to Intelligence
+87% increased Evasion Rating
++141 to maximum Energy Shield
+30% increased Movement Speed
+Enemies Cannot Leech Life From you
+Corrupted`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "chest",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: RARE
+Miracle Hide
+Vaal Regalia
+Energy Shield: 366
+EnergyShieldBasePercentile: 0.4172
+Unique ID: a8e79ebf3fa4e1373fd5605c5bdbac7933cabe13d82e8980ed34282d902b9cd7
+Redeemer Item
+Item Level: 85
+Quality: 20
+Sockets: R-R-G-B-B-B
+LevelReq: 68
+Implicits: 0
++3 to maximum Energy Shield
+78% increased Energy Shield
++19% to Fire Resistance
+Reflects 10 Physical Damage to Melee Attackers
+24% increased effect of Non-Curse Auras from your Skills`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "mainhand",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Ephemeral Edge
+Dusk Blade
+Unique ID: c6b97cb55910505726ffae6effcf2d0ab3c178ba7af32dd1ac1039355dd3967f
+Item Level: 77
+Quality: 20
+Sockets: R-R-R
+LevelReq: 32
+Implicits: 3
+{crafted}Quality does not increase Physical Damage
+{crafted}Grants 1% increased Area of Effect per 4% Quality
+40% increased Global Accuracy Rating
++10 to Intelligence
+Adds 1 to 75 Lightning Damage
+50% increased Global Critical Strike Chance
+48% increased maximum Energy Shield
+25% reduced maximum Life
+Attacks with this Weapon have Added Maximum Lightning Damage equal to 20% of your Maximum Energy Shield`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "offhand",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Prism Guardian
+Archon Kite Shield
+Armour: 188
+ArmourBasePercentile: 0.029
+Energy Shield: 38
+EnergyShieldBasePercentile: 0
+Unique ID: 1d959388aee11a08e28dae0eed0a8e20fdfc2af8f7e27cda10f785ba9a7ef263
+Item Level: 80
+Quality: 20
+Sockets: R-R-G
+LevelReq: 68
+Implicits: 1
++12% to all Elemental Resistances
++2 to Level of Socketed Aura Gems
+Socketed Gems Cost and Reserve Life instead of Mana
+Socketed Gems have 30% increased Reservation Efficiency
++30 to Dexterity
++25% to all Elemental Resistances`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "leftring",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: RARE
+Woe Grip
+Amethyst Ring
+Unique ID: 85d70204018624e4e0ba9540383248d867f26e6932e2b303386e74e8b2341436
+Item Level: 83
+LevelReq: 54
+Implicits: 1
++23% to Chaos Resistance
++30 to Strength
++24% to Lightning Resistance
++21% to Chaos Resistance
+12% increased Life Reservation Efficiency of Skills
+{crafted}+30 to maximum Energy Shield`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "rightring",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: RARE
+Rift Grip
+Amethyst Ring
+Unique ID: 78404c835b29b5e35967e65dc2c10a2f4140b0a82c5ea042fe12d273803c9280
+Item Level: 83
+LevelReq: 65
+Implicits: 1
++23% to Chaos Resistance
+{fractured}12% increased Life Reservation Efficiency of Skills
++55 to Dexterity
++44 to maximum Energy Shield
+10% increased Elemental Damage with Attack Skills
+{crafted}Light Radius is based on Energy Shield instead of Life`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "amulet",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Ashes of the Stars
+Onyx Amulet
+Unique ID: 6f2dbfa2666284e80510c622b790109d2683683180542766d1b5ee519409b536
+Item Level: 87
+LevelReq: 60
+Implicits: 2
+{crafted}Allocates Champion of the Cause
++19 to all Attributes
+5% increased Experience Gain of Gems
+20% increased Reservation Efficiency of Skills
++1 to Level of all Skill Gems
++27% to Quality of all Skill Gems`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "belt",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: UNIQUE
+Mageblood
+Heavy Belt
+Unique ID: eb1ce3b3275c063ad0c3fe14fd3d7b8090b1024a3313556743aa535ec51b3fa3
+Item Level: 80
+LevelReq: 44
+Implicits: 1
++42 to Strength
++39 to Dexterity
++24% to Fire Resistance
++15% to Cold Resistance
+Magic Utility Flasks cannot be Used
+Leftmost 4 Magic Utility Flasks constantly apply their Flask Effects to you
+Magic Utility Flask Effects cannot be removed`
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "jewel_1",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: RARE
+Luminous Scar
+Large Cluster Jewel
+Unique ID: be97557e7ee39cdeef28d2467b6af9e0a6b33dff83d67300bbce1eebbbc93e3b
+Item Level: 79
+LevelReq: 54
+Implicits: 4
+{crafted}Adds 8 Passive Skills
+{crafted}2 Added Passive Skills are Jewel Sockets
+{crafted}Added Small Passive Skills grant: Staff Attacks deal 12% increased Damage with Hits and Ailments
+Added Small Passive Skills grant: Mace or Sceptre Attacks deal 12% increased Damage with Hits and Ailments
+Added Small Passive Skills also grant: +4% to Chaos Resistance
+Added Small Passive Skills also grant: +2 to Intelligence
+Added Small Passive Skills also grant: +9 to Maximum Energy Shield
+  `
+});
+window.HoradricHelper.PathOfExile.applyConfig({
+  reference: "flask_1",
+  iconUrl: "https://web.poecdn.com/image/Art/2DItems/Armours/BodyArmours/BodyStr3C.png?scale=1",
+  data: `Rarity: MAGIC
+Dabbler's Granite Flask of the Armadillo
+Unique ID: f1aafb74acef0941707a2fd3cacebcd5df2a1b31682b8b237689f66ead3d7de6
+Item Level: 84
+Quality: 20
+LevelReq: 67
+Implicits: 2
+{crafted}66% increased effect
+{crafted}Gains no Charges during Effect
+32% reduced Duration
+25% increased effect
+58% increased Armour during Effect`
+});
+</script>
+</html>
