@@ -34,6 +34,12 @@
         console.log("allGem:", Object.entries(allGem));
 		loadGem = true;
 	});
+var allStats, loadStats;
+	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
+		allStats = parsed;
+        console.log("allStats:", Object.entries(allStats));
+		loadStats = true;
+	});
 </script>
 <!-- Style -->
 </head>
