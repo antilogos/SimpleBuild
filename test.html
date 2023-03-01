@@ -4,8 +4,40 @@
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
+<!-- RePoE -->
+<script>
+    // Load all item mods from repoe file
+    var allMods, itemType, loadMod;
+	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/mods.json").then(response => response.json()).then(parsed => {
+		allMods = parsed;
+        console.log("domain list:", new Set(Object.entries(allMods).map(m => m[1].domain)));
+        console.log("generation_type list:", new Set(Object.entries(allMods).map(m => m[1].generation_type)));
+        // fetching the list of item type for spawning mods (spawn_weights.tag)
+        itemType = new Set(Object.entries(allMods).flatMap(m => Object.entries(m[1].spawn_weights).filter(s => s[1].weight > 0).map(s => s[1].tag)));
+        console.log("item type spawn list:", itemType);
+		loadMod = true;
+	});
+	// Load all base item class from repoe file
+    var classItems, baseItems, itemTag, loadItem;
+    fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/base_items.json").then(response => response.json()).then(parsed => {
+		baseItems = parsed;
+		classItems = new Set(Object.entries(baseItems).map(m => m[1].item_class));
+        console.log("class list missing:", Object.entries(classItems).filter(c => !catByClass.has(c)));
+        itemTag = new Set(Object.entries(baseItems).flatMap(m => m[1].tags));
+        console.log("item tag list:", itemTag);
+		loadItem = true;
+	});
+	// Load all skill gem from repoe file
+    var allGem, loadGem;
+    fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gem.json").then(response => response.json()).then(parsed => {
+		allGem = parsed;
+        console.log("allGem:", Object.entries(allGem));
+		loadGem = true;
+	});
+</script>
 <!-- Style -->
 </head>
+<link rel="shortcut icon" type="image/png" href="https://docs.google.com/drawings/d/e/2PACX-1vRmsUqz_w0baXylHjox1oadVVCB2B0kq8LtyvLEx9M7rZTjSr18UDf0IaDljbf5db3uUkd2Fi9MRwHX/pub?w=51&h=50"/>
 <!-- Body -->
 <body>
 <h1>Concept</h1>
