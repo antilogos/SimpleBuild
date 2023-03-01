@@ -29,7 +29,7 @@
 	});
 	// Load all skill gem from repoe file
     var allGem, loadGem;
-    fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gem.json").then(response => response.json()).then(parsed => {
+    fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
 		allGem = parsed;
         console.log("allGem:", Object.entries(allGem));
 		loadGem = true;
