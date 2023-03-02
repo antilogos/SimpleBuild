@@ -34,13 +34,13 @@
 		loadGem = true;
 	}).then( data => {
         	console.log("allGem:", Object.entries(allGem));
-		for( let gem of Object.entries(allGem)) {
-        	if(gem[1].base_item && gem[1].base_item.release_state && gem[1].base_item.release_state == "released") {
+		for( let gem of Object.values(allGem)) {
+        	if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
 			// Load special stats for gem
-			if(!mapStatGem[gem[0]]) {
-				mapStatGem[gem[0]] = "loading...";
-				fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem[1].stat_translation_file+".json").then(response => response.json()).then(subparsed => {
-					mapStatGem[gem[0]] = subparsed;
+			if(!mapStatGem[gem.stat_translation_file]) {
+				mapStatGem[gem.stat_translation_file] = "loading...";
+				fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem.stat_translation_file+".json").then(response => response.json()).then(subparsed => {
+					mapStatGem[gem.stat_translation_file] = subparsed;
 					});
 				}
 			}
