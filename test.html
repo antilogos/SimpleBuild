@@ -32,7 +32,7 @@
     fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
 		allGem = parsed;
 		loadGem = true;
-	}).then( data =>
+	}).then( data => {
         	console.log("allGem:", Object.entries(allGem));
 		for( let gem of Object.values(allGem)) {
         	if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
@@ -41,7 +41,7 @@
 				mapStatGem[gem] = subparsed;
 				});
 			}
-		}
+		}}
     );
 var allStats, loadStats;
 	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
