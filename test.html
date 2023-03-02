@@ -28,7 +28,7 @@
 		loadItem = true;
 	});
 	// Load all skill gem from repoe file
-    var allGem, loadGem, mapStatGem;
+    var allGem, loadGem, mapStatGem = [];
     fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
 		allGem = parsed;
 		loadGem = true;
