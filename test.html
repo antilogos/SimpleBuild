@@ -33,9 +33,10 @@
 		allGem = parsed;
 		for( let gem of Object.values(allGem)) {
         	if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
+			// Load special stats for gem
 			fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem.stat_translation_file).then(response => response.json()).then(subparsed => {
 				mapStatGem[gem] = subparsed;
-				}
+				});
 			}
 		}
         console.log("allGem:", Object.entries(allGem));
