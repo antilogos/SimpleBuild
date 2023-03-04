@@ -4,7 +4,8 @@
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
-<!-- Translate pob code into javascript object -->
+<!-- Translate pob code into javascript object with pako library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script>
 function pobCodeToObject(pobCode) {
 	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
