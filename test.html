@@ -4,6 +4,18 @@
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
+<!-- Translate pob code into javascript object -->
+<script>
+function pobCodeToObject(pobCode) {
+	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
+	var gzipedDataArray = Uint8Array.from(compressData, c => c.charCodeAt(0));
+	const ungzipedData = pako.ungzip(gzipedDataArray);
+	var xml = new TextDecoder().decode(ungzipedData);
+	
+	var parser = new DOMParser();
+	return parser.parseFromString(xml,"text/xml");
+}
+</script>
 <!-- RePoE -->
 <script>
     // Load all item mods from repoe file
@@ -34,6 +46,7 @@
 		loadGem = true;
 	}).then( data => {
         	console.log("allGem:", Object.entries(allGem));
+	    	// ALL THIS SEEMS IRELEVANT AS ALL STATS ARE IN STAT_TRANSLATIONS AND NOT INTO STAT_TRANSLATION_FILE
 		for( let gem of Object.values(allGem)) {
         	if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
 			// Load special stats for gem
