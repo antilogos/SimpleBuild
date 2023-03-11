@@ -6,22 +6,62 @@
 <!-- Translate pob code into javascript object with pako library to unzip -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
-<!-- Passive Skill Tree -->
-<script src="../SimpleFiltre/master/TreeParser/data-320.json"></script>
-<script src="../SimpleFiltre/master/TreeParser/parser.js"></script>
+<!-- Passive Skill Tree parser -->
 <script>
 var passiveSkillTreeData;
-var nodes;
-fetch("data-320.json").then(response => response.json()).then(parsed => {
+var treeNodes, loadPassive = false;
+fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-320.json").then(response => response.json()).then(parsed => {
 	passiveSkillTreeData = parsed;
-	nodes = extractNodesData(parsed);
-	init();
-});
+	treeNodes = extractNodesData(parsed);
+	loadPassive = true;
+}).then(data => waitForLoadAsync());
+// Take the passive skill tree and extract all the nodes that are relevant with added coordinates
+function extractNodesData(jsonData) {
+	// keep a map of nodes that matters
+	const nodeMap = new Map();
+	for( let[key, value] of Object.entries(passiveSkillTreeData.nodes)) {
+		// No cluster jewels, no standard nodes
+		if(!value.isAscendancyStart && !value.isMultipleChoice && !value.isMultipleChoiceOption && (!value.spc || value.spc.length == 0)) {
+			nodeMap[key] = value;
+		}
+	}
+
+	// Parse the groups to get coordinate of the center of circle if needed
+	for( let [key, value] of Object.entries(passiveSkillTreeData.groups)) {
+		// Ignore cluster jewels
+		if(!value.isProxy) {
+			// No orbit declaration in group
+			for( let node of value.nodes) {
+				const nodeObject = nodeMap[node];
+				if(node in nodeMap) {
+					if(nodeObject.orbit != 0) {
+						// get the radius of the orbits from the groupNode
+						const radius = passiveSkillTreeData.constants.orbitRadii[nodeObject.orbit];
+						// Number of point on the circle
+						const skillOrbit = passiveSkillTreeData.constants.skillsPerOrbit[nodeObject.orbit]; 
+						// Place the node in the orbit and use orbit position to get him at the right location
+						nodeObject.x = value.x + (Math.sin(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
+						nodeObject.y = value.y - (Math.cos(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
+					} else {
+						// node from group without coordinates?
+						nodeObject.x = value.x;
+						nodeObject.y = value.y;
+						nodeObject.anomaly = true;
+					}
+					nodeObject.id = node;
+					// Store back the coordinates
+					nodeMap[node] = nodeObject;
+				}
+			}
+		}
+	}
+	return nodeMap;
+};
 </script>
 <script>
 
 // Load all skill gem from repoe file
-var allGem, loadGem, mapStatGem = new Map();
+var allGem, loadGem = false, mapStatGem = new Map();
 fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
 	allGem = parsed;
 	loadGem = true;
@@ -38,12 +78,12 @@ fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems
 			}
 		}
 	}}
-).then(data => loadGemData());
-var allStats, loadStats;
+).then(data => waitForLoadAsync());
+var allStats, loadStats = false;
 	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
 		allStats = parsed;
 		loadStats = true;
-	}).then(data => loadGemData());
+	}).then(data => waitForLoadAsync());
 function pobCodeToObject(pobCode) {
 	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
 	var gzipedDataArray = Uint8Array.from(compressData, c => c.charCodeAt(0));
@@ -60,7 +100,7 @@ var gemGroups = new Map();
 var qualityIdMap = {Default: 0, Alternate1: 1, Alternate2: 2, Alternate3: 3};
 Object.values(testPob.getElementsByTagName("Skill")).forEach(s => gemGroups[s.getAttribute("slot")] = s);
 // Map of each tree nodes
-var treeGroups = testPob.getElementsByTagName("Spec");
+var treeGroups = Object.values(testPob.getElementsByTagName("Spec"))[0];
 // Map of each items in the pob where jewel association to slot are under <Socket>, and other in <Slot>
 var slots = new Map();
 var items = Object.values(testPob.getElementsByTagName("Item"));
@@ -136,7 +176,6 @@ function translateStats(gemStat) {
 	return skillModifiers;
 }
 function loadGemData() {
-	if(!loadStats || !loadGem) return;
 	Object.values(gemGroups).forEach( (s, i) => {
 		Object.entries(s.children).forEach( (g, j) => {
 			var config = [], gemData = [], gemSection = [];
@@ -195,7 +234,28 @@ function loadGemData() {
 			//console.log("loaded gem", gemData.sections.gemDescription);
 		})
 	});
-	loadHoradricHelper();
+}
+function loadNodeData() {
+	console.log("load now");
+	Object.entries(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+		let node = treeNodes[k[1]];
+		if(node !== undefined && node.isNotable) {
+			var nodeMap = {}, config = [];
+			var stats = node.stats;
+			if(node.reminderText) stats.concat(node.reminderText);
+			nodeMap = {reference:"node_"+k[1], iconUrl: node.icon, data: {sections: {description: stats}, name: node.name, type: "notable"}};
+			config.data = nodeMap;
+			config.iconUrl = "";
+			hhData.push(config);
+			console.log("nodes ", nodeMap);
+		}
+	});
+	requestAnimationFrame(() => {
+		console.log("wait animation frame again");
+	   // this will be called just before the next video frame.
+	   // That will be after any changes to the DOM have been completed.
+		loadHoradricHelper();
+	});
 }
 // Get items from pob (listed under slots) and create div for each of them
 function fillProfile(slots) {
@@ -246,14 +306,53 @@ function fillProfile(slots) {
 		}
 		brotherDiv.insertAdjacentElement('afterend', div);
 	})
+	// Tree nodes
+	Object.entries(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+		let node = treeNodes[k[1]];
+		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
+			var div = document.createElement("div");
+			div.setAttribute("id",k[0]);
+			// Creation of the poe-item html element for HoradricHelper
+			var item = document.createElement("poe-item");
+			item.setAttribute("reference", "node_"+k[1]);
+			item.setAttribute("as-icon","");
+			item.setAttribute("icon-size","md");
+			item.setAttribute("label-text", node.name);
+			div.appendChild(item);
+			var brotherDiv;
+			// Depending on the name of the slot, we put this under different header
+			if(node.ascendancyName !== undefined) {
+				brotherDiv = document.getElementById("mastery");
+			} else {
+				brotherDiv = document.getElementById("notable");
+			}
+			brotherDiv.insertAdjacentElement('afterend', div);
+		}
+	});
+	// Masteries
+	Object.entries(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+		console.log("masteries ", k);
+	});
+	requestAnimationFrame(() => {
+	console.log("wait animation frame");
+	   // this will be called just before the next video frame.
+	   // That will be after any changes to the DOM have been completed.
+		loadGemData();
+		loadNodeData();
+	});
 }
 function loadHoradricHelper() {
 	//console.log("launch HH");
 	window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
 }
+function waitForLoadAsync() {
+	if(!loadStats || !loadGem || !loadPassive) return;
+	else {
+		fillProfile(slots);
+	}
+}
 // ONLOAD
 window.onload = function() {
-	fillProfile(slots);
 }
 </script>
 <!-- Style -->
@@ -267,45 +366,12 @@ This is just a template
 <h2 id="secondary">Secondary</h2>
 <!--h2 id="auxiliary">Aura & reservation</h2-->
 <h1>Talent</h1>
-<h2>Ascendancy & Masteries</h2>
-<poe-passive reference="ascendancy_1" as-icon icon-size="md"></poe-passive>
-<poe-passive reference="mastery_1" as-icon icon-size="md"></poe-passive>
-<h2>Notables</h2>
-<poe-passive reference="notable_1" as-icon icon-size="md"  dim-sections="description:1,2"></poe-passive>
-<h2>Bandits & Pantheon</h2>
+<h2 id="mastery">Ascendancy & Masteries</h2>
+<h2 id="notable">Notables</h2>
+<!--h2 id="pantheon">Bandits & Pantheon</h2-->
 <h1>Item</h1>
 <h2 id="equipped">Equipement</h2>
 <h2 id="socketed">Jewel</h2>
 <h2 id="flask">Flask</h2>
 </body>
-<!-- Javascript -->
-<script>
-// Script for notables comes from data translation made on personnal website
-window.HoradricHelper.PathOfExile.applyConfig({"reference": "ascendancy_1",
-    "iconUrl": "Art/2DArt/SkillIcons/passives/DamageOverTimeNotable.png",
-    "data": {
-        "sections": {
-            "description": [
-                "+15% to Damage over Time Multiplier"
-            ]
-        },
-        "name": "Acrimony",
-        "type": "notable"
-    }
-});
-window.HoradricHelper.PathOfExile.applyConfig({"reference": "notable_1",
-    "iconUrl": "Art/2DArt/SkillIcons/passives/Gladiator/GLADPainForged.png",
-    "data": {
-        "sections": {
-            "description": [
-                "+10% Chance to Block Attack Damage",
-                "Cannot be Stunned by Hits you Block",
-                "Your Counterattacks deal Double Damage"
-            ]
-        },
-        "name": "Painforged",
-        "type": "ascendancy notable"
-    }
-});
-</script>
 </html>
