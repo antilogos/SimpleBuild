@@ -236,8 +236,8 @@ function loadGemData() {
 	});
 }
 function loadNodeData() {
-	Object.entries(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
-		let node = treeNodes[k[1]];
+	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+		let node = treeNodes[k];
 		if(node !== undefined && node.isNotable) {
 			var nodeData = [], nodeSection = [], config = [];
 			var stats = node.stats;
@@ -250,35 +250,59 @@ function loadNodeData() {
 			} else {
 				nodeData.type = "notable"
 			}
-			config.reference = "node_"+k[1];
+			config.reference = "node_"+k;
 			config.data = nodeData;
 			config.iconUrl = "";
 			hhData.push(config);
 			//console.log("loaded passive", config);
 		}
 	});
+	var masteryGroup = new Map();
+	Object.values(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
+		let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
+		let mastery = treeNodes[master].name;
+		let effect = treeNodes[master].masteryEffects.find( e => e.effect == slave);
+		if(masteryGroup[mastery] !== undefined) {
+			masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
+		}
+		else masteryGroup[mastery] = [].concat(effect.stats);
+		if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
+	});
+	Object.entries(masteryGroup).forEach( k => {
+		var nodeData = [], nodeSection = [], config = [];
+		nodeSection.description = [].concat(k[1]);
+		nodeData.sections = nodeSection;
+		nodeData.name = k[0];
+		nodeData.type = "mastery"
+		config.reference = "mastery_"+k[0];
+		config.data = nodeData;
+		config.iconUrl = "";
+		hhData.push(config);
+		//console.log("loaded mastery", config);
+	});
 }
 // Get items from pob (listed under slots) and create div for each of them
 function fillProfile(slots) {
 	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
-	Object.entries(gemGroups).forEach( (k, i) => {
+	Object.values(gemGroups).forEach( (k, i) => {
 		var div = document.createElement("div");
 		var brotherDiv;
 		div.setAttribute("id", "gem_"+i);
-		Object.entries(k[1].children).forEach( (g, j) => {
+		Object.values(k.children).forEach( (g, j) => {
 			let gemRef = "gem_"+i+"_"+j;
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
 			item.setAttribute("as-icon","");
 			item.setAttribute("icon-size","md");
-			item.setAttribute("label-text",g[1].getAttribute("nameSpec"));
+			item.setAttribute("label-text",g.getAttribute("nameSpec"));
 			div.appendChild(item);
 		});
 		// Depending on the number of gem in slot, we put this under different header
-		if(k[1].children.length > 4) {
+		if(k.children.length > 4) {
 			brotherDiv = document.getElementById("primary");
-		} else //if(k[0].startsWith("Flask")) {
+		} else //if(k.startsWith("Flask")) {
 			brotherDiv = document.getElementById("secondary");
 		// } else {
 		// brotherDiv = document.getElementById("auxiliary");
@@ -308,20 +332,20 @@ function fillProfile(slots) {
 		brotherDiv.insertAdjacentElement('afterend', div);
 	})
 	// Tree nodes
-	Object.entries(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
-		let node = treeNodes[k[1]];
+	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
 			var div = document.createElement("div");
-			div.setAttribute("id","passive_"+k[1]);
+			div.setAttribute("id","passive_"+k);
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-passive");
-			item.setAttribute("reference", "node_"+k[1]);
+			item.setAttribute("reference", "node_"+k);
 			item.setAttribute("as-icon","");
 			item.setAttribute("icon-size","md");
 			item.setAttribute("label-text", node.name);
 			div.appendChild(item);
 			var brotherDiv;
-			// Depending on the name of the slot, we put this under different header
+			// Depending on the type of nodes
 			if(node.ascendancyName !== undefined) {
 				brotherDiv = document.getElementById("mastery");
 			} else {
@@ -331,8 +355,24 @@ function fillProfile(slots) {
 		}
 	});
 	// Masteries
-	Object.entries(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
-		console.log("masteries ", k);
+	var masteryGroup = new Map();
+	Object.values(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
+		let mastery = treeNodes[master].name;
+		masteryGroup[mastery] = master;
+	});
+	Object.entries(masteryGroup).forEach( k => {
+		var div = document.createElement("div");
+		div.setAttribute("id","mastery_"+k[1]);
+		// Creation of the poe-item html element for HoradricHelper
+		var item = document.createElement("poe-passive");
+		item.setAttribute("reference", "mastery_"+k[0]);
+		item.setAttribute("as-icon","");
+		item.setAttribute("icon-size","md");
+		item.setAttribute("label-text", k[0]);
+		div.appendChild(item);
+		var brotherDiv = document.getElementById("mastery");
+		brotherDiv.insertAdjacentElement('afterend', div);
 	});
 	
 	loadNodeData();
