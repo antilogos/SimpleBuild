@@ -3,29 +3,42 @@
 <head>
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
+<!-- Translate pob code into javascript object with pako library to unzip -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
+<!-- Passive Skill Tree -->
+<script src="../SimpleFiltre/master/TreeParser/data-320.json"></script>
+<script src="../SimpleFiltre/master/TreeParser/parser.js"></script>
+<script>
+var passiveSkillTreeData;
+var nodes;
+fetch("data-320.json").then(response => response.json()).then(parsed => {
+	passiveSkillTreeData = parsed;
+	nodes = extractNodesData(parsed);
+	init();
+});
+</script>
 <script>
 
-	// Load all skill gem from repoe file
-    var allGem, loadGem, mapStatGem = new Map();
-    fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
-		allGem = parsed;
-		loadGem = true;
-	}).then( data => {
-	    	// ALL THIS SEEMS IRELEVANT AS ALL STATS ARE IN STAT_TRANSLATIONS AND NOT INTO STAT_TRANSLATION_FILE
-		for( let gem of Object.values(allGem)) {
-        	if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
-			// Load special stats for gem
-			if(!mapStatGem[gem.stat_translation_file]) {
-				mapStatGem[gem.stat_translation_file] = "loading...";
-				fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem.stat_translation_file+".json").then(response => response.json()).then(subparsed => {
-					mapStatGem[gem.stat_translation_file] = subparsed;
-					});
-				}
+// Load all skill gem from repoe file
+var allGem, loadGem, mapStatGem = new Map();
+fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
+	allGem = parsed;
+	loadGem = true;
+}).then( data => {
+		// ALL THIS SEEMS IRELEVANT AS ALL STATS ARE IN STAT_TRANSLATIONS AND NOT INTO STAT_TRANSLATION_FILE
+	for( let gem of Object.values(allGem)) {
+		if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
+		// Load special stats for gem
+		if(!mapStatGem[gem.stat_translation_file]) {
+			mapStatGem[gem.stat_translation_file] = "loading...";
+			fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem.stat_translation_file+".json").then(response => response.json()).then(subparsed => {
+				mapStatGem[gem.stat_translation_file] = subparsed;
+				});
 			}
-		}}
-    ).then(data => loadGemData());
+		}
+	}}
+).then(data => loadGemData());
 var allStats, loadStats;
 	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
 		allStats = parsed;
@@ -44,6 +57,7 @@ var testPob = pobCodeToObject("eNrtPWtz28iRn8NfgVLV3RfL9rwB-Oxc6S3tSrYsSna8X1wDY
 
 // Map of each gems
 var gemGroups = new Map();
+var qualityIdMap = {Default: 0, Alternate1: 1, Alternate2: 2, Alternate3: 3};
 Object.values(testPob.getElementsByTagName("Skill")).forEach(s => gemGroups[s.getAttribute("slot")] = s);
 // Map of each tree nodes
 var treeGroups = testPob.getElementsByTagName("Spec");
@@ -57,40 +71,115 @@ var hhData = Array();
 Object.entries(slots).map( k => {
 		var config = [];
 		config.reference = k[0];
-		config.data = k[1].innerHTML;
+		// Remove PoB lines with ModRange and empty lines
+		config.data = k[1].innerHTML.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
 		hhData.push(config);
+		//console.log("loaded items");
 	});
-function translateStats(statGroup, placeholder) {
-
+function conditionToFormat(sentence, cn, statValue) {
+	if(sentence.format[cn] !== undefined && sentence.format[cn].contains("ignore")) {
+		return "ignore";
+	} else if(sentence.format[cn] !== undefined) {
+		return sentence.string.replaceAll("\{0\}", sentence.format[cn].replaceAll("#", statValue));
+	} else {
+		console.log("no format?", sentence,cn);
+		return false;
+	}
+}
+function translateStats(gemStat) {
+	var skillModifiers = [];
+	// TODO regroup value of shared mod id
+	//console.log("readable stats:",gemStat);
+	gemStat.forEach( (stats, index) => { 
+		// Assure that translation in specific language exists
+		if(stats.translate.English !== undefined) {
+			// from each sentence available, only one can be displayed? XXX replace find with filter later to test
+			let translation = stats.translate.English.filter( sentence => {
+				// check if all condition apply
+				return sentence.condition.every( condition => {
+					if(condition.hasOwnProperty("min")) {
+						if(condition.hasOwnProperty("max")) {
+							return condition.min <= stats.value && condition.max >= stats.value;
+						} else return condition.min <= stats.value;
+					} else if(condition.hasOwnProperty("max")) {
+						return condition.max >= stats.value;
+					} else if(Object.keys(condition).length === 0) {
+						// free match
+						return true;
+					} else {
+						console.log("other condition,",condition,"for",sentence);
+						return true;
+					}
+				})
+			})
+			// TODO traitement après condition trouvé
+			if(translation !== undefined) {
+				var baseString, ignore = false;
+				// TODO what is index_handlers?
+				//conditionToFormat(translation[0], 0, stats.value);
+				translation.forEach( sentence => {
+					if(sentence.format !== undefined && sentence.format.indexOf("ignore") > 0) {
+						ignore = true;
+					} else {
+						baseString = sentence.string.replaceAll("\{0\}", sentence.format[0].replaceAll("#", stats.value));
+					}
+				});
+				if(baseString !== undefined && !ignore) skillModifiers.push(baseString);
+			}
+		} else {
+			// Mods that are not meant to be displayed?
+			// console.log("not found ",statGroup," for ",stats," with file ", skillGem.stat_translation_file);
+		}
+	});
+	//var indexInStat = statGroup.ids.findIndex(id => id == statsDescription[0].id);
+	//console.log("find stat",skillModifiers);
+	return skillModifiers;
 }
 function loadGemData() {
 	if(!loadStats || !loadGem) return;
-	Object.values(gemGroups).forEach(s => {
-		Object.entries(s.children).forEach(g => {
+	Object.values(gemGroups).forEach( (s, i) => {
+		Object.entries(s.children).forEach( (g, j) => {
 			var config = [], gemData = [], gemSection = [];
 			var skillGem = allGem[g[1].getAttribute("skillId")];
-			console.log("gem:", g[1].getAttribute("nameSpec"), ", level:", g[1].getAttribute("level"), ", quality:",g[1].getAttribute("quality"),", qualityId:",g[1].getAttribute("qualityId"),", skillId:",g[1].getAttribute("skillId"),", skill:",skillGem);
+			//if(skillGem !== undefined) console.log("gem:",g[1].getAttribute("qualityId"), g[1].getAttribute("nameSpec"), " lvl", g[1].getAttribute("level"), "q",g[1].getAttribute("quality")/*,", skill:",skillGem*/);
 			var skillModifiers = [];
-			if(skillGem.active_skill) {
+			if(skillGem.active_skill !== undefined) {
 				// Active skill gem
 				gemSection.gemDescription = [].concat(skillGem.active_skill.description);
 			} else {
 				// Support skill gem
+				// XXX no gem description for support ?
 			}
+			var gemStat = [];
+			// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
 			skillGem.static.stats.forEach( (stats, index) => {
-				var statGroup = allStats.find(a => a.ids.find(id => id == stats.id));
-				if(statGroup && statGroup.English && statGroup.English.string) {
-					if(stats.value) {
-						skillModifiers.concat(statGroup.English.string.replaceAll("\{0\}", stats.value));
-					} else {
-						skillModifiers.concat(statGroup.English.string.replaceAll("\{0\}", skillGem.per_level[g[1].getAttribute("level")].stats[index]));
-					}
-				} else {
-					console.log("not found ",statGroup," for ",stats," with file ", skillGem.stat_translation_file);
+				var statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
+				if(statTranslation !== undefined) {
+					var keyValueStat = {};
+					keyValueStat.id = stats.id;
+					if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
+					else if(skillGem.per_level[g[1].getAttribute("level")] && skillGem.per_level[g[1].getAttribute("level")].stats[index] && skillGem.per_level[g[1].getAttribute("level")].stats[index].value)
+					keyValueStat.value = skillGem.per_level[g[1].getAttribute("level")].stats[index].value;
+					keyValueStat.translate = statTranslation;
+					gemStat.push(keyValueStat);
 				}
 			});
+			// Include stat from appropriate quality and normalized it with quality value (base on 2000)
+			let qualityStat = skillGem.static.quality_stats[qualityIdMap[g[1].getAttribute("qualityId")]];
+			if(qualityStat !== undefined) {
+				let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
+				if(g[1].getAttribute("quality") !== undefined && g[1].getAttribute("quality") > 0 && qualityTranslation !== undefined) {
+					var keyValueStat = {};
+					keyValueStat.id = qualityStat.id;
+					keyValueStat.value = qualityStat.value / 2000 * g[1].getAttribute("quality");
+					keyValueStat.translate = qualityTranslation;
+					gemStat.push(keyValueStat);
+				}
+				skillModifiers.push(translateStats(gemStat));
+			}
+			//console.log(skillModifiers);
 			
-			gemSection.modifiers = skillModifiers;
+			if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
 			gemSection.properties = [].concat(skillGem.tags);
 			g[1].getAttribute("level");
 			g[1].getAttribute("skillId");
@@ -99,17 +188,43 @@ function loadGemData() {
 			gemData.rarity = "Gem";
 			gemData.name = skillGem.base_item.display_name;
 			gemData.sections = gemSection;
-			config.reference = s.getAttribute("slot") + "_" + g[0];
+			config.reference = "gem_" + i + "_" + j;
 			config.data = gemData;
 			config.iconUrl = "";
-			//console.log(config);
-			//hhData.push(config);
-			// {reference: "primary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"}
+			hhData.push(config);
+			//console.log("loaded gem", gemData.sections.gemDescription);
 		})
-});
+	});
+	loadHoradricHelper();
 }
 // Get items from pob (listed under slots) and create div for each of them
 function fillProfile(slots) {
+	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
+	Object.entries(gemGroups).forEach( (k, i) => {
+		var div = document.createElement("div");
+		var brotherDiv;
+		div.setAttribute("id", "gem_"+i);
+		Object.entries(k[1].children).forEach( (g, j) => {
+			let gemRef = "gem_"+i+"_"+j;
+			// Creation of the poe-item html element for HoradricHelper
+			var item = document.createElement("poe-item");
+			item.setAttribute("reference", gemRef);
+			item.setAttribute("as-icon","");
+			item.setAttribute("icon-size","md");
+			item.setAttribute("label-text",g[1].getAttribute("nameSpec"));
+			div.appendChild(item);
+		});
+		// Depending on the number of gem in slot, we put this under different header
+		if(k[1].children.length > 4) {
+			brotherDiv = document.getElementById("primary");
+		} else //if(k[0].startsWith("Flask")) {
+			brotherDiv = document.getElementById("secondary");
+		// } else {
+		// brotherDiv = document.getElementById("auxiliary");
+		// }
+		brotherDiv.insertAdjacentElement('afterend', div);
+	});
+	// Inventory slots (jewel, flask and equipement)
 	Object.entries(slots).forEach( k => {
 		var div = document.createElement("div");
 		div.setAttribute("id",k[0]);
@@ -132,12 +247,13 @@ function fillProfile(slots) {
 		brotherDiv.insertAdjacentElement('afterend', div);
 	})
 }
+function loadHoradricHelper() {
+	//console.log("launch HH");
+	window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
+}
 // ONLOAD
 window.onload = function() {
 	fillProfile(slots);
-	(() => {
-	  window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
-	})();
 }
 </script>
 <!-- Style -->
@@ -147,13 +263,9 @@ window.onload = function() {
 <h1>Concept</h1>
 This is just a template
 <h1>Gem</h1>
-<h2>Main setup</h2>
-<poe-item reference="primary_1_1" as-icon icon-size="md" label-text="Skill Gem"></poe-item>
-<poe-item reference="primary_1_2" as-icon icon-size="md" label-text="Support Gem"></poe-item>
-<h2>Secondary</h2>
-<poe-item reference="secondary_1_1" as-icon icon-size="md" label-text="Secondary Gem"></poe-item>
-<h2>Aura & reservation</h2>
-<poe-item reference="tertiary_1_1" as-icon icon-size="md" label-text="Aura Gem"></poe-item>
+<h2 id="primary">Main setup</h2>
+<h2 id="secondary">Secondary</h2>
+<!--h2 id="auxiliary">Aura & reservation</h2-->
 <h1>Talent</h1>
 <h2>Ascendancy & Masteries</h2>
 <poe-passive reference="ascendancy_1" as-icon icon-size="md"></poe-passive>
@@ -168,11 +280,6 @@ This is just a template
 </body>
 <!-- Javascript -->
 <script>
-// Script for gems come from google sheet data translation of ingame level 1 gem
-window.HoradricHelper.PathOfExile.applyConfig({reference: "primary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
-window.HoradricHelper.PathOfExile.applyConfig({reference: "primary_1_2", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
-window.HoradricHelper.PathOfExile.applyConfig({reference: "secondary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
-window.HoradricHelper.PathOfExile.applyConfig({reference: "tertiary_1_1", data: {name: "Ground Slam", rarity:"Gem", sections:{modifiers: ["25% reduced Enemy Stun Threshold","Deals up to 40% more Damage with Hits to closer targets"], properties: ["Attack, AoE, Slam, Melee","Level: 1","Cost: 6 Mana","Attack Speed: 90% of base","Attack Damage: 115% of base","Effectiveness of Added Damage: 115%"], gemDescription: ["Slams the ground in front of you, creating a wave that travels forward and damages enemies with an increased chance to stun. The wave deals more damage to closer enemies. Requires an Axe, Mace, Sceptre, Staff or Unarmed."]}}, iconUrl: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9DbGVhdmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7d4382b5e9/Cleave.png"});
 // Script for notables comes from data translation made on personnal website
 window.HoradricHelper.PathOfExile.applyConfig({"reference": "ascendancy_1",
     "iconUrl": "Art/2DArt/SkillIcons/passives/DamageOverTimeNotable.png",
