@@ -231,30 +231,31 @@ function loadGemData() {
 			config.data = gemData;
 			config.iconUrl = "";
 			hhData.push(config);
-			//console.log("loaded gem", gemData.sections.gemDescription);
+			//console.log("loaded gem", config);
 		})
 	});
 }
 function loadNodeData() {
-	console.log("load now");
 	Object.entries(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
 		let node = treeNodes[k[1]];
 		if(node !== undefined && node.isNotable) {
-			var nodeMap = {}, config = [];
+			var nodeData = [], nodeSection = [], config = [];
 			var stats = node.stats;
 			if(node.reminderText) stats.concat(node.reminderText);
-			nodeMap = {reference:"node_"+k[1], iconUrl: node.icon, data: {sections: {description: stats}, name: node.name, type: "notable"}};
-			config.data = nodeMap;
+			nodeSection.description = [].concat(stats);
+			nodeData.sections = nodeSection;
+			nodeData.name = node.name;
+			if(node.ascendancyName !== undefined) {
+				nodeData.type = "ascendancy notable"
+			} else {
+				nodeData.type = "notable"
+			}
+			config.reference = "node_"+k[1];
+			config.data = nodeData;
 			config.iconUrl = "";
 			hhData.push(config);
-			console.log("nodes ", nodeMap);
+			//console.log("loaded passive", config);
 		}
-	});
-	requestAnimationFrame(() => {
-		console.log("wait animation frame again");
-	   // this will be called just before the next video frame.
-	   // That will be after any changes to the DOM have been completed.
-		loadHoradricHelper();
 	});
 }
 // Get items from pob (listed under slots) and create div for each of them
@@ -311,9 +312,9 @@ function fillProfile(slots) {
 		let node = treeNodes[k[1]];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
 			var div = document.createElement("div");
-			div.setAttribute("id",k[0]);
+			div.setAttribute("id","passive_"+k[1]);
 			// Creation of the poe-item html element for HoradricHelper
-			var item = document.createElement("poe-item");
+			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k[1]);
 			item.setAttribute("as-icon","");
 			item.setAttribute("icon-size","md");
@@ -333,13 +334,10 @@ function fillProfile(slots) {
 	Object.entries(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
 		console.log("masteries ", k);
 	});
-	requestAnimationFrame(() => {
-	console.log("wait animation frame");
-	   // this will be called just before the next video frame.
-	   // That will be after any changes to the DOM have been completed.
-		loadGemData();
-		loadNodeData();
-	});
+	
+	loadNodeData();
+	loadGemData();
+	loadHoradricHelper();
 }
 function loadHoradricHelper() {
 	//console.log("launch HH");
@@ -368,6 +366,7 @@ This is just a template
 <h1>Talent</h1>
 <h2 id="mastery">Ascendancy & Masteries</h2>
 <h2 id="notable">Notables</h2>
+<div><poe-passive></poe-passive></div>
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
 <h1>Item</h1>
 <h2 id="equipped">Equipement</h2>
