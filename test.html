@@ -105,9 +105,19 @@ var treeGroups = Object.values(testPob.getElementsByTagName("Spec"))[0];
 var slots = new Map();
 var items = Object.values(testPob.getElementsByTagName("Item"));
 Object.values(testPob.getElementsByTagName("Slot")).filter(s => s.getAttribute("itemId") != 0).forEach( s => slots[s.getAttribute("name")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
+// FIXME socketed item name
 Object.values(testPob.getElementsByTagName("Socket")).forEach( s => slots["Jewel " + s.getAttribute("nodeId")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
 // Create the all the data for Horadric Helper
 var hhData = Array();
+function displayMode(elem, type) {
+	if(type == "show") {
+		elem.setAttribute("as-showcase","");
+		elem.setAttribute("icon-inside","");
+	} else {
+		elem.setAttribute("as-icon","");
+		elem.setAttribute("icon-size","md");
+	}
+}
 Object.entries(slots).map( k => {
 		var config = [];
 		config.reference = k[0];
@@ -285,76 +295,90 @@ function loadNodeData() {
 // Get items from pob (listed under slots) and create div for each of them
 function fillProfile(slots) {
 	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
+	let primaryHeader = document.getElementById("primary");
+	let primaryDiv = document.createElement("div");
+	primaryDiv.setAttribute("class", "gem_display");
+	primaryHeader.insertAdjacentElement("afterend", primaryDiv);
+	let secondaryHeader = document.getElementById("secondary");
+	let secondaryDiv = document.createElement("div");
+	secondaryHeader.insertAdjacentElement("afterend", secondaryDiv);
+	// Add poe-item for each gem, each group in a single div
 	Object.values(gemGroups).forEach( (k, i) => {
 		var div = document.createElement("div");
-		var brotherDiv;
 		div.setAttribute("id", "gem_"+i);
 		Object.values(k.children).forEach( (g, j) => {
 			let gemRef = "gem_"+i+"_"+j;
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
-			item.setAttribute("as-icon","");
-			item.setAttribute("icon-size","md");
+			displayMode(item, "popup");
 			item.setAttribute("label-text",g.getAttribute("nameSpec"));
 			div.appendChild(item);
 		});
 		// Depending on the number of gem in slot, we put this under different header
 		if(k.children.length > 4) {
-			brotherDiv = document.getElementById("primary");
+			primaryDiv.appendChild(div);
 		} else //if(k.startsWith("Flask")) {
-			brotherDiv = document.getElementById("secondary");
+			secondaryDiv.appendChild(div);
 		// } else {
 		// brotherDiv = document.getElementById("auxiliary");
 		// }
-		brotherDiv.insertAdjacentElement('afterend', div);
 	});
 	// Inventory slots (jewel, flask and equipement)
-	Object.entries(slots).forEach( k => {
-		var div = document.createElement("div");
-		div.setAttribute("id",k[0]);
+	let equippedHeader = document.getElementById("equipped");
+	let equippedDiv = document.createElement("div");
+	equippedDiv.setAttribute("class", "equipment_display");
+	equippedHeader.insertAdjacentElement("afterend", equippedDiv);
+	let flaskHeader = document.getElementById("flask");
+	let flaskDiv = document.createElement("div");
+	flaskHeader.insertAdjacentElement("afterend", flaskDiv);
+	let jewelHeader = document.getElementById("jewel");
+	let jewelDiv = document.createElement("div");
+	jewelHeader.insertAdjacentElement("afterend", jewelDiv);
+	// Add poe-item for each equipment, each group in a single div
+	Object.keys(slots).forEach( k => {
 		// Creation of the poe-item html element for HoradricHelper
 		var item = document.createElement("poe-item");
-		item.setAttribute("reference", k[0]);
-		item.setAttribute("as-icon","");
-		item.setAttribute("icon-size","md");
-		item.setAttribute("label-text",k[0]);
-		div.appendChild(item);
+		item.setAttribute("reference", k);
+		displayMode(item, "show");
+		item.setAttribute("label-text",k);
 		var brotherDiv;
 		// Depending on the name of the slot, we put this under different header
-		if(k[0].startsWith("Jewel")) {
-			brotherDiv = document.getElementById("socketed");
-		} else if(k[0].startsWith("Flask")) {
-			brotherDiv = document.getElementById("flask");
+		if(k.startsWith("Jewel")) {
+			jewelDiv.appendChild(item);
+		} else if(k.startsWith("Flask")) {
+			flaskDiv.appendChild(item);
 		} else {
-			brotherDiv = document.getElementById("equipped");
+			equippedDiv.appendChild(item);
 		}
-		brotherDiv.insertAdjacentElement('afterend', div);
 	})
 	// Tree nodes
+	let masteryHeader = document.getElementById("mastery");
+	let masteryDiv = document.createElement("div");
+	masteryDiv.setAttribute("class", "passive_display");
+	masteryHeader.insertAdjacentElement("afterend", masteryDiv);
+	let notableHeader = document.getElementById("notable");
+	let notableDiv = document.createElement("div");
+	notableDiv.setAttribute("class", "passive_display");
+	notableHeader.insertAdjacentElement("afterend", notableDiv);
+	// Add poe-passive for each ascendancy and notable allocated
 	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
-			var div = document.createElement("div");
-			div.setAttribute("id","passive_"+k);
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k);
-			item.setAttribute("as-icon","");
-			item.setAttribute("icon-size","md");
+			displayMode(item, "show");
 			item.setAttribute("label-text", node.name);
-			div.appendChild(item);
-			var brotherDiv;
 			// Depending on the type of nodes
 			if(node.ascendancyName !== undefined) {
-				brotherDiv = document.getElementById("mastery");
+				masteryDiv.appendChild(item);
 			} else {
-				brotherDiv = document.getElementById("notable");
+				notableDiv.appendChild(item);
 			}
-			brotherDiv.insertAdjacentElement('afterend', div);
 		}
 	});
-	// Masteries
+	// Add poe-passive for Masteris group with their effect from all masteries allocated 
 	var masteryGroup = new Map();
 	Object.values(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
@@ -362,17 +386,12 @@ function fillProfile(slots) {
 		masteryGroup[mastery] = master;
 	});
 	Object.entries(masteryGroup).forEach( k => {
-		var div = document.createElement("div");
-		div.setAttribute("id","mastery_"+k[1]);
 		// Creation of the poe-item html element for HoradricHelper
 		var item = document.createElement("poe-passive");
 		item.setAttribute("reference", "mastery_"+k[0]);
-		item.setAttribute("as-icon","");
-		item.setAttribute("icon-size","md");
+		displayMode(item, "show");
 		item.setAttribute("label-text", k[0]);
-		div.appendChild(item);
-		var brotherDiv = document.getElementById("mastery");
-		brotherDiv.insertAdjacentElement('afterend', div);
+		masteryDiv.appendChild(item);
 	});
 	
 	loadNodeData();
@@ -394,6 +413,25 @@ window.onload = function() {
 }
 </script>
 <!-- Style -->
+<style>
+body {
+	color: #949A9D;
+	background: #343a40;
+}
+h1, h2{
+	text-transform: uppercase;
+	letter-spacing: .09375rem;
+	font-familiy: Arial, Helvetica;
+	text-shadow:  0px 3px 6px rgb(0 0 0 / 60%), 0 0 8px rgb(208 183 130 / 40%);
+	background: -webkit-linear-gradient(#fff, #b79f6e);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+.passive_display {
+	#display: inline-block;
+	#float: left;
+}
+</style>
 </head>
 <!-- Body -->
 <body>
@@ -410,7 +448,7 @@ This is just a template
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
 <h1>Item</h1>
 <h2 id="equipped">Equipement</h2>
-<h2 id="socketed">Jewel</h2>
+<h2 id="jewel">Jewel</h2>
 <h2 id="flask">Flask</h2>
 </body>
 </html>
