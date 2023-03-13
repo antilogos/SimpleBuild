@@ -1,6 +1,14 @@
 <!Doctype html>
 <html lang="en-US">
 <head>
+<!-- TODO -->
+<!-- Add check if empty item, passive, gem, etc. -->
+<!-- Add check if non-readable or empty pob -->
+<!-- Add check everywhere necessary -->
+<!-- Add fetch pob url like pastbin, ninja and other -->
+<!-- Add support for different skill setups -->
+<!-- Add support for different item setups -->
+<!-- Add display of class -->
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <!-- Translate pob code into javascript object with pako library to unzip -->
@@ -59,7 +67,17 @@ function extractNodesData(jsonData) {
 };
 </script>
 <script>
-
+// Create the all the data for Horadric Helper
+var hhData = Array();
+function displayMode(elem, type) {
+	if(type == "show") {
+		elem.setAttribute("as-showcase","");
+		elem.setAttribute("icon-inside","");
+	} else {
+		elem.setAttribute("as-icon","");
+		elem.setAttribute("icon-size","md");
+	}
+}
 // Load all skill gem from repoe file
 var allGem, loadGem = false, mapStatGem = new Map();
 fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
@@ -79,11 +97,13 @@ fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems
 		}
 	}}
 ).then(data => waitForLoadAsync());
+var qualityIdMap = {Default: 0, Alternate1: 1, Alternate2: 2, Alternate3: 3};
 var allStats, loadStats = false;
-	fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
-		allStats = parsed;
-		loadStats = true;
-	}).then(data => waitForLoadAsync());
+fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
+	allStats = parsed;
+	loadStats = true;
+}).then(data => waitForLoadAsync());
+// Read pob code into object
 function pobCodeToObject(pobCode) {
 	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
 	var gzipedDataArray = Uint8Array.from(compressData, c => c.charCodeAt(0));
@@ -93,32 +113,20 @@ function pobCodeToObject(pobCode) {
 	var parser = new DOMParser();
 	return parser.parseFromString(xml,"text/xml");
 }
-var testPob = pobCodeToObject("eNrtPWtz28iRn8NfgVLV3RfL9rwB-Oxc6S3tSrYsSna8X1wDYCBiBQI0AEqWU_nv1zMASYACSFCSN9lLkiovSXT3zPT0exqjt__7fRxbtyrLozR5t4VfoS1LJX4aRMn1u62ry8OXztb__nXw9lwWow_h7jSK9ZO_Dv7y1ny2YnWrYsBDgFfI7FoVn2a06Ff4bSKTYqTS5Ez-nmZHafBu632aqC3Lk0kQFbNvfizz_L0cq3dbn6PCH21ZMvdVEuwtfv_g-9O4iPJiyxrLKBmm_o0qjrJ0Onm3xbes20jdnaUBAF5eHBzUxo2S-rgw8b-8PY_lvcqGhSysHP55t7UD65fX6jgC4rcyngIVYRP6Crl863U7ynCiVDCH5q9EF-B5pg7CUPlFdKv2sqjYG8nEV4txuvA2hT3T3JnEkcrm8LgL_vgBab1_HcCXaSHj_fPhHJbagrmvKCWrMdIFMztpw2aPdmPg5Eb0NdbJdRIVaiO08zTK06SO4iLK2SuBHeGuQZJjkI_FdgMGtl8hG3NB-KppPhyTuAy7iL1yKbH5Og42EREjHCQNoW7EvWkcg37W8TqZv5eOvShp8r7X7M5kIvfSfLG_rlgFeq4y0OWigYHWIAyVn4L6b4Kix9gQ8zQKVX_IjdZRIWw6m8et42DYF66dMBHOK2cl0iMmdQEa0w9yWNRslui0WhfqWwOSdyrtvvq-WBt1VxCsQ2LeKfEnyWIZFNsrCNYhV87wNi3AS65njjEFB8fnCy_g2py-sh1GXOFQ1mm4Rvd55Mv4TH6PxtMxmPxLeaMWA2LiUtwtitejIgFD0oVNCaWdEnMYZepRiHtpHDwOcSTTvBMTUSZWKd0C0uFohcP332jok8SvuU13FeGrJFO5ym5rkcKqITTKBWiYjka8WPXGWQxTaWoft14Odq2SasT7hYC9WrmoU6X80RGEYBeyUP2sc03oCF3JYA1dZzBd6Vla-dsPYZlT9BUGd46p4Mxl3eGAJtLONQgXVzrMDdl2kKjs-n44ilQc1AwKcvogzCa3Jye9cA3r6wTqWyBQvyHbmNILdUPOfJZZ0M_7bDqnW5nXTTJ2uctWs6zEqHPL7Qw_zxQEuoARqOWwvjv4zNLfdeYQb4i3k43T6cJTEsyJvXIhJUJ9HWidXylD4gsVTP2GIxOdLNuNIWdbWgNZxeA4bkPpnNlOUUj_Zj8NrlVfFDPI5hjD6WQChkTv_RKei1c5xQuVR7WAqDvCXgB_ANltqDFd5Tx7D7AAfjAAWhsU9B5lCWN5KLLany8PQ3tALw_RreyznPwMrMMYPIFJ6M_ShWkhkBiiTvE8hESrV5ZlAJuZXLdupXcw_ZEuo-SbQUPss3BlnVPJVPLjvjf9BnivAQ6SYJppfeg9xjJG2zCX0RhMZ57vy0JauZKZPzqFrX63tVX7dijj2AP1h1811tvXpjylP52MJ2lWmB_3ZOznhuZJMpkWVmIqS-Mo97960zDU9SOgWWSm9nVweHiwd3ny6aCaRh0lv4ni-GsyHXu63FL-V5ehSsihMibRyqdeXn58t_UpUndDjbWvChnFwBo_jWM5yVXwbiuUcQ4jR_DRwAxhvX6xgpqBgkB3Vpdop7UA6KZ08F1lBawXvKqfRapzXvPnayZVDqg9rt62Lmq6ONRNqDTkezIvyoigg1OmAtdNRRfFOpejH67ABZmRcefI1dM1nCjuJyoH5xqFka8lfvWWXwJ0CbWCL74PyuLfr9jvyh110zDVti4C5cNu5LKa1YVdPV3BVVOz6-Rq-bQbfV_5snPt5cNu5HmQmSamzNtOZQ61gtL7qhwISrMTxdp1dO7sQazmIN0EPxQjlZX-qJPSGdioGchKxckib1p0q3ENYgWvTE7cwSH9rBu1zPY61qCfrbBEjYyng6F1mG5SZYrQachWoV6ssKcXq03pLOru4Hz5dMX6Z-lHx9KrxyumbiKgzq2vwqlVpgGC7W7ToB92I5eq9ZBEkU17UjBqsK9CBQZspR7MYVYY4GKa7IOtLFYwtCep0qHt3KZRUEb6T6JmFtlObMGpjWiV9qWVbxtTNJnQU1m_lCA9C_urgl6H6a-BrCEENvt4RVTQj9I8dThWMtZHPGn8NIIPCpdPWmda5DIJ9nXto_dC376ehcZvTTSSWznEzEdqnO_eQ-ZyqO3t0oGRNCyowtVCHzY2cWbiF6hQTmP9-8epjKPiXmcDtV9PywPkJM3G82I1kBqld1qISoo6OMrBhJ6elk924qIipoebraxkSTUhs0xsfqt-NMfGO4tZmxWbeUeJH08DdZJUSR3MJor1Mbiuws71KI9TXcRIUy0_S7TmQ_3lLcyowjyKU0_GZIZfnZQTtNV4juf0NaETHQ-W694B-7WwYd_K9Z6YUMfwbsu6VmP9_QwyigByo9cnBXDjtWbJ6wXv9qNb2LNdnUCB9M8J1ScyX6KfTpNyK3WaoytDMJrBt-YEXvdcJ7Z7rtOUkCD1NpFDbZmwySpLIAEgPVfaRqj3Mk-SfBJVzH793Ft5kviZkqCEz7Cf3bSMYvVaakXBmpN4vhWXluVDlf9pGX7UpmpyWni7qfXe2TPI1W7TWM3zIrB2hv6z24ZjBb64eJJxwGv5q4CB4yh5KEZz1uJ-rG0l1N8sNNCfT36OIMFVm6tHtagmdl-FKLHWrsHM8SxKYMFLQtJ7dccqk3HwIdy5TpP7hxQNsc21ZYnqpltZoltpaD2c1tKUh5MoUNl5DFMKem867evwgiDS0iTjv50_wUC2kunNjIMk1kXrWYj102zFZyUnELmRp1iLtcbivborc-WyuvpotWol0le7SmSrwn5233ooc1CSsmT4BKlpJdN3iSWyVWLn_UOkdUs8jGGIfZmPHr1zDyn0XpPGtAzqH6IJ-KdqQrXRuqb8IWnklI-WmG5afVmsKVh3I5VYJRWrlts9x6LPUvAfyXAECfmjBaiNRt_1lbhWifyMig9zGOlzl8cHP58NBUhnhoWabO4k5uiWwf-5-rGbBvfWrLb4eBVhG3thk5k_iyNuUurvi8cTfcTZX3TWm4GJzG7aBYf284QNAr1XUqL1XQfvuVVXiQdjBbMjhvN4mj9hu1ZR673QnTttwiC1rKhZzfOP53T8B7E5t5fxYeo_aeEdhPpauTm6VeI_-0JNZ78vdSvEIyzefJkPyWwgvmDBrQN_lD67DO8rGcT3zyTCK4htLsElsWUB_llWHth0q55UWNw8zapqqM9i4pdpbZBw1Y6sn6cEpfKJjLJHhzyfpnGiO3CjpQX1LYyUoz-7GdiNZT4ZqfFT9ushjd77tEDtuzKxbmG7cZoGQ5kEw6I8DXt8QGdI7SSG2mPWBtgWoFoGf0NNN0rdoeux9DQr9NnINPPVuy099zfum50cplWM_htSn_x_cusILEwM8X869Ufb1jCKb6yZQdjMWuhBu7ennFLP7OFS6cYpGUPiHiW93KIhv-DqQz5WH4eqMGdO5VGT_niZKTU7UTK4uDrNgS_1VwFPzKEOLFvn2_dVQ8S7rb8T7CC8zZFL6T-2_y4QwWhbEMe14Rv8B9FtwYhg-ptL4DN1MHxmQgi-zZCLhMbinDjb3Ea2gYMveJvZgAffOBWYbxNHUEd_48zF2wIjoA8LTgN9OGVTx9mmmDK2jQVztjFyiLsthOPCv2ZCRI9NhaBsm2DXgX9twcU2c6gg24y5gM8RdrYZd_T0YcJ8mxIEQxHbhoeOC2Sp6wi8TeE_LhC04RfBHQrEzSopYdjexo4t3G1qYwKfbU2SwiIdGFXYMAYnzIZRbf3ZFUgAlg0DUmpzaqjhbUyxAHhKYa6CYpdtM-raejWUABJ3uAaxEQyFHfhFYCw0KmEwLKxQfwYk7iCAJ7A2PYjmAeWEA65DYXCBYBUa3oYVOg53NRZMv2Q2twkRsHKil6XnA1iMmlFcDrzQa-ZEIMNFg2oDF2E93DAd-Mq5qzliw3RcG2bPXBfBjDEjSIMwEAT9s-DUMFGPZsRIswDWAVyEWQAls616CBcWAMjMgGDgkuPAFgmswYE4LMlIl3BhDlQ4XHMcUbpNkIMJDKxxiO2CWMD0Hb0epHlHYD2EU2QW4Zi52CAcBAjrGbrbmOhpuZTrwUAiYAs58EwgxpDBASpGJBkmsFjGsOFZKWIIWFEKs6CamOafZhrTPIaNh13CtgPcZSBXnDEtGwIEDrYBWGXAYRpYGNnQGlJqjRYFkHSCmdlsBLJEGUizAOmFSKQAha69CKztsD9TYFqdyl5dnJamalQUk_zN69d3d3evJmAV01B9j2L1yk_HryeABFbhpTFLLzXZ1zvwv93rs13v4gcYhp0jf2_yXvw4OXFPHPlJ7eZ7pz--Zfbd5Tg7vX95F7ufyf3Zye3QK75cHn5-__0O5Gs0_HR0sYt-EaPLX66yIjy_TbMUJ1-Prt2bH_5hPnaL9OJU_b57Rn853i1ydPP9a5QfvrwLg19_KV7eTm_ug7upe3hL2eTbRzq5Gu58jNj419zbud397p38Fn7Nxxf-aX76y538_WL866dh7Fy__O2LShz59dtHPvSOv0f5mdgZDs9fxieTq6u76QlBv51MJ8esuE2-FPjL59G387Prg5vo5csTcnGeH73_fT8dvswv6I87GYyiu_CGyu_he5FPft31PqPvPsjq-799fXn62y-n5OtHdP79-PD60-XO8MvuL3dXH3eGO7u_XR_8tvPZ373a-fRx9yLdPbk--LZzcXb4-ePh9c6nk93P14fRzuf08OD64ONe-Pm7-HFq7x3vJ55rX3iOhz8NEzv8eHBjf0u-3Nmp_JIfK-f2K0ucb2T48d270uDPdvZt-ZZ2Xnmk8psxmFoOjOKA5yxK947deWSxDFjK1BxQdAEa47oAJKgL0NjfGqDTSVEbxRog6wI0xqk2x06KxnrWKNJOitrA1ija3XMEZ1CjSDpXrf1FDbCbojaaNcBOhmuTWIPDXXDGMNUA-SI2WEgIfAF3byIDHQ_oD-_TQpln-sfZFxMt6H7qqv17WGQ6wvqRpuMvJjrRLSLHShZnclIFJfrZ6TxNMs0lhSz2IwggMtOBNItkNODfZv3qb02gWcUl-vOs0WWaq_JN2LJ2bX6u9aBo0Hr_yYXMIHB6Y13sXBwMPqnkWulw1_o8SrN4cHmXvhwWaaKsiyi5Hlwl0bepsk7231jcox4NMUUs4EpgDyQHB0oojLC208znEhxlKKkH7oEi8MEESdsBXxUy6jE6MPMwy35jOWxgPl2ob28swQcn40kc-VGRv7Hw4AVm_2UVqaXfCjFh8PzFDavsGtTzzQfVXr0Z_D3MgCnTTAX_eIG5QZW6QDCvhNSxKP0vHR1XLQfmXY2q3j14wZnGHZddP5buLR28oI4h2DaFwd_9TIYFDPs-TV7qXudEmffdrapraSRvlfXS1vjmvVlLN4NY-i1kI21naXAhgf1Wpv-FbX7Ft6qNquSxE4KuhWBrIfhaCLEWYvYel0mCmtJGWqTtc6pAAuT1VA32FfjjmyixTAvToOonhe137dmXXdii6sVI8L9aMmriqDgGg6QQxQhCA086fkCER5DyQhlQAtFJyDj2fM9hTIBUAgh1qMKBJ3BAbK8pjnxQVQzeWATNJcu6eKn_v1uTVRvVZZUMyi7z3LpPpyBWITworEDBVldnKCCOoUkPBqwudztlp5x5aaApvwDmmxKElppZ46JVlrwqOXUbpCpmWRdSvzgxeOE4D4WYlUKs3-Oqy-8LYncLN0X1UWbvJVVTfqL4kj-bgK-AcLpVgDZV4Or9ycerg8EZ7KGnU_wBeIXbe2tXxUVdsqWiAYL0zeeu6_qhdDgjLqNc2CQMQ8cTKnSoZCFlkMo4iBOwtURBfG-HGCHXb0o2qgmvs2RnGTFCBmFscl2MFgb1BTcytK--g-DC1EFQSIcAoYWlrv0OS4x866owNSvrEELtm9zywT6mheUp6wokCqYVFmMwhRaz2sFBrYBaEd9bcjKBf4uRirLyqVXl2nps0Ly28eYgi2EzNQYpDv4ctneFZWWtYnU5Upa-x2FqTgL3Ixmo8eC98rN0rPcks_aizI9VMSjfWrDKRght7_ig_iLDstVFryA4deoCKrjwKCKQ1srQ9SBfFJ7DBYie8LCPPAVpPIc8mgbM8UIaeEz6UifOSEBuR4Xb0_Qewf_rppezpvjOva85zrJCkM3cWryjnIP1sqTlm1VDTGEMnSamW4vKYcCu6bLdoPGt9NqE163fhXlN3zSXabmCKUCYdj-4zKLra-BsSRZz61DpM3Sgfwjjjyyl3_S2OASGOjrLBwThhuWub8QAo7nlD9Os-RAm4JuGFb0I0IqsOqjXXgeiP1imiTgGTsMzzPopTS9VdW7QcFR3I-BTeU4EanEQB5m-7cralYWuZ_18E_5PN9C8LSIGzqSwbZf6sHcAHhjMhgK3F90AS6u9mkcrgojuaGVJ0TBx1iqaaMQ4oRDEpfCjh0KKMQ4F9eyQ6JKWLXxhhwI0E3QQHIGi4CiQE3AWemGIbMED12kqmuhWtO4IB7wEXx-RdGmXuWSg1LEX2F1PB2K5ttBG5wBNZXnBULtDYqTVIc1txQvxMDz6dwtm2jRBtGjCXppNwLjsQXR6M_iQ-2BhTIxpDX01gaCh4RMcZOu6iBP4HvFs23aFjYXiCoU2cTHmigrBQt92madChaTnEoHBcXg2D4Qve4fjRytEdZHx6R7tOJUgKESUAlFL9Cz9PrClW7itxTV1g50gyC1sMkBCrNm9EjPJLJ8i_RRD2LSImCuSWqS1JOfLuqAz0QV0Ke3l8Y1Ri7lgkka4bXqx_j-G2m2yZ7fGM0OdHAIDIeyzTtMM3Ocwgs0GdU-9puhhECtBHeJ4OmKWlIPd9CViAsFWCUoDRYiCfNFlGEyjEyhHUupKGThYBmAcukSvIXm71f-P6iI3h6hFmeM0iMJIadFbEXJApF7f7_LUy5q9gTb4Al4aSFppAoFvVb0Cdcymk3mYAtwpRlFuqliDvSwaQx4K0qit3RzyD3PhbdvqtJiUXRMgHYN1Hgwhqh8Z871UaHJs7LmY24Givu14zPZJIHHg2OD6uI8516l_iKnjS4m4R6Vjw3NI9SEuDVAgVhSa7CXXRtvTl9bKEltRCHphuw-TbntNJeqFLkXNTdN_ykr9HJXbaixWHGAPaufXD3Kf1RFZIxiTIXEgApMi8BFGPkI-86kPubmCTDygbkA5l5AFCc6562PJOAR8ASWKE-454Ir6eLgjY2MuajJLeNPgvCAmgDlJCi0U18qIn6At4ofrv2kRGexNM_DnsOJxBOnRXVSMrNmxulWeq4PBsY6jYqAlT7_fZBmUZtYgQWe1ravSaSuEDNPav9cCWpEezIZIlMwgkddhRA4M1Ak5IHj3ml42o63p7YJ8BzoHqRB_BUEHyF746vskTgO1bepu2paAWpV-I8oMLyyZP_DnfwqvuiJzwahDD0bAkcprDiFRzAcfkvvv1s54qlP_mjhTxxMchDNAyqHgKymHvMGllNkOIgoxx-HYJ8xX0hO-q_R9bUJSiXxQAUkEWc4tahK7VCKdm7OdOE59WcAEKwcFsb3OC2ZmcnEbxMICu4184PtEZTr1hpxCltFB6UzF-mTduGBjP9sitFpE9oK4xixX-tkC8dNl559uZPHSUdHZztHJ3mDoj9JYZjMjW72KazSsLLnpOgPkCPdLDj2kMkDEJYEdQiILZtRWkLkKn1MmXMdTOIBHLqg_VthmDrEVpK-M64CN2pIsleppzXI6deeOmoZS55tZ-Q5u9bZPboH46HrJ4Ah4AUHbyXg8TfQew3aby2a0DdPFF0xnNRsrCjVGUNVKZlBtFBbxWdnAtZJQ3ZgtIT6TfLXuK2nb1x1PAZPgJ5nM9vbjNPJv8ijWidJ8b7VN2RspVchR4yQmgCCaMewjBwfC9hjke4xgEri-wNJD-kfYWF28cAAOInQlAgzZYeB4SFKyyjHWttfpsCqiYSKU4evi6ZHxakk6F4GgrI-W1eEBtRdCMiuXDZq1v4oipt3HIUtE_3W0v1UGaE8ZGC5t_3k81RlzmueNsAgyeuaCBgvHJzKUge0j1-dEhDa3CXIRhfAn8KTAnsekQn6AEEG2kLpXJ1h9Dler_Xb5FBs9Zfdp393Xwf-ieGVuTIFcz8TkI-2q_mQiwNpEYF96XqyyhQmQWfGjqf3HKURcYXzfLFJ6KPADohybIyIFyAL8i7ErFJhyCiGwTx3d5OdwT3kS8jbluebc1vZcx1lKv50u9ec_RQBwb_UX7eWZTfad_tPdOu-x79qzRYVqbvyv8gYe17fdCyDdFr7ncBQKLJzQI8qmNvht2PRAhpRQgsDtY2ILP5R-4AmPeL6jbEyDcLngx-pVl5rak5-x68Tpu-tcLCBLZM2QKu9Iy_OXP5Xit5V5D5IiSyf3OgcD034G8Q3ki3vx1LxE_Iu6U3HD3hMMiQPlDue-D55fUORqmw_W32WQSXgQvoWucP1QuZwL4jHOwBhQEUhCRUiXg7mu8z1ayxt07ZVb52Xv5SyKnz_GFgDABjWeWxEkjOXsq_pZg54-yhnrsL5J1LrWYZ0-qulqElrUjgcryMg4T2e0XrDWk4qe2ObSaAUyqiz0CpvE1gTcOpItm74GnesfFtNAxyiAY-4j7Ib8pEPSC_Bnt9F1WinEf05FTJfjQ33Zn4JdHPoyW6srCDsqDDxwi5y5XIYiACsZ4DAImC1tj0pFPeQLrmioGERNfqCbzQPiuzYOMF86vyO9dYX9aXWFt9ZjO2dtWhq09f3gxZCNgtR2gn6OTJh2DjP4NzhSwU77mUqRZuN8lKXTYPApyqIAwv0WE498ajso4K5PmRsq5LrUhzAPI0fYyNXvYRDsMIj1fURDQXzkIaLA_zvU120eyyF9s35ZNXe21tHPyrOTLK_q4ivi7aonaLnAPutz-JlJtNtiFC7kRJ8TQIQ80ecvnoyLh4wVGIUMCy90Hap7tQjzmSI8xJAZe76NsBu63Be2Q4Tj2J7DPIJtZStlSy-U9tLJBl5mrGh0c70oDz5XHXnyjpjWVIZrh5alEcFNcFi8KajCgNGNmu2WQTX6W2H96-haa5MqaguI5DW4ww-ZfncsKTp306cSC30QFTr6nS1KmS53gKoQIlweuLDT8MVXIWwrQ1xCfhQ6WNkBJQFj5EEk1KxeNQLcB_a02lwTVKza4eaeLZ9aD-z603_RnojWbWtrZT9MlT7YSdRavxwwH6JURG1XYLBboecJB7KXwEHM9RDkqXYIm6b022GK2E4QyAApFtoEKUxc8ugY9o_1yw0JWvTF1Toa-rhk2kGlbE74A6LYHZWlwT3oYuTnq2JdmOI41veB_idyLV-7aQsAdrNpdQxdZJAkF4PZXzN4qCSh54BW2B6TELtiQsD9E-G7SDm-LznEBIzjwMeEu8TW_cmCEYUZ90MSUBl4avmA6EKCUoJSnOqUvGns9lWS6vK3PreJwImAeHBicytQN5DAy7LVQVmy_KZPGcrj3kElBqYZIjP0zWniXprAKrKyuq4xzwAP1Gc0OIZII80i_w-Tkda9oW3NViPYCZiZdaxk1u10MJIeDSBScChXnus52LNtFnqCYs_jCivhMtvzMVg1YZs3aV3l4SAMXBXow-rVsZnds1eKd_qNRjH-MjWD_ZH-pJXfbBW_-7kMW0Iw7IfaR_i-6ygqwHlwL8QEBwohBbxVoR0yCAqcQBGA8RmSQoTMJsS20Z-j7PE8LoOsdBlPNPQXaqKkfp_m_38SR9rak3czfbZoyg-zpq8Hwsp9BiZY8TD0GPIwRVK3XGKf-QJ5UpGAQ_DjOSHYErDhDgHJ1l1yAWRxkOp5ck0Ch-p5hmnObXSjYOcxecILXHvFRNNcKgLkg9mV6YtedvOiVbD8olXP7rd_fhArVpmlgzw33DTuckWJKZSQb9iIO5ChK_ABLmfwm4dh822bkyAgUngC0szAobbHwSfIAPvEBTg7FOFj7ZLTaZdIm-aWfrlul_LnqTH1r8I-6JrqNDGmbcwU-rOpiosVddOrZJTG95a5sfffsfT0yNjUbj-FGGWy6nMsQFoGx_cTCAu1KtyrlhwOIeTb2OfwH8xcCDp9l_meCiBUDSS1wdAx4kru-grCU6WE5ytBFKO-7kp3vO4u0eahExpU8q47v0kzNqo1fRPyoAPP_ELcSirKzu8HfeNlN8j-FAzZZ92CqHtLRP2s-Vg3xmXzpr2yP680n9XY_-JWrq0N-DSF6N06iqMxGLt1Jg5DsiFdcFMhOCpFQkhJbOzawnEcxSEvcVzfC7yQgRl0EPc8yn0SEJtJJMOQuP82Jq4RlJuW4HnaXb0frJ5qya6SO3lrrhoF2IPbKP6P0eth9PTf_-i-o6H5p0HitDAd_efe1cWpvkei_At_s1uJh3dyYu1493kuZ1Jm1a7vmN0wUl14cRIAkeV7S0qCpZzWrjKZDfi630SWJ0HaJrGGxgJFrEMxlwT0WvgjGLjJ3PXL2o_DL-_tmN3sUVIreyzql8mwngshbQuhj2DIMzCV_Awa7BnWIp5hHqKndlXX3tS1q3YTzrJ2tRCoruypE6jd4rOZerZKB-65kupKoPpEarcE9ZxIq8JuIp_lXy_ptYYNVFU8eQabGIvZvYgzBPdxQ9JnsnP4yYtnz6BQ-BkUm20oBgtw2m_PnjRgm-g_B-ee6mdqZhmTVRaguh-rbgFqV2Y9xQI81dXSjfZhflP9U2SwXSCerkv8yRQ2N2YLBLbal5lr5pq-bH7zXA9fVt3Y1iCwuMRtrQB1i3CN7RivDHbL2_wawe7igr-eIty-9fx5ZJA81aSIZzCk9BnMEu0ZV1T3_dW3pHYFYA-pqq5JbBBY3JzYJ8Qq7zBshFiLaw17ECgvGGwI1fzKwT5qUV4I2VCLxR2RPQjoi2Ob-OUvm5jlFqv6GOf0MxIp_DyaRZ_oJ-u3gPLHEKjxAdPHMOK5MtvHqPcChT9FFsRTzdszCcNzyfajAjhN6DFW-pF4T90HfRNDQ3gf5yDJ8-zcc_i3RwrRAst-HAvoplyvTdR5ynaz5-E9f3KAvLH-1-7jfYqebjLz8q34mryjev129ncBzLW7-tNemoTRdVnWTSbToqKiq7rmz47oo-4LpW-PiO-3LC9NYyWTyj-87kbTRzv3eyNz48F6NKWhT_LdNAeO5YWuxb_bOo-SRPpxG_xEJsVIpcmZ_D3NjtJggfQ-TdoQPKnntR4sAzjzJwZHKrhMzSJ6zn4Y_VDnmcpVbZSy_2bV_KOk3_ybfD251i-zBZtux-w97_V401zV_lhz9cJZO9p5LH01SmN9nldnh26LAZGcjj2VgcVBaDW87pA413_fb4bBV8Obs6SykWKBQ9cMMj-oLM-gFoiE0XXjgRqUXR79pwi_bLIkzYLlFXG0fozNF6NH2hxrdtvI45i3jLVur8wGLyMJ5K7nx6Y8rP5y3gzcYT2FaJO9nSN1TO7t65kdfvv6XBajD-HuNDIH538d_B-KWh7x");
-
-// Map of each gems
-var gemGroups = new Map();
-var qualityIdMap = {Default: 0, Alternate1: 1, Alternate2: 2, Alternate3: 3};
-Object.values(testPob.getElementsByTagName("Skill")).forEach(s => gemGroups[s.getAttribute("slot")] = s);
-// Map of each tree nodes
-var treeGroups = Object.values(testPob.getElementsByTagName("Spec"))[0];
-// Map of each items in the pob where jewel association to slot are under <Socket>, and other in <Slot>
-var slots = new Map();
-var items = Object.values(testPob.getElementsByTagName("Item"));
-Object.values(testPob.getElementsByTagName("Slot")).filter(s => s.getAttribute("itemId") != 0).forEach( s => slots[s.getAttribute("name")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
-// FIXME socketed item name
-Object.values(testPob.getElementsByTagName("Socket")).forEach( s => slots["Jewel " + s.getAttribute("nodeId")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
-// Create the all the data for Horadric Helper
-var hhData = Array();
-function displayMode(elem, type) {
-	if(type == "show") {
-		elem.setAttribute("as-showcase","");
-		elem.setAttribute("icon-inside","");
-	} else {
-		elem.setAttribute("as-icon","");
-		elem.setAttribute("icon-size","md");
-	}
-}
-Object.entries(slots).map( k => {
+function loadPobData(dataPoB) {
+	console.log(dataPoB);
+	// Map of each gems
+	var gemGroups = new Map();
+	Object.values(dataPoB.getElementsByTagName("Skill")).forEach(s => gemGroups[s.getAttribute("slot")] = s);
+	// Map of each tree nodes
+	var treeGroups = Object.values(dataPoB.getElementsByTagName("Spec"))[dataPoB.getElementsByTagName("Tree")[0].getAttribute("activeSpec")-1];
+	// Map of each items in the pob where jewel association to slot are under <Socket>, and other in <Slot>
+	var itemGroups = new Map();
+	var items = Object.values(dataPoB.getElementsByTagName("Item"));
+	Object.values(dataPoB.getElementsByTagName("Slot")).filter(s => s.getAttribute("itemId") != 0).forEach( s => itemGroups[s.getAttribute("name")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
+	// FIXME socketed item name
+	Object.values(dataPoB.getElementsByTagName("Socket")).forEach( s => itemGroups["Jewel " + s.getAttribute("nodeId")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
+	Object.entries(itemGroups).map( k => {
 		var config = [];
 		config.reference = k[0];
 		// Remove PoB lines with ModRange and empty lines
@@ -126,6 +134,10 @@ Object.entries(slots).map( k => {
 		hhData.push(config);
 		//console.log("loaded items");
 	});
+	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups};
+	fillProfile(pobObject);
+}
+
 function conditionToFormat(sentence, cn, statValue) {
 	if(sentence.format[cn] !== undefined && sentence.format[cn].contains("ignore")) {
 		return "ignore";
@@ -185,7 +197,8 @@ function translateStats(gemStat) {
 	//console.log("find stat",skillModifiers);
 	return skillModifiers;
 }
-function loadGemData() {
+// Add gems HH config
+function loadGemData(gemGroups) {
 	Object.values(gemGroups).forEach( (s, i) => {
 		Object.entries(s.children).forEach( (g, j) => {
 			var config = [], gemData = [], gemSection = [];
@@ -245,7 +258,8 @@ function loadGemData() {
 		})
 	});
 }
-function loadNodeData() {
+// Add passive node HH config
+function loadNodeData(treeGroups) {
 	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && node.isNotable) {
@@ -273,11 +287,13 @@ function loadNodeData() {
 		let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
 		let effect = treeNodes[master].masteryEffects.find( e => e.effect == slave);
-		if(masteryGroup[mastery] !== undefined) {
-			masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
+		if(effect !== undefined) {
+			if(masteryGroup[mastery] !== undefined) {
+				masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
+			}
+			else masteryGroup[mastery] = [].concat(effect.stats);
+			if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
 		}
-		else masteryGroup[mastery] = [].concat(effect.stats);
-		if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
 	});
 	Object.entries(masteryGroup).forEach( k => {
 		var nodeData = [], nodeSection = [], config = [];
@@ -293,17 +309,21 @@ function loadNodeData() {
 	});
 }
 // Get items from pob (listed under slots) and create div for each of them
-function fillProfile(slots) {
+function fillProfile(pobObject) {
+	console.log(pobObject);
 	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
 	let primaryHeader = document.getElementById("primary");
 	let primaryDiv = document.createElement("div");
+	primaryDiv.id = "primaryDiv";
 	primaryDiv.setAttribute("class", "gem_display");
 	primaryHeader.insertAdjacentElement("afterend", primaryDiv);
 	let secondaryHeader = document.getElementById("secondary");
 	let secondaryDiv = document.createElement("div");
+	secondaryDiv.id = "secondaryDiv";
+	secondaryDiv.setAttribute("class", "gem_display");
 	secondaryHeader.insertAdjacentElement("afterend", secondaryDiv);
 	// Add poe-item for each gem, each group in a single div
-	Object.values(gemGroups).forEach( (k, i) => {
+	Object.values(pobObject.gemGroups).forEach( (k, i) => {
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+i);
 		Object.values(k.children).forEach( (g, j) => {
@@ -328,15 +348,20 @@ function fillProfile(slots) {
 	let equippedHeader = document.getElementById("equipped");
 	let equippedDiv = document.createElement("div");
 	equippedDiv.setAttribute("class", "equipment_display");
+	equippedDiv.id = "equippedDiv";
 	equippedHeader.insertAdjacentElement("afterend", equippedDiv);
 	let flaskHeader = document.getElementById("flask");
 	let flaskDiv = document.createElement("div");
+	flaskDiv.id = "flaskDiv";
+	flaskDiv.setAttribute("class", "equipment_display");
 	flaskHeader.insertAdjacentElement("afterend", flaskDiv);
 	let jewelHeader = document.getElementById("jewel");
 	let jewelDiv = document.createElement("div");
+	jewelDiv.setAttribute("class", "equipment_display");
+	jewelDiv.id = "jewelDiv";
 	jewelHeader.insertAdjacentElement("afterend", jewelDiv);
 	// Add poe-item for each equipment, each group in a single div
-	Object.keys(slots).forEach( k => {
+	Object.keys(pobObject.itemGroups).forEach( k => {
 		// Creation of the poe-item html element for HoradricHelper
 		var item = document.createElement("poe-item");
 		item.setAttribute("reference", k);
@@ -356,13 +381,15 @@ function fillProfile(slots) {
 	let masteryHeader = document.getElementById("mastery");
 	let masteryDiv = document.createElement("div");
 	masteryDiv.setAttribute("class", "passive_display");
+	masteryDiv.id = "masteryDiv";
 	masteryHeader.insertAdjacentElement("afterend", masteryDiv);
 	let notableHeader = document.getElementById("notable");
 	let notableDiv = document.createElement("div");
 	notableDiv.setAttribute("class", "passive_display");
+	notableDiv.id = "notableDiv";
 	notableHeader.insertAdjacentElement("afterend", notableDiv);
 	// Add poe-passive for each ascendancy and notable allocated
-	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+	Object.values(pobObject.treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
 			// Creation of the poe-item html element for HoradricHelper
@@ -380,7 +407,7 @@ function fillProfile(slots) {
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated 
 	var masteryGroup = new Map();
-	Object.values(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+	Object.values(pobObject.treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
 		masteryGroup[mastery] = master;
@@ -394,8 +421,8 @@ function fillProfile(slots) {
 		masteryDiv.appendChild(item);
 	});
 	
-	loadNodeData();
-	loadGemData();
+	loadNodeData(pobObject.treeGroups);
+	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
 }
 function loadHoradricHelper() {
@@ -405,7 +432,24 @@ function loadHoradricHelper() {
 function waitForLoadAsync() {
 	if(!loadStats || !loadGem || !loadPassive) return;
 	else {
-		fillProfile(slots);
+		//fillProfile(pobObject);
+	}
+}
+function parsePobCode() {
+	var input = document.getElementById("pobinput").value;
+	// Trying loading input
+	var pobObject = pobCodeToObject(input);
+	if(pobObject !== undefined) {
+		// If valid code, clear before load
+		let clearList=["primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
+		clearList.forEach( divId => {
+			var divElem = document.getElementById(divId);
+			if(divElem !== null) diveElem.remove();
+		});
+		// Clear HH data
+		hhData = [];
+		// Load new data
+		loadPobData(pobObject);
 	}
 }
 // ONLOAD
@@ -416,27 +460,41 @@ window.onload = function() {
 <style>
 body {
 	color: #949A9D;
-	background: #343a40;
+	background: #1a1818;
 }
-h1, h2{
+h1 {
+	text-align: center;
+	font-size: 2.5em;
+}
+h2 {	
+	padding-left: 1em;
+}
+h1, h2 {
 	text-transform: uppercase;
 	letter-spacing: .09375rem;
-	font-familiy: Arial, Helvetica;
-	text-shadow:  0px 3px 6px rgb(0 0 0 / 60%), 0 0 8px rgb(208 183 130 / 40%);
-	background: -webkit-linear-gradient(#fff, #b79f6e);
+	font-family: serif;
+	text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
+	#background: -webkit-repeating-linear-gradient(50deg, #fb2 0%, #fc6 5%, #fb2 10%);
+	background: -webkit-linear-gradient(#fc6 5%, #b80);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
-.passive_display {
-	#display: inline-block;
-	#float: left;
+.concept_display, .gem_display, .equipment_display, .passive_display {
+	margin: 2em;
+	padding: 2em;
+	background: #0c0b0b;
 }
 </style>
 </head>
 <!-- Body -->
 <body>
 <h1>Concept</h1>
-This is just a template
+<div class="concept_display">
+This is just a template<br/>
+<label>POB code:</label>
+<input type="text" id="pobinput" size=100 />
+<button type="submit" onclick="parsePobCode()">submit</button>
+</div>
 <h1>Gem</h1>
 <h2 id="primary">Main setup</h2>
 <h2 id="secondary">Secondary</h2>
