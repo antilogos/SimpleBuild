@@ -436,20 +436,26 @@ function waitForLoadAsync() {
 	}
 }
 function parsePobCode() {
-	var input = document.getElementById("pobinput").value;
-	// Trying loading input
-	var pobObject = pobCodeToObject(input);
-	if(pobObject !== undefined) {
-		// If valid code, clear before load
-		let clearList=["primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
-		clearList.forEach( divId => {
-			var divElem = document.getElementById(divId);
-			if(divElem !== null) diveElem.remove();
-		});
-		// Clear HH data
-		hhData = [];
-		// Load new data
-		loadPobData(pobObject);
+	var input = document.getElementById("pobinput").value.trim();
+	if(input.startsWith("https://pastebin.com")) {
+		fetch(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/")).then(response => {
+			console.log(response);
+		})
+	} else {
+		// Trying loading input
+		var pobObject = pobCodeToObject(input);
+		if(pobObject !== undefined) {
+			// If valid code, clear before load
+			let clearList=["primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
+			clearList.forEach( divId => {
+				var divElem = document.getElementById(divId);
+				if(divElem !== null) diveElem.remove();
+			});
+			// Clear HH data
+			hhData = [];
+			// Load new data
+			loadPobData(pobObject);
+		}
 	}
 }
 // ONLOAD
