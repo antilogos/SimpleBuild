@@ -11,9 +11,7 @@
 <!-- Add display of class -->
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
-<!-- Translate pob code into javascript object with pako library to unzip -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <!-- Passive Skill Tree parser -->
 <script>
 var passiveSkillTreeData;
@@ -46,7 +44,7 @@ function extractNodesData(jsonData) {
 						// get the radius of the orbits from the groupNode
 						const radius = passiveSkillTreeData.constants.orbitRadii[nodeObject.orbit];
 						// Number of point on the circle
-						const skillOrbit = passiveSkillTreeData.constants.skillsPerOrbit[nodeObject.orbit]; 
+						const skillOrbit = passiveSkillTreeData.constants.skillsPerOrbit[nodeObject.orbit];
 						// Place the node in the orbit and use orbit position to get him at the right location
 						nodeObject.x = value.x + (Math.sin(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
 						nodeObject.y = value.y - (Math.cos(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
@@ -66,18 +64,8 @@ function extractNodesData(jsonData) {
 	return nodeMap;
 };
 </script>
+<!-- External files for mods from RePoE -->
 <script>
-// Create the all the data for Horadric Helper
-var hhData = Array();
-function displayMode(elem, type) {
-	if(type == "show") {
-		elem.setAttribute("as-showcase","");
-		elem.setAttribute("icon-inside","");
-	} else {
-		elem.setAttribute("as-icon","");
-		elem.setAttribute("icon-size","md");
-	}
-}
 // Load all skill gem from repoe file
 var allGem, loadGem = false, mapStatGem = new Map();
 fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
@@ -103,13 +91,28 @@ fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat
 	allStats = parsed;
 	loadStats = true;
 }).then(data => waitForLoadAsync());
+</script>
+<!-- Translate pob code into javascript object with pako library to unzip -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
+<script>
+// Create the all the data for Horadric Helper
+var hhData = Array();
+function displayMode(elem, type) {
+	if(type == "show") {
+		elem.setAttribute("as-showcase","");
+		elem.setAttribute("icon-inside","");
+	} else {
+		elem.setAttribute("as-icon","");
+		elem.setAttribute("icon-size","md");
+	}
+}
 // Read pob code into object
 function pobCodeToObject(pobCode) {
 	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
 	var gzipedDataArray = Uint8Array.from(compressData, c => c.charCodeAt(0));
 	const ungzipedData = pako.ungzip(gzipedDataArray);
 	var xml = new TextDecoder().decode(ungzipedData);
-	
+
 	var parser = new DOMParser();
 	return parser.parseFromString(xml,"text/xml");
 }
@@ -126,14 +129,6 @@ function loadPobData(dataPoB) {
 	Object.values(dataPoB.getElementsByTagName("Slot")).filter(s => s.getAttribute("itemId") != 0).forEach( s => itemGroups[s.getAttribute("name")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
 	// FIXME socketed item name
 	Object.values(dataPoB.getElementsByTagName("Socket")).forEach( s => itemGroups["Jewel " + s.getAttribute("nodeId")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
-	Object.entries(itemGroups).map( k => {
-		var config = [];
-		config.reference = k[0];
-		// Remove PoB lines with ModRange and empty lines
-		config.data = k[1].innerHTML.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
-		hhData.push(config);
-		//console.log("loaded items");
-	});
 	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups};
 	fillProfile(pobObject);
 }
@@ -152,7 +147,7 @@ function translateStats(gemStat) {
 	var skillModifiers = [];
 	// TODO regroup value of shared mod id
 	//console.log("readable stats:",gemStat);
-	gemStat.forEach( (stats, index) => { 
+	gemStat.forEach( (stats, index) => {
 		// Assure that translation in specific language exists
 		if(stats.translate.English !== undefined) {
 			// from each sentence available, only one can be displayed? XXX replace find with filter later to test
@@ -197,6 +192,18 @@ function translateStats(gemStat) {
 	//console.log("find stat",skillModifiers);
 	return skillModifiers;
 }
+// Add items HH applyConfig
+function loadItemData(itemGroups) {
+  // Items
+	Object.entries(itemGroups).map( k => {
+		var config = [];
+		config.reference = k[0];
+		// Remove PoB lines with ModRange and empty lines
+		config.data = k[1].innerHTML.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
+		hhData.push(config);
+		//console.log("loaded items");
+	});
+}
 // Add gems HH config
 function loadGemData(gemGroups) {
 	Object.values(gemGroups).forEach( (s, i) => {
@@ -240,7 +247,7 @@ function loadGemData(gemGroups) {
 				skillModifiers.push(translateStats(gemStat));
 			}
 			//console.log(skillModifiers);
-			
+
 			if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
 			gemSection.properties = [].concat(skillGem.tags);
 			g[1].getAttribute("level");
@@ -405,7 +412,7 @@ function fillProfile(pobObject) {
 			}
 		}
 	});
-	// Add poe-passive for Masteris group with their effect from all masteries allocated 
+	// Add poe-passive for Masteris group with their effect from all masteries allocated
 	var masteryGroup = new Map();
 	Object.values(pobObject.treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
@@ -420,7 +427,8 @@ function fillProfile(pobObject) {
 		item.setAttribute("label-text", k[0]);
 		masteryDiv.appendChild(item);
 	});
-	
+
+  loadItemData(pobObject.itemGroups);
 	loadNodeData(pobObject.treeGroups);
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
@@ -455,11 +463,24 @@ function parsePobCode() {
 			hhData = [];
 			// Load new data
 			loadPobData(pobObject);
+      // Change page to display
+      displayMenu('home');
 		}
 	}
 }
 // ONLOAD
 window.onload = function() {
+}
+</script>
+<!-- Navigation and page script -->
+<script>
+function displayMenu(page) {
+  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
+  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
 }
 </script>
 <!-- Style -->
@@ -472,7 +493,7 @@ h1 {
 	text-align: center;
 	font-size: 2.5em;
 }
-h2 {	
+h2 {
 	padding-left: 1em;
 }
 h1, h2 {
@@ -480,7 +501,7 @@ h1, h2 {
 	letter-spacing: .09375rem;
 	font-family: serif;
 	text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
-	#background: -webkit-repeating-linear-gradient(50deg, #fb2 0%, #fc6 5%, #fb2 10%);
+	background: -webkit-repeating-linear-gradient(50deg, #fb2 0%, #fc6 5%, #fb2 10%);
 	background: -webkit-linear-gradient(#fc6 5%, #b80);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
@@ -490,16 +511,85 @@ h1, h2 {
 	padding: 2em;
 	background: #0c0b0b;
 }
+.menu_import, .menu_display, .menu_import div, .menu_display div {
+  display: none;
+  margin-top: 4em;
+}
+.navigation_bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #222;
+  display: flex;
+  height: 3em;
+  align-items:center;
+}
+.navigation_home {
+  min-width: 40%;
+}
+.navigation_menu {
+  text-align: right;
+  margin-right: 2em;
+  width: 60%
+}
+nav {
+  display: inline-block;
+}
+li {
+  display: inline-block;
+  height: 100%;
+}
+li button{
+  background: #222;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  color: white;
+  padding: 1em;
+  height: 100%;
+}
+li button:hover {
+  background: #333;
+}
+ul {
+  margin: 0;
+  display: inline-block;
+}
 </style>
 </head>
 <!-- Body -->
 <body>
+<div class="navigation_bar">
+  <div class="navigation_home">
+    <nav>
+      <ul>
+        <li><button id="home" onclick="displayMenu('home');">Home</button></li>
+        <li><button id="import" onclick="displayMenu('import');">Import</button></li>
+        <li><button id="config" onclick="displayMenu('config');">Configuration</button></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="navigation_menu">
+    <nav>
+      <ul>
+        <li><button id="fifu" onclick="displayMenu('fifu');">Fifu</button></li>
+        <li><button id="touff" onclick="displayMenu('touff');">Touffeless</button></li>
+        <li><button id="vindoq" onclick="displayMenu('vindoq');">Vindoq<button></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<div class="menu_import" id="page_import">
+<h1>Import</h1>
+<label>POB code:</label>
+<input type="text" id="pobinput" size=100 />
+<button type="submit" onclick="parsePobCode();">submit</button>
+</div>
+<div class="menu_display" id="page_display">
 <h1>Concept</h1>
 <div class="concept_display">
 This is just a template<br/>
-<label>POB code:</label>
-<input type="text" id="pobinput" size=100 />
-<button type="submit" onclick="parsePobCode()">submit</button>
 </div>
 <h1>Gem</h1>
 <h2 id="primary">Main setup</h2>
@@ -514,5 +604,6 @@ This is just a template<br/>
 <h2 id="equipped">Equipement</h2>
 <h2 id="jewel">Jewel</h2>
 <h2 id="flask">Flask</h2>
+</div>
 </body>
 </html>
