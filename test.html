@@ -446,9 +446,11 @@ function waitForLoadAsync() {
 function parsePobCode() {
 	var input = document.getElementById("pobinput").value.trim();
 	if(input.startsWith("https://pastebin.com")) {
-		fetch(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/")).then(response => {
-			console.log(response);
-		})
+		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
+	} else if(input.startsWith("https://pobb.in")) {
+		window.open(input, "_blank");
+	} else if(input.startsWith("https://poe.ninja")) {
+		window.open(input, "_blank");
 	} else {
 		// Trying loading input
 		var pobObject = pobCodeToObject(input);
@@ -463,8 +465,6 @@ function parsePobCode() {
 			hhData = [];
 			// Load new data
 			loadPobData(pobObject);
-      // Change page to display
-      displayMenu('home');
 		}
 	}
 }
