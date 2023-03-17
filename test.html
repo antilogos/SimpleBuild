@@ -491,70 +491,126 @@ body {
 }
 h1 {
 	text-align: center;
-	font-size: 2.5em;
+	font-size: 2.5rem;
 }
 h2 {
-	padding-left: 1em;
+	padding-left: 1rem;
 }
 h1, h2 {
 	text-transform: uppercase;
 	letter-spacing: .09375rem;
 	font-family: serif;
 	text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
-	background: -webkit-repeating-linear-gradient(50deg, #fb2 0%, #fc6 5%, #fb2 10%);
 	background: -webkit-linear-gradient(#fc6 5%, #b80);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 .concept_display, .gem_display, .equipment_display, .passive_display {
-	margin: 2em;
-	padding: 2em;
+	margin: 2rem;
+	padding: 2rem;
 	background: #0c0b0b;
 }
-.menu_import, .menu_display, .menu_import div, .menu_display div {
+.menu_import, .menu_display, .menu_import > div, .menu_display > div {
   display: none;
-  margin-top: 4em;
+  margin-top: 4rem;
 }
 .navigation_bar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: #222;
+  background: #333;
   display: flex;
-  height: 3em;
   align-items:center;
+  padding: 0.5rem;
 }
 .navigation_home {
   min-width: 40%;
 }
 .navigation_menu {
   text-align: right;
-  margin-right: 2em;
+  margin-right: 2rem;
   width: 60%
 }
 nav {
   display: inline-block;
 }
-li {
-  display: inline-block;
-  height: 100%;
-}
-li button{
-  background: #222;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  color: white;
-  padding: 1em;
-  height: 100%;
-}
-li button:hover {
-  background: #333;
-}
 ul {
   margin: 0;
   display: inline-block;
+}
+ul > li {
+  list-style: none;
+  position: relative;
+  display: inline-block;
+}
+li > button{
+  font-size: 1em;
+	text-transform: uppercase;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  display: block;
+
+	text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
+	background: -webkit-linear-gradient(#fc6 5%, #b80);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+li > button:hover {
+  background: -webkit-linear-gradient(#fc6 5%, #b80);
+	text-shadow: -0.1em 0.1em 0.07em #000a, 0em 0em 0.2em #d839, 0em -0.3em 0.6em #fff3;
+  transition: all 0.4s ease-in-out;
+}
+.dropmenu {
+  border: 1px red;
+  height: 0;
+  right: 0;
+  overflow: hidden;
+  left: auto;
+  position: absolute;
+  text-align: left;
+  box-shadow: 0.1em 0.1em 0.5em 0.1em #0003 inset;
+  border-radius: 0 0 0.2em 0.2em;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+li:hover .dropmenu {
+  height: 4em;
+  transition: height ease 0.4s;
+}
+.dropmenu > li {
+  display: list-item;
+  background: #333;
+  height: 2em;
+}
+#menu_stream, #menu_first {
+}
+#menu_stream:hover .dropmenu, #menu_first:hover .dropmenu {
+  display: block;
+}
+.dropmenu button, .dropmenu ul, .dropmenu li {
+  min-width: 10em;
+}
+.arrow {
+  width: 0.5em;
+  height: 0.5em;
+  display: inline-block;
+  vertical-align: middle;
+  border-left: 0.15em solid currentColor;
+  border-bottom: 0.15em solid currentColor;
+  transform: rotate(-45deg);
+  margin-left: 0.38em;
+  margin-top: -0.25em;
+  transition: transform 100ms ease-in-out;
+}
+ul li:hover > button > .arrow {
+  transform: rotate(-225deg);
+  margin-top: 4px;
 }
 </style>
 </head>
@@ -564,18 +620,27 @@ ul {
   <div class="navigation_home">
     <nav>
       <ul>
-        <li><button id="home" onclick="displayMenu('home');">Home</button></li>
-        <li><button id="import" onclick="displayMenu('import');">Import</button></li>
-        <li><button id="config" onclick="displayMenu('config');">Configuration</button></li>
+        <li><button id="home" onclick="displayMenu('home');">Accueil</button></li>
+        <li><button id="import" onclick="displayMenu('import');">Importer</button></li>
+        <li><button id="config" onclick="displayMenu('config');">Options</button></li>
       </ul>
     </nav>
   </div>
   <div class="navigation_menu">
     <nav>
       <ul>
-        <li><button id="fifu" onclick="displayMenu('fifu');">Fifu</button></li>
-        <li><button id="touff" onclick="displayMenu('touff');">Touffeless</button></li>
-        <li><button id="vindoq" onclick="displayMenu('vindoq');">Vindoq<button></li>
+        <li id="menu_stream"><button>Streameur<span class="arrow"></span></button>
+          <ul class="dropmenu">
+            <li><button id="touff" onclick="displayMenu('touff');">Touffeless</button></li>
+            <li><button id="fifu" onclick="displayMenu('fifu');">Fifu</button></li>
+          </ul>
+        </li>
+        <li id="menu_first"><button>1<sup>er</sup> perso<span class="arrow"></span></button>
+          <ul class="dropmenu">
+            <li><button id="menu_first_necromancer" onclick="displayMenu('necromancer');">Necromancer</button></li>
+            <li><button id="menu_first_guardian" onclick="displayMenu('guardian');">Guardian</button></li>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>
