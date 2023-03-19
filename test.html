@@ -255,7 +255,11 @@ function loadGemData(gemGroups) {
 			g[1].getAttribute("qualityId");
 			g[1].getAttribute("quality");
 			gemData.rarity = "Gem";
-			gemData.name = skillGem.base_item.display_name;
+			if(skillGem.base_item !== null) {
+				gemData.name = skillGem.base_item.display_name;
+			} else {
+				gemData.name = skillGem.active_skill.display_name;
+			}
 			gemData.sections = gemSection;
 			config.reference = "gem_" + i + "_" + j;
 			config.data = gemData;
