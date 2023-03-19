@@ -249,7 +249,6 @@ function loadGemData(gemGroups) {
 			//console.log(skillModifiers);
 
 			if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
-			gemSection.properties = [].concat(skillGem.tags);
 			g[1].getAttribute("level");
 			g[1].getAttribute("skillId");
 			g[1].getAttribute("qualityId");
@@ -257,8 +256,10 @@ function loadGemData(gemGroups) {
 			gemData.rarity = "Gem";
 			if(skillGem.base_item !== null) {
 				gemData.name = skillGem.base_item.display_name;
+				gemSection.properties = [].concat(skillGem.tags);
 			} else {
 				gemData.name = skillGem.active_skill.display_name;
+				gemSection.properties = [].concat(skillGem.active_skill.types);
 			}
 			gemData.sections = gemSection;
 			config.reference = "gem_" + i + "_" + j;
