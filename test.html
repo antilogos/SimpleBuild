@@ -488,19 +488,30 @@ function displayMenu(page) {
   //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
   //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
 }
+function selectStyle(theme) {
+  document.body.classList = "";
+  document.body.classList.add(theme);
+}
 </script>
 <!-- Style -->
 <link rel="stylesheet" href="style.css">
 </head>
 <!-- Body -->
-<body>
+<body class="dark">
 <div class="navigation_bar">
   <div class="navigation_home">
     <nav>
       <ul>
         <li><button id="home" onclick="displayMenu('home');">Accueil</button></li>
         <li><button id="import" onclick="displayMenu('import');">Importer</button></li>
-        <li><button id="config" onclick="displayMenu('config');">Options</button></li>
+        <li id="menu_config"><button onclick="displayMenu('config');">Options</button>
+          <ul class="dropmenu">
+            <li>
+              <div style="display: inline; margin-left: 1em;">Mode&nbsp;<button onclick="selectStyle('dark');">&#9790;</button><button onclick="selectStyle('light');">&#9728;</button>
+              </div>
+            </li>
+          </ul>
+        </li>
       </ul>
     </nav>
   </div>
@@ -515,8 +526,24 @@ function displayMenu(page) {
         </li>
         <li id="menu_first"><button>1<sup>er</sup> perso<span class="arrow"></span></button>
           <ul class="dropmenu">
-            <li><button id="menu_first_necromancer" onclick="displayMenu('necromancer');">Necromancer</button></li>
-            <li><button id="menu_first_guardian" onclick="displayMenu('guardian');">Guardian</button></li>
+            <li><button id="menu_first_necromancer" onclick="displayMenu('necromancer');">Nécromancienne</button></li>
+            <li><button id="menu_first_occultist" onclick="displayMenu('occultist');">Occultist</button></li>
+            <li><button id="menu_first_elementalist" onclick="displayMenu('elementalist');">Élémentaliste</button></li>
+            <li><button id="menu_first_trickster" onclick="displayMenu('trickster');">Roublard</button></li>
+            <li><button id="menu_first_saboteur" onclick="displayMenu('saboteur');">Saboteur</button></li>
+            <li><button id="menu_first_assassin" onclick="displayMenu('assassin');">Assassin</button></li>
+            <li><button id="menu_first_raider" onclick="displayMenu('raider');">Furie</button></li>
+            <li><button id="menu_first_pathfinder" onclick="displayMenu('pathfinder');">Éclaireuse</button></li>
+            <li><button id="menu_first_deadeye" onclick="displayMenu('deadeye');">Archère d'élite</button></li>
+            <li><button id="menu_first_champion" onclick="displayMenu('champion');">Champion</button></li>
+            <li><button id="menu_first_slayer" onclick="displayMenu('slayer');">Sanguinaire</button></li>
+            <li><button id="menu_first_gladiator" onclick="displayMenu('gladiator');">Gladiateur</button></li>
+            <li><button id="menu_first_juggernaut" onclick="displayMenu('juggernaut');">Colosse</button></li>
+            <li><button id="menu_first_berserker" onclick="displayMenu('berserker');">Berserker</button></li>
+            <li><button id="menu_first_chieftain" onclick="displayMenu('chieftain');">Chef tribal</button></li>
+            <li><button id="menu_first_inquisitor" onclick="displayMenu('inquisitor');">Inquisiteur</button></li>
+            <li><button id="menu_first_hierophant" onclick="displayMenu('hierophant');">Hiérophant</button></li>
+            <li><button id="menu_first_guardian" onclick="displayMenu('guardian');">Guardien</button></li>
           </ul>
         </li>
       </ul>
