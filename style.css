@@ -45,7 +45,7 @@ h1, h2 {
 	padding: 2rem;
 	background: var(--section-bg);
 }
-.menu_import, .menu_display, .menu_import > div, .menu_display > div {
+.menu_import, .menu_display {
   display: none;
   margin-top: 4rem;
 }
