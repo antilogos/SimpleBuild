@@ -120,7 +120,8 @@ function loadPobData(dataPoB) {
 	console.log(dataPoB);
 	// Map of each gems
 	var gemGroups = new Map();
-	Object.values(dataPoB.getElementsByTagName("Skill")).forEach(s => gemGroups[s.getAttribute("slot")] = s);
+	// Filter skill from tree (ascendancy)
+	Object.values(dataPoB.getElementsByTagName("Skill")).filter(s => s.getAttribute("slot") !== null).forEach(s => gemGroups[s.getAttribute("slot")] = s);
 	// Map of each tree nodes
 	var treeGroups = Object.values(dataPoB.getElementsByTagName("Spec"))[dataPoB.getElementsByTagName("Tree")[0].getAttribute("activeSpec")-1];
 	// Map of each items in the pob where jewel association to slot are under <Socket>, and other in <Slot>
