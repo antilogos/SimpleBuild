@@ -11,7 +11,7 @@ function pobCodeToObject(pobCode) {
 
 // Read pob object and simplify it
 function loadPobData(dataPoB) {
-	console.log(dataPoB);
+	// console.log(dataPoB);
 	// Map of each gems
 	var gemGroups = [];
 	// Filter skill from tree (ascendancy)
@@ -85,6 +85,7 @@ function loadPobData(dataPoB) {
 		}
 	}
 	// TODO add socketed jewel to specific tree?
-	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups};
+	var notes = dataPoB.getElementsByTagName("Notes")[0];
+	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups, "notes": notes.innerHTML};
 	return pobObject;
 }

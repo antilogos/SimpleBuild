@@ -24,6 +24,8 @@ fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParse
 </script>
 <!-- External files for mods from RePoE -->
 <script src="Repoe.js"></script>
+<!-- External data for quest reward from https://poe-roadmap.com/api/gems -->
+<script src="GemReward.js"></script>
 <!-- Translate pob code into javascript object with pako library to unzip -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script src="PobParser.js"></script>
@@ -232,12 +234,12 @@ function loadNodeData(treeGroups) {
 function fillProfile(pobObject) {
 	console.log(pobObject);
 	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
-	let primaryHeader = document.getElementById("primary");
+	let primaryHeader = document.getElementById(DIV_SETUP);
 	let primaryDiv = document.createElement("div");
 	primaryDiv.id = "primaryDiv";
 	primaryDiv.setAttribute("class", "gem_display");
 	primaryHeader.insertAdjacentElement("afterend", primaryDiv);
-	let secondaryHeader = document.getElementById("secondary");
+	let secondaryHeader = document.getElementById(DIV_SETUP);
 	let secondaryDiv = document.createElement("div");
 	secondaryDiv.id = "secondaryDiv";
 	secondaryDiv.setAttribute("class", "gem_display");
@@ -265,17 +267,17 @@ function fillProfile(pobObject) {
 		// }
 	});
 	// Inventory slots (jewel, flask and equipement)
-	let equippedHeader = document.getElementById("equipped");
+	let equippedHeader = document.getElementById(DIV_WEAPON);
 	let equippedDiv = document.createElement("div");
 	equippedDiv.setAttribute("class", "equipment_display");
 	equippedDiv.id = "equippedDiv";
 	equippedHeader.insertAdjacentElement("afterend", equippedDiv);
-	let flaskHeader = document.getElementById("flask");
+	let flaskHeader = document.getElementById(DIV_WEAPON);
 	let flaskDiv = document.createElement("div");
 	flaskDiv.id = "flaskDiv";
 	flaskDiv.setAttribute("class", "equipment_display");
 	flaskHeader.insertAdjacentElement("afterend", flaskDiv);
-	let jewelHeader = document.getElementById("jewel");
+	let jewelHeader = document.getElementById(DIV_WEAPON);
 	let jewelDiv = document.createElement("div");
 	jewelDiv.setAttribute("class", "equipment_display");
 	jewelDiv.id = "jewelDiv";
@@ -298,12 +300,12 @@ function fillProfile(pobObject) {
 		}
 	})
 	// Tree nodes
-	let masteryHeader = document.getElementById("mastery");
+	let masteryHeader = document.getElementById(DIV_MASTERY);
 	let masteryDiv = document.createElement("div");
 	masteryDiv.setAttribute("class", "passive_display");
 	masteryDiv.id = "masteryDiv";
 	masteryHeader.insertAdjacentElement("afterend", masteryDiv);
-	let notableHeader = document.getElementById("notable");
+	let notableHeader = document.getElementById(DIV_MASTERY);
 	let notableDiv = document.createElement("div");
 	notableDiv.setAttribute("class", "passive_display");
 	notableDiv.id = "notableDiv";
@@ -341,10 +343,19 @@ function fillProfile(pobObject) {
 		masteryDiv.appendChild(item);
 	});
 
+	// Notes
+	let notesHeader = document.getElementById(DIV_NOTES);
+	let notesDiv = document.createElement("div");
+	notesDiv.setAttribute("class", "passive_display");
+	notesDiv.id = "notesDiv";
+	notesDiv.innerHTML = pobObject.notes;
+	notesHeader.insertAdjacentElement("afterend", notesDiv);
+	
 	loadItemData(pobObject.itemGroups);
 	loadNodeData(pobObject.treeGroups);
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
+	buildSvgTree(DIV_PREVIEW, treeNodes);
 }
 function loadHoradricHelper() {
 	//console.log("launch HH");
@@ -353,7 +364,7 @@ function loadHoradricHelper() {
 function waitForLoadAsync() {
 	if(!loadStats || !loadGem || !loadPassive) return;
 	else {
-		//fillProfile(pobObject);
+		console.log("finish loading");
 	}
 }
 function parseAndLoadCode() {
@@ -370,7 +381,7 @@ function parseAndLoadCode() {
 		if(pobObject !== undefined) {
 			// If valid code, clear before load
 			displayMenu('home');
-			let clearList=["primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
+			let clearList=["notesDiv", "primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
 			clearList.forEach( divId => {
 				var divElem = document.getElementById(divId);
 				if(divElem !== null) diveElem.remove();
@@ -389,6 +400,8 @@ window.onload = function() {
 </script>
 <!-- Navigation and page script -->
 <script>
+let DIV_NOTES = "notes", DIV_SETUP = "setup", DIV_ROADMAP = "roadmap", DIV_ASCENDANCY = "ascendancy", DIV_MASTERY = "mastery", DIV_PREVIEW = "preview", DIV_WEAPON = "weapon";
+
 function displayMenu(page) {
   document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
   document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
@@ -466,23 +479,23 @@ function selectStyle(theme) {
 <button type="submit" onclick="parseAndLoadCode();">submit</button>
 </div>
 <div class="menu_display" id="page_display">
-<h1>Concept</h1>
-<div class="concept_display">
-This is just a template<br/>
-</div>
-<h1>Gem</h1>
-<h2 id="primary">Main setup</h2>
-<h2 id="secondary">Secondary</h2>
-<!--h2 id="auxiliary">Aura & reservation</h2-->
+<h1 id="notes">Concept</h1>
+<h1>Gemmes</h1>
+<h2 id="setup">Configurations</h2>
+<h2 id="roadmap">Récupération pendant les quêtes</h2>
 <h1>Talent</h1>
-<h2 id="mastery">Ascendancy & Masteries</h2>
-<h2 id="notable">Notables</h2>
-<div><poe-passive></poe-passive></div>
+<h2 id="ascendancy">Ascendances</h2>
+<h2 id="mastery">Charnières & Maîtrises</h2>
+<h2 id="preview">Arbre</h2>
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
 <h1>Item</h1>
-<h2 id="equipped">Equipement</h2>
-<h2 id="jewel">Jewel</h2>
-<h2 id="flask">Flask</h2>
+<h2 id="weapon">Armes</h2>
+<h2 id="chest">Torse</h2>
+<h2 id="helm">Casque</h2>
+<h2 id="boots">Bottes</h2>
+<h2 id="gloves">Gants</h2>
+<h2 id="accessories">Accessoires</h2>
+<h2 id="flask">Flacons</h2>
 </div>
 </body>
 </html>

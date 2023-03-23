@@ -128,20 +128,55 @@ function extractNodesData(jsonData) {
 	return nodeMap;
 };
 
+function buildSvgTree(elementId, treeNodes) {
+	const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+	svg.setAttribute("width","100%");
+	svg.setAttribute("height","95vh");
+	svg.setAttribute("xmlns","http://www.w3.org/2000/svg")
+	
+	// Drawing the links between nodes
+	for( let[key, value] of Object.entries(treeNodes)) {
+		// Some nodes got no x or y ? FIXME research this further
+		if(value.out && value.x && value.y && !value.isMastery && !value.isAscendancyStart 
+			&& !value.isMultipleChoice && !value.isMultipleChoiceOption && !value.ascendancyName && !value.isBlighted && (!value.spc || value.spc.length == 0))
+		for( let nodeTo of value.out) {
+			const target = treeNodes[nodeTo];
+			// Some nodes out point to ascendancy or large cluster jewel
+			if(target && target.x && target.y && !target.isMastery && !target.isAscendancyStart 
+			&& !target.isMultipleChoice && !target.isMultipleChoiceOption && !target.ascendancyName && !target.isBlighted && (!target.spc || target.spc.length == 0)) {
+				// If nodes are of the same group with orbit, draw arc
+				svg.appendChild(buildSvgConnection(value, target, passiveSkillTreeData.constants.skillsPerOrbit, passiveSkillTreeData.constants.orbitRadii));
+			}
+		}
+	}
+	for( let[key, value] of Object.entries(treeNodes)) {
+		if(value.id && !value.isMastery && !value.isAscendancyStart 
+			&& !value.isMultipleChoice && !value.isMultipleChoiceOption && !value.ascendancyName && !value.isBlighted && (!value.spc || value.spc.length == 0)) svg.appendChild(buildSvgNode(value));
+	}
+	let minViewX = Math.ceil(Math.min(...Object.entries(treeNodes).filter(n => n[1].x).map(n => n[1].x)));
+	let minViewY = Math.ceil(Math.min(...Object.entries(treeNodes).filter(n => n[1].y).map(n => n[1].y)));
+	let maxViewX = Math.ceil(Math.max(...Object.entries(treeNodes).filter(n => n[1].x).map(n => n[1].x)));
+	let maxViewY = Math.ceil(Math.max(...Object.entries(treeNodes).filter(n => n[1].y).map(n => n[1].y)));
+	svg.setAttribute("viewBox",(minViewX -150) + " " + (minViewY -150) + " " + (maxViewX-minViewX +300) + " " + (maxViewY-minViewY +300));
+	let mainDiv = document.getElementById(elementId);
+	while(mainDiv.firstChild) mainDiv.removeChild(mainDiv.firstChild);
+	mainDiv.appendChild(svg);
+}
+
 function buildSvgNode(node) {
 	const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 	nodePoint.setAttribute("cx", node.x);
 	nodePoint.setAttribute("cy", node.y);
 	
 	if(node.isKeystone) {
-		nodePoint.setAttribute("fill", "#F00");
+		nodePoint.setAttribute("fill", "var(--tree-node-large)");
 		nodePoint.setAttribute("r", 96);
 	} else if(node.isNotable) {
-		nodePoint.setAttribute("fill", "#F00");
+		nodePoint.setAttribute("fill", "var(--tree-node-medium)");
 		nodePoint.setAttribute("r", 64);
 	} else if(node.isJewelSocket) {
 		nodePoint.setAttribute("fill", "none");
-		nodePoint.setAttribute("stroke", "#000");
+		nodePoint.setAttribute("stroke", "var(--tree-connector)");
 		nodePoint.setAttribute("stroke-width", "16");
 		nodePoint.setAttribute("r", 58);
 	} else if(node.grantedStrength && node.grantedStrength == 10 && !node.grantedIntelligence && !node.grantedDexterity) {
@@ -154,7 +189,7 @@ function buildSvgNode(node) {
 		nodePoint.setAttribute("fill", "#00C");
 		nodePoint.setAttribute("r", 32);
 	} else {
-		nodePoint.setAttribute("fill", "#222");
+		nodePoint.setAttribute("fill", "var(--tree-node-small)");
 		nodePoint.setAttribute("r", 32);
 	}
 	nodePoint.setAttribute("id", "node_"+node.id);
@@ -174,7 +209,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 		//if(value.orbitIndex > target.orbitIndex) isBefore = "0";
 		nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
 		nodeConnection.setAttribute("fill", "none");
-		nodeConnection.setAttribute("stroke", "#000");
+		nodeConnection.setAttribute("stroke", "var(--tree-connector)");
 		nodeConnection.setAttribute("stroke-width", "24");
 		return nodeConnection;
 	// If not, draw line
@@ -184,7 +219,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 		nodeConnection.setAttribute("y1", origin.y);
 		nodeConnection.setAttribute("x2", dest.x);
 		nodeConnection.setAttribute("y2", dest.y);
-		nodeConnection.setAttribute("style", "stroke:#000;stroke-width:24");
+		nodeConnection.setAttribute("style", "stroke:var(--tree-connector);stroke-width:24");
 		return nodeConnection;
 	}
 };
