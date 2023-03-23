@@ -13,87 +13,20 @@
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
 <!-- Passive Skill Tree parser -->
+<script src="TreeParser.js"></script>
 <script>
-var passiveSkillTreeData;
-var treeNodes, loadPassive = false;
+var passiveSkillTreeData, treeNodes, loadPassive = false;
 fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-320.json").then(response => response.json()).then(parsed => {
 	passiveSkillTreeData = parsed;
 	treeNodes = extractNodesData(parsed);
 	loadPassive = true;
 }).then(data => waitForLoadAsync());
-// Take the passive skill tree and extract all the nodes that are relevant with added coordinates
-function extractNodesData(jsonData) {
-	// keep a map of nodes that matters
-	const nodeMap = new Map();
-	for( let[key, value] of Object.entries(passiveSkillTreeData.nodes)) {
-		// No cluster jewels, no standard nodes
-		if(!value.isAscendancyStart && !value.isMultipleChoice && !value.isMultipleChoiceOption && (!value.spc || value.spc.length == 0)) {
-			nodeMap[key] = value;
-		}
-	}
-
-	// Parse the groups to get coordinate of the center of circle if needed
-	for( let [key, value] of Object.entries(passiveSkillTreeData.groups)) {
-		// Ignore cluster jewels
-		if(!value.isProxy) {
-			// No orbit declaration in group
-			for( let node of value.nodes) {
-				const nodeObject = nodeMap[node];
-				if(node in nodeMap) {
-					if(nodeObject.orbit != 0) {
-						// get the radius of the orbits from the groupNode
-						const radius = passiveSkillTreeData.constants.orbitRadii[nodeObject.orbit];
-						// Number of point on the circle
-						const skillOrbit = passiveSkillTreeData.constants.skillsPerOrbit[nodeObject.orbit];
-						// Place the node in the orbit and use orbit position to get him at the right location
-						nodeObject.x = value.x + (Math.sin(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
-						nodeObject.y = value.y - (Math.cos(Math.PI*2*nodeObject.orbitIndex/skillOrbit)*radius);
-					} else {
-						// node from group without coordinates?
-						nodeObject.x = value.x;
-						nodeObject.y = value.y;
-						nodeObject.anomaly = true;
-					}
-					nodeObject.id = node;
-					// Store back the coordinates
-					nodeMap[node] = nodeObject;
-				}
-			}
-		}
-	}
-	return nodeMap;
-};
 </script>
 <!-- External files for mods from RePoE -->
-<script>
-// Load all skill gem from repoe file
-var allGem, loadGem = false, mapStatGem = new Map();
-fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/gems.json").then(response => response.json()).then(parsed => {
-	allGem = parsed;
-	loadGem = true;
-}).then( data => {
-		// ALL THIS SEEMS IRELEVANT AS ALL STATS ARE IN STAT_TRANSLATIONS AND NOT INTO STAT_TRANSLATION_FILE
-	for( let gem of Object.values(allGem)) {
-		if(gem.base_item && gem.base_item.release_state && gem.base_item.release_state == "released") {
-		// Load special stats for gem
-		if(!mapStatGem[gem.stat_translation_file]) {
-			mapStatGem[gem.stat_translation_file] = "loading...";
-			fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/"+gem.stat_translation_file+".json").then(response => response.json()).then(subparsed => {
-				mapStatGem[gem.stat_translation_file] = subparsed;
-				});
-			}
-		}
-	}}
-).then(data => waitForLoadAsync());
-var qualityIdMap = {Default: 0, Alternate1: 1, Alternate2: 2, Alternate3: 3};
-var allStats, loadStats = false;
-fetch("https://raw.githubusercontent.com/brather1ng/RePoE/master/RePoE/data/stat_translations.json").then(response => response.json()).then(parsed => {
-	allStats = parsed;
-	loadStats = true;
-}).then(data => waitForLoadAsync());
-</script>
+<script src="Repoe.js"></script>
 <!-- Translate pob code into javascript object with pako library to unzip -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
+<script src="PobParser.js"></script>
 <script>
 // Create the all the data for Horadric Helper
 var hhData = Array();
@@ -105,33 +38,6 @@ function displayMode(elem, type) {
 		elem.setAttribute("as-icon","");
 		elem.setAttribute("icon-size","md");
 	}
-}
-// Read pob code into object
-function pobCodeToObject(pobCode) {
-	var compressData = atob(pobCode.replaceAll("_","/").replaceAll("-","+"));
-	var gzipedDataArray = Uint8Array.from(compressData, c => c.charCodeAt(0));
-	const ungzipedData = pako.ungzip(gzipedDataArray);
-	var xml = new TextDecoder().decode(ungzipedData);
-
-	var parser = new DOMParser();
-	return parser.parseFromString(xml,"text/xml");
-}
-function loadPobData(dataPoB) {
-	console.log(dataPoB);
-	// Map of each gems
-	var gemGroups = new Map();
-	// Filter skill from tree (ascendancy)
-	Object.values(dataPoB.getElementsByTagName("Skill")).filter(s => s.getAttribute("slot") !== null).forEach(s => gemGroups[s.getAttribute("slot")] = s);
-	// Map of each tree nodes
-	var treeGroups = Object.values(dataPoB.getElementsByTagName("Spec"))[dataPoB.getElementsByTagName("Tree")[0].getAttribute("activeSpec")-1];
-	// Map of each items in the pob where jewel association to slot are under <Socket>, and other in <Slot>
-	var itemGroups = new Map();
-	var items = Object.values(dataPoB.getElementsByTagName("Item"));
-	Object.values(dataPoB.getElementsByTagName("Slot")).filter(s => s.getAttribute("itemId") != 0).forEach( s => itemGroups[s.getAttribute("name")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
-	// FIXME socketed item name
-	Object.values(dataPoB.getElementsByTagName("Socket")).forEach( s => itemGroups["Jewel " + s.getAttribute("nodeId")] = items.find(i => i.getAttribute("id") == s.getAttribute("itemId")));
-	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups};
-	fillProfile(pobObject);
 }
 
 function conditionToFormat(sentence, cn, statValue) {
@@ -196,22 +102,21 @@ function translateStats(gemStat) {
 // Add items HH applyConfig
 function loadItemData(itemGroups) {
   // Items
-	Object.entries(itemGroups).map( k => {
+	itemGroups.items.forEach( k => {
 		var config = [];
-		config.reference = k[0];
+		config.reference = k.itemId;
 		// Remove PoB lines with ModRange and empty lines
-		config.data = k[1].innerHTML.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
+		config.data = k.innerText.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
 		hhData.push(config);
 		//console.log("loaded items");
 	});
 }
 // Add gems HH config
 function loadGemData(gemGroups) {
-	Object.values(gemGroups).forEach( (s, i) => {
-		Object.entries(s.children).forEach( (g, j) => {
+	gemGroups[0].groups.forEach( (s, i) => {
+		s.gems.forEach( (g, j) => {
 			var config = [], gemData = [], gemSection = [];
-			var skillGem = allGem[g[1].getAttribute("skillId")];
-			//if(skillGem !== undefined) console.log("gem:",g[1].getAttribute("qualityId"), g[1].getAttribute("nameSpec"), " lvl", g[1].getAttribute("level"), "q",g[1].getAttribute("quality")/*,", skill:",skillGem*/);
+			var skillGem = allGem[g.skill];
 			var skillModifiers = [];
 			if(skillGem.active_skill !== undefined) {
 				// Active skill gem
@@ -223,25 +128,31 @@ function loadGemData(gemGroups) {
 			var gemStat = [];
 			// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
 			skillGem.static.stats.forEach( (stats, index) => {
-				var statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
+				// if stats not displayed from static, it should come from per_level
+				if(stats === null) stats = skillGem.per_level[1].stats[index];
+				var statTranslation;
+				if(skillGem.stat_translation_file !== undefined) statTranslation = mapStatGem[skillGem.stat_translation_file].find(a => a.ids.find(id => id == stats.id));
+				else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
 				if(statTranslation !== undefined) {
 					var keyValueStat = {};
 					keyValueStat.id = stats.id;
 					if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
-					else if(skillGem.per_level[g[1].getAttribute("level")] && skillGem.per_level[g[1].getAttribute("level")].stats[index] && skillGem.per_level[g[1].getAttribute("level")].stats[index].value)
-					keyValueStat.value = skillGem.per_level[g[1].getAttribute("level")].stats[index].value;
+					else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
+					keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
 					keyValueStat.translate = statTranslation;
 					gemStat.push(keyValueStat);
+				} else {
+					//console.log("translation not found", stats, g[1].getAttribute("skillId"));
 				}
 			});
 			// Include stat from appropriate quality and normalized it with quality value (base on 2000)
-			let qualityStat = skillGem.static.quality_stats[qualityIdMap[g[1].getAttribute("qualityId")]];
+			let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
 			if(qualityStat !== undefined) {
 				let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
-				if(g[1].getAttribute("quality") !== undefined && g[1].getAttribute("quality") > 0 && qualityTranslation !== undefined) {
+				if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
 					var keyValueStat = {};
 					keyValueStat.id = qualityStat.id;
-					keyValueStat.value = qualityStat.value / 2000 * g[1].getAttribute("quality");
+					keyValueStat.value = qualityStat.value / 2000 * g.quality;
 					keyValueStat.translate = qualityTranslation;
 					gemStat.push(keyValueStat);
 				}
@@ -250,10 +161,6 @@ function loadGemData(gemGroups) {
 			//console.log(skillModifiers);
 
 			if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
-			g[1].getAttribute("level");
-			g[1].getAttribute("skillId");
-			g[1].getAttribute("qualityId");
-			g[1].getAttribute("quality");
 			gemData.rarity = "Gem";
 			if(skillGem.base_item !== null) {
 				gemData.name = skillGem.base_item.display_name;
@@ -273,7 +180,7 @@ function loadGemData(gemGroups) {
 }
 // Add passive node HH config
 function loadNodeData(treeGroups) {
-	Object.values(treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+	treeGroups[0].nodes.split(",").forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && node.isNotable) {
 			var nodeData = [], nodeSection = [], config = [];
@@ -295,7 +202,7 @@ function loadNodeData(treeGroups) {
 		}
 	});
 	var masteryGroup = new Map();
-	Object.values(treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+	treeGroups[0].masteryEffects.split("},{").forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 		let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
@@ -336,20 +243,20 @@ function fillProfile(pobObject) {
 	secondaryDiv.setAttribute("class", "gem_display");
 	secondaryHeader.insertAdjacentElement("afterend", secondaryDiv);
 	// Add poe-item for each gem, each group in a single div
-	Object.values(pobObject.gemGroups).forEach( (k, i) => {
+	pobObject.gemGroups[0].groups.forEach( (k, i) => {
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+i);
-		Object.values(k.children).forEach( (g, j) => {
+		k.gems.forEach( (g, j) => {
 			let gemRef = "gem_"+i+"_"+j;
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
 			displayMode(item, "popup");
-			item.setAttribute("label-text",g.getAttribute("nameSpec"));
+			item.setAttribute("label-text",g.skill);
 			div.appendChild(item);
 		});
 		// Depending on the number of gem in slot, we put this under different header
-		if(k.children.length > 4) {
+		if(k.gems.length > 4) {
 			primaryDiv.appendChild(div);
 		} else //if(k.startsWith("Flask")) {
 			secondaryDiv.appendChild(div);
@@ -374,17 +281,17 @@ function fillProfile(pobObject) {
 	jewelDiv.id = "jewelDiv";
 	jewelHeader.insertAdjacentElement("afterend", jewelDiv);
 	// Add poe-item for each equipment, each group in a single div
-	Object.keys(pobObject.itemGroups).forEach( k => {
+	pobObject.itemGroups.items.forEach( k => {
 		// Creation of the poe-item html element for HoradricHelper
 		var item = document.createElement("poe-item");
-		item.setAttribute("reference", k);
+		item.setAttribute("reference", k.itemId);
 		displayMode(item, "show");
-		item.setAttribute("label-text",k);
+		// TODO item.setAttribute("label-text","maybe latter");
 		var brotherDiv;
 		// Depending on the name of the slot, we put this under different header
-		if(k.startsWith("Jewel")) {
+		if(k.itemId.startsWith("Jewel")) {
 			jewelDiv.appendChild(item);
-		} else if(k.startsWith("Flask")) {
+		} else if(k.itemId.startsWith("Flask")) {
 			flaskDiv.appendChild(item);
 		} else {
 			equippedDiv.appendChild(item);
@@ -402,7 +309,7 @@ function fillProfile(pobObject) {
 	notableDiv.id = "notableDiv";
 	notableHeader.insertAdjacentElement("afterend", notableDiv);
 	// Add poe-passive for each ascendancy and notable allocated
-	Object.values(pobObject.treeGroups.getAttribute("nodes").split(",")).forEach( (k, i) => {
+	pobObject.treeGroups[0].nodes.split(",").forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
 			// Creation of the poe-item html element for HoradricHelper
@@ -420,7 +327,7 @@ function fillProfile(pobObject) {
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated
 	var masteryGroup = new Map();
-	Object.values(pobObject.treeGroups.getAttribute("masteryEffects").split("},{")).forEach( (k, i) => {
+	pobObject.treeGroups[0].masteryEffects.split("},{").forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
 		masteryGroup[mastery] = master;
@@ -434,7 +341,7 @@ function fillProfile(pobObject) {
 		masteryDiv.appendChild(item);
 	});
 
-  loadItemData(pobObject.itemGroups);
+	loadItemData(pobObject.itemGroups);
 	loadNodeData(pobObject.treeGroups);
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
@@ -449,7 +356,7 @@ function waitForLoadAsync() {
 		//fillProfile(pobObject);
 	}
 }
-function parsePobCode() {
+function parseAndLoadCode() {
 	var input = document.getElementById("pobinput").value.trim();
 	if(input.startsWith("https://pastebin.com")) {
 		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
@@ -471,7 +378,8 @@ function parsePobCode() {
 			// Clear HH data
 			hhData = [];
 			// Load new data
-			loadPobData(pobObject);
+			var pobData = loadPobData(pobObject);
+			fillProfile(pobData);
 		}
 	}
 }
@@ -555,7 +463,7 @@ function selectStyle(theme) {
 <h1>Import</h1>
 <label>POB code:</label>
 <input type="text" id="pobinput" size=100 />
-<button type="submit" onclick="parsePobCode();">submit</button>
+<button type="submit" onclick="parseAndLoadCode();">submit</button>
 </div>
 <div class="menu_display" id="page_display">
 <h1>Concept</h1>
