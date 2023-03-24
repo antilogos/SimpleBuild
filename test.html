@@ -348,7 +348,7 @@ function fillProfile(pobObject) {
 	let notesDiv = document.createElement("div");
 	notesDiv.setAttribute("class", "passive_display");
 	notesDiv.id = "notesDiv";
-	notesDiv.innerHTML = pobObject.notes;
+	notesDiv.innerHTML = pobObject.notes.replaceAll("\n","<br/>").replaceAll(/\^x([0-9A-Fa-f]{6})(.*?)\^7/g,"<font color='#$1'>$2</font>").replaceAll(/\^x([0-9A-Fa-f]{6})/g,"").replaceAll(/\^7/g,"");
 	notesHeader.insertAdjacentElement("afterend", notesDiv);
 	
 	loadItemData(pobObject.itemGroups);

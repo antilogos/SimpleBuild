@@ -11,9 +11,11 @@ body.dark {
 	--text-color: #eee;
 	--tree-connector: #ddd;
 	--tree-node-small: #fff;
-	--tree-node-medium: #f00;
-	--tree-node-large: #f00;
-	
+	--tree-node-medium: #f0f;
+	--tree-node-large: #ff0;
+	--tree-node-str: #f66;
+	--tree-node-int: #66f;
+	--tree-node-dex: #6f6;
 }
 
 body.light {
@@ -29,6 +31,9 @@ body.light {
 	--tree-node-small: #222;
 	--tree-node-medium: #f00;
 	--tree-node-large: #f00;
+	--tree-node-str: #f00;
+	--tree-node-int: #00f;
+	--tree-node-dex: #0f0;
 }
 
 /* Main structure */
