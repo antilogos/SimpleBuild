@@ -11,7 +11,7 @@ body.dark {
 	--text-color: #eee;
 	--tree-connector: #ddd;
 	--tree-node-small: #fff;
-	--tree-node-medium: #f0f;
+	--tree-node-medium: #fff;
 	--tree-node-large: #ff0;
 	--tree-node-str: #f66;
 	--tree-node-int: #66f;
