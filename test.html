@@ -115,137 +115,131 @@ function loadItemData(itemGroups) {
 }
 // Add gems HH config
 function loadGemData(gemGroups) {
-	gemGroups[0].groups.forEach( (s, i) => {
-		s.gems.forEach( (g, j) => {
-			var config = [], gemData = [], gemSection = [];
-			var skillGem = allGem[g.skill];
-			var skillModifiers = [];
-			if(skillGem.active_skill !== undefined) {
-				// Active skill gem
-				gemSection.gemDescription = [].concat(skillGem.active_skill.description);
-			} else {
-				// Support skill gem
-				// XXX no gem description for support ?
-			}
-			var gemStat = [];
-			// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
-			skillGem.static.stats.forEach( (stats, index) => {
-				// if stats not displayed from static, it should come from per_level
-				if(stats === null) stats = skillGem.per_level[1].stats[index];
-				var statTranslation;
-				if(skillGem.stat_translation_file !== undefined) statTranslation = mapStatGem[skillGem.stat_translation_file].find(a => a.ids.find(id => id == stats.id));
-				else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
-				if(statTranslation !== undefined) {
-					var keyValueStat = {};
-					keyValueStat.id = stats.id;
-					if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
-					else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
-					keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
-					keyValueStat.translate = statTranslation;
-					gemStat.push(keyValueStat);
+	for (let gemGroup of gemGroups) {
+		gemGroup.groups.forEach( (s, i) => {
+			s.gems.forEach( (g, j) => {
+				var config = [], gemData = [], gemSection = [];
+				var skillGem = allGem[g.skill];
+				var skillModifiers = [];
+				if(skillGem.active_skill !== undefined) {
+					// Active skill gem
+					gemSection.gemDescription = [].concat(skillGem.active_skill.description);
 				} else {
-					//console.log("translation not found", stats, g[1].getAttribute("skillId"));
+					// Support skill gem
+					// XXX no gem description for support ?
 				}
-			});
-			// Include stat from appropriate quality and normalized it with quality value (base on 2000)
-			let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
-			if(qualityStat !== undefined) {
-				let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
-				if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
-					var keyValueStat = {};
-					keyValueStat.id = qualityStat.id;
-					keyValueStat.value = qualityStat.value / 2000 * g.quality;
-					keyValueStat.translate = qualityTranslation;
-					gemStat.push(keyValueStat);
+				var gemStat = [];
+				// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
+				skillGem.static.stats.forEach( (stats, index) => {
+					// if stats not displayed from static, it should come from per_level
+					if(stats === null) stats = skillGem.per_level[1].stats[index];
+					var statTranslation;
+					if(skillGem.stat_translation_file !== undefined) statTranslation = mapStatGem[skillGem.stat_translation_file].find(a => a.ids.find(id => id == stats.id));
+					else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
+					if(statTranslation !== undefined) {
+						var keyValueStat = {};
+						keyValueStat.id = stats.id;
+						if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
+						else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
+						keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
+						keyValueStat.translate = statTranslation;
+						gemStat.push(keyValueStat);
+					} else {
+						//console.log("translation not found", stats, g[1].getAttribute("skillId"));
+					}
+				});
+				// Include stat from appropriate quality and normalized it with quality value (base on 2000)
+				let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
+				if(qualityStat !== undefined) {
+					let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
+					if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
+						var keyValueStat = {};
+						keyValueStat.id = qualityStat.id;
+						keyValueStat.value = qualityStat.value / 2000 * g.quality;
+						keyValueStat.translate = qualityTranslation;
+						gemStat.push(keyValueStat);
+					}
+					skillModifiers.push(translateStats(gemStat));
 				}
-				skillModifiers.push(translateStats(gemStat));
-			}
-			//console.log(skillModifiers);
+				//console.log(skillModifiers);
 
-			if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
-			gemData.rarity = "Gem";
-			if(skillGem.base_item !== null) {
-				gemData.name = skillGem.base_item.display_name;
-				gemSection.properties = [].concat(skillGem.tags);
-			} else {
-				gemData.name = skillGem.active_skill.display_name;
-				gemSection.properties = [].concat(skillGem.active_skill.types);
-			}
-			gemData.sections = gemSection;
-			config.reference = "gem_" + i + "_" + j;
-			config.data = gemData;
-			config.iconUrl = "";
-			hhData.push(config);
-			//console.log("loaded gem", config);
-		})
-	});
+				if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
+				gemData.rarity = "Gem";
+				if(skillGem.base_item !== null) {
+					gemData.name = skillGem.base_item.display_name;
+					gemSection.properties = [].concat(skillGem.tags);
+				} else {
+					gemData.name = skillGem.active_skill.display_name;
+					gemSection.properties = [].concat(skillGem.active_skill.types);
+				}
+				gemData.sections = gemSection;
+				config.reference = "gem_" + i + "_" + j;
+				config.data = gemData;
+				config.iconUrl = "";
+				hhData.push(config);
+				//console.log("loaded gem", config);
+			})
+		});
+	}
 }
 // Add passive node HH config
 function loadNodeData(treeGroups) {
-	treeGroups[0].nodes.split(",").forEach( (k, i) => {
-		let node = treeNodes[k];
-		if(node !== undefined && node.isNotable) {
-			var nodeData = [], nodeSection = [], config = [];
-			var stats = node.stats;
-			if(node.reminderText) stats.concat(node.reminderText);
-			nodeSection.description = [].concat(stats);
-			nodeData.sections = nodeSection;
-			nodeData.name = node.name;
-			if(node.ascendancyName !== undefined) {
-				nodeData.type = "ascendancy notable"
-			} else {
-				nodeData.type = "notable"
+	for (let treeGroup of treeGroups) {
+		treeGroup.nodes.split(",").forEach( (k, i) => {
+			let node = treeNodes[k];
+			if(node !== undefined && node.isNotable) {
+				var nodeData = [], nodeSection = [], config = [];
+				var stats = node.stats;
+				if(node.reminderText) stats.concat(node.reminderText);
+				nodeSection.description = [].concat(stats);
+				nodeData.sections = nodeSection;
+				nodeData.name = node.name;
+				if(node.ascendancyName !== undefined) {
+					nodeData.type = "ascendancy notable"
+				} else {
+					nodeData.type = "notable"
+				}
+				config.reference = "node_"+k;
+				config.data = nodeData;
+				config.iconUrl = "";
+				hhData.push(config);
+				//console.log("loaded passive", config);
 			}
-			config.reference = "node_"+k;
+		});
+		var masteryGroup = new Map();
+		treeGroup.masteryEffects.split("},{").forEach( (k, i) => {
+			let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
+			let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
+			let mastery = treeNodes[master].name;
+			let effect = treeNodes[master].masteryEffects.find( e => e.effect == slave);
+			if(effect !== undefined) {
+				if(masteryGroup[mastery] !== undefined) {
+					masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
+				}
+				else masteryGroup[mastery] = [].concat(effect.stats);
+				if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
+			}
+		});
+		Object.entries(masteryGroup).forEach( k => {
+			var nodeData = [], nodeSection = [], config = [];
+			nodeSection.description = [].concat(k[1]);
+			nodeData.sections = nodeSection;
+			nodeData.name = k[0];
+			nodeData.type = "mastery"
+			config.reference = "mastery_"+k[0];
 			config.data = nodeData;
 			config.iconUrl = "";
 			hhData.push(config);
-			//console.log("loaded passive", config);
-		}
-	});
-	var masteryGroup = new Map();
-	treeGroups[0].masteryEffects.split("},{").forEach( (k, i) => {
-		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
-		let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
-		let mastery = treeNodes[master].name;
-		let effect = treeNodes[master].masteryEffects.find( e => e.effect == slave);
-		if(effect !== undefined) {
-			if(masteryGroup[mastery] !== undefined) {
-				masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
-			}
-			else masteryGroup[mastery] = [].concat(effect.stats);
-			if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
-		}
-	});
-	Object.entries(masteryGroup).forEach( k => {
-		var nodeData = [], nodeSection = [], config = [];
-		nodeSection.description = [].concat(k[1]);
-		nodeData.sections = nodeSection;
-		nodeData.name = k[0];
-		nodeData.type = "mastery"
-		config.reference = "mastery_"+k[0];
-		config.data = nodeData;
-		config.iconUrl = "";
-		hhData.push(config);
-		//console.log("loaded mastery", config);
-	});
+			//console.log("loaded mastery", config);
+		});
+	}
 }
+
 // Get items from pob (listed under slots) and create div for each of them
-function fillProfile(pobObject) {
-	console.log(pobObject);
-	//	Gems (main setup are gems setup with at least 5 gems, auxiliary are those with reservation, and secondary are all the others)
-	let primaryHeader = document.getElementById(DIV_SETUP);
-	let primaryDiv = document.createElement("div");
-	primaryDiv.id = "primaryDiv";
-	primaryDiv.setAttribute("class", "gem_display");
-	primaryHeader.insertAdjacentElement("afterend", primaryDiv);
-	let secondaryHeader = document.getElementById(DIV_SETUP);
-	let secondaryDiv = document.createElement("div");
-	secondaryDiv.id = "secondaryDiv";
-	secondaryDiv.setAttribute("class", "gem_display");
-	secondaryHeader.insertAdjacentElement("afterend", secondaryDiv);
+function fillGemProfile(gemGroup) {
+	clearProfile([DIV_SETUP]);
 	// Add poe-item for each gem, each group in a single div
-	pobObject.gemGroups[0].groups.forEach( (k, i) => {
+	gemGroup.groups.forEach( (k, i) => {
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+i);
 		k.gems.forEach( (g, j) => {
@@ -257,61 +251,14 @@ function fillProfile(pobObject) {
 			item.setAttribute("label-text",g.skill);
 			div.appendChild(item);
 		});
-		// Depending on the number of gem in slot, we put this under different header
-		if(k.gems.length > 4) {
-			primaryDiv.appendChild(div);
-		} else //if(k.startsWith("Flask")) {
-			secondaryDiv.appendChild(div);
-		// } else {
-		// brotherDiv = document.getElementById("auxiliary");
-		// }
+		document.getElementById(DIV_SETUP).appendChild(div);
 	});
-	// Inventory slots (jewel, flask and equipement)
-	let equippedHeader = document.getElementById(DIV_WEAPON);
-	let equippedDiv = document.createElement("div");
-	equippedDiv.setAttribute("class", "equipment_display");
-	equippedDiv.id = "equippedDiv";
-	equippedHeader.insertAdjacentElement("afterend", equippedDiv);
-	let flaskHeader = document.getElementById(DIV_WEAPON);
-	let flaskDiv = document.createElement("div");
-	flaskDiv.id = "flaskDiv";
-	flaskDiv.setAttribute("class", "equipment_display");
-	flaskHeader.insertAdjacentElement("afterend", flaskDiv);
-	let jewelHeader = document.getElementById(DIV_WEAPON);
-	let jewelDiv = document.createElement("div");
-	jewelDiv.setAttribute("class", "equipment_display");
-	jewelDiv.id = "jewelDiv";
-	jewelHeader.insertAdjacentElement("afterend", jewelDiv);
-	// Add poe-item for each equipment, each group in a single div
-	pobObject.itemGroups.items.forEach( k => {
-		// Creation of the poe-item html element for HoradricHelper
-		var item = document.createElement("poe-item");
-		item.setAttribute("reference", k.itemId);
-		displayMode(item, "show");
-		// TODO item.setAttribute("label-text","maybe latter");
-		var brotherDiv;
-		// Depending on the name of the slot, we put this under different header
-		if(k.itemId.startsWith("Jewel")) {
-			jewelDiv.appendChild(item);
-		} else if(k.itemId.startsWith("Flask")) {
-			flaskDiv.appendChild(item);
-		} else {
-			equippedDiv.appendChild(item);
-		}
-	})
-	// Tree nodes
-	let masteryHeader = document.getElementById(DIV_MASTERY);
-	let masteryDiv = document.createElement("div");
-	masteryDiv.setAttribute("class", "passive_display");
-	masteryDiv.id = "masteryDiv";
-	masteryHeader.insertAdjacentElement("afterend", masteryDiv);
-	let notableHeader = document.getElementById(DIV_MASTERY);
-	let notableDiv = document.createElement("div");
-	notableDiv.setAttribute("class", "passive_display");
-	notableDiv.id = "notableDiv";
-	notableHeader.insertAdjacentElement("afterend", notableDiv);
-	// Add poe-passive for each ascendancy and notable allocated
-	pobObject.treeGroups[0].nodes.split(",").forEach( (k, i) => {
+	//TODO link to roadmap
+}
+function fillTreeProfile(treeGroup) {
+	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW]);
+	// Add poe-passive for each ascendancy and keystone allocated
+	treeGroup.nodes.split(",").forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
 			// Creation of the poe-item html element for HoradricHelper
@@ -321,15 +268,15 @@ function fillProfile(pobObject) {
 			item.setAttribute("label-text", node.name);
 			// Depending on the type of nodes
 			if(node.ascendancyName !== undefined) {
-				masteryDiv.appendChild(item);
-			} else {
-				notableDiv.appendChild(item);
+				document.getElementById(DIV_ASCENDANCY).appendChild(item);
+			} else if(node.isKeystone) {
+				document.getElementById(DIV_KEYSTONE).appendChild(item);
 			}
 		}
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated
 	var masteryGroup = new Map();
-	pobObject.treeGroups[0].masteryEffects.split("},{").forEach( (k, i) => {
+	treeGroup.masteryEffects.split("},{").forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
 		masteryGroup[mastery] = master;
@@ -340,8 +287,52 @@ function fillProfile(pobObject) {
 		item.setAttribute("reference", "mastery_"+k[0]);
 		displayMode(item, "show");
 		item.setAttribute("label-text", k[0]);
-		masteryDiv.appendChild(item);
+		document.getElementById(DIV_MASTERY).appendChild(item);
 	});
+	// Tree Preview
+	buildSvgTree(DIV_PREVIEW, treeNodes);
+	buildPath(treeGroup, {"stroke":"#166","width":96}, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
+}
+function fillProfile(pobObject) {
+	console.log(pobObject);
+	// Add div for each gems setup and a link to raodmap
+	for (let option of pobObject.gemGroups) {
+		let optionElement = document.createElement("button");
+		optionElement.innerHTML = option.title;
+		optionElement.addEventListener('click', function (event) {
+			fillGemProfile(option);
+		});
+		document.getElementById(DIV_ROADMAP).appendChild(optionElement);
+	}
+	fillGemProfile(pobObject.gemGroups[0]);
+	// Add poe-item for each equipment, each group in a single div
+	pobObject.itemGroups.items.forEach( k => {
+		// Creation of the poe-item html element for HoradricHelper
+		var item = document.createElement("poe-item");
+		item.setAttribute("reference", k.itemId);
+		displayMode(item, "show");
+		// TODO item.setAttribute("label-text","maybe latter");
+		var brotherDiv;
+		// Depending on the name of the slot, we put this under different header
+		if(k.itemId.startsWith("Jewel")) {
+			document.getElementById(DIV_WEAPON).appendChild(item);
+		} else if(k.itemId.startsWith("Flask")) {
+			document.getElementById(DIV_WEAPON).appendChild(item);
+		} else {
+			document.getElementById(DIV_WEAPON).appendChild(item);
+		}
+	})
+	
+	// Add div for each tree setup and a link to the official tree
+	for (let option of pobObject.treeGroups) {
+		let optionElement = document.createElement("button");
+		optionElement.innerHTML = option.title + " (" + option.nodes.split(",").length + " points)";
+		optionElement.addEventListener('click', function (event) {
+			fillTreeProfile(option);
+		});
+		document.getElementById(DIV_TREE).appendChild(optionElement);
+	}
+	fillTreeProfile(pobObject.treeGroups[0]);
 
 	// Notes
 	let notesHeader = document.getElementById(DIV_NOTES);
@@ -355,7 +346,6 @@ function fillProfile(pobObject) {
 	loadNodeData(pobObject.treeGroups);
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
-	buildSvgTree(DIV_PREVIEW, treeNodes);
 }
 function loadHoradricHelper() {
 	//console.log("launch HH");
@@ -365,6 +355,15 @@ function waitForLoadAsync() {
 	if(!loadStats || !loadGem || !loadPassive) return;
 	else {
 		console.log("finish loading");
+	}
+}
+function clearProfile(divList) {
+	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_WEAPON];
+	for (let divId of divList) {
+		let divElement = document.getElementById(divId);
+		while(divElement.firstChild) {
+			divElement.removeChild(divElement.firstChild);
+		}
 	}
 }
 function parseAndLoadCode() {
@@ -381,14 +380,10 @@ function parseAndLoadCode() {
 		if(pobObject !== undefined) {
 			// If valid code, clear before load
 			displayMenu('home');
-			let clearList=["notesDiv", "primaryDiv", "secondaryDiv", "equippedDiv", "flaskDiv", "jewelDiv", "masteryDiv", "notableDiv"];
-			clearList.forEach( divId => {
-				var divElem = document.getElementById(divId);
-				if(divElem !== null) diveElem.remove();
-			});
-			// Clear HH data
+			// Clear old
+			clearProfile();
 			hhData = [];
-			// Load new data
+			// Load new
 			var pobData = loadPobData(pobObject);
 			fillProfile(pobData);
 		}
@@ -400,7 +395,9 @@ window.onload = function() {
 </script>
 <!-- Navigation and page script -->
 <script>
-let DIV_NOTES = "notes", DIV_SETUP = "setup", DIV_ROADMAP = "roadmap", DIV_ASCENDANCY = "ascendancy", DIV_MASTERY = "mastery", DIV_PREVIEW = "preview", DIV_WEAPON = "weapon";
+let DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
+	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
+	DIV_WEAPON = "weaponDiv";
 
 function displayMenu(page) {
   document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
@@ -472,30 +469,92 @@ function selectStyle(theme) {
     </nav>
   </div>
 </div>
-<div class="menu_import" id="page_import">
+<!-- Import Page -->
+<div class="page" id="page_import">
 <h1>Import</h1>
 <label>POB code:</label>
 <input type="text" id="pobinput" size=100 />
 <button type="submit" onclick="parseAndLoadCode();">submit</button>
 </div>
-<div class="menu_display" id="page_display">
+<!-- Display Page -->
+<div class="page" id="page_display">
 <h1 id="notes">Concept</h1>
-<h1>Gemmes</h1>
-<h2 id="setup">Configurations</h2>
-<h2 id="roadmap">Récupération pendant les quêtes</h2>
-<h1>Talent</h1>
-<h2 id="ascendancy">Ascendances</h2>
-<h2 id="mastery">Charnières & Maîtrises</h2>
-<h2 id="preview">Arbre</h2>
-<!--h2 id="pantheon">Bandits & Pantheon</h2-->
-<h1>Item</h1>
-<h2 id="weapon">Armes</h2>
-<h2 id="chest">Torse</h2>
-<h2 id="helm">Casque</h2>
-<h2 id="boots">Bottes</h2>
-<h2 id="gloves">Gants</h2>
-<h2 id="accessories">Accessoires</h2>
-<h2 id="flask">Flacons</h2>
+<div class="section">
+	<div class="filling" id="notesDiv"></div>
 </div>
+<h1>Gemmes</h1>
+<div class="section">
+	<div style="width: auto">
+		<h2>Groupes</h2>
+		<div id="setupDiv"></div>
+	</div>
+	<div style="max-width: 40%">
+		<h2>Configurations</h2>
+		<div id="roadmapDiv"></div>
+	</div>
+</div>
+<h1>Talents passifs</h1>
+<div class="section">
+	<div style="width: auto">
+		<h2>Prévisualisation<h2>
+		<div id="previewDiv"></div>
+	</div>
+	<div style="display: block; max-width: 30%">
+		<div>
+			<h2>Arbres</h2>
+			<div id="treeDiv"></div>
+		</div>
+		<div>
+			<h2>Ascendance</h2>
+			<div id="ascendancyDiv"></div>
+		</div>
+		<div>
+			<h2>Maîtrises</h2>
+			<div id="masteryDiv"></div>
+		</div>
+		<div>
+			<h2>Charnières</h2>
+			<div id="keystoneDiv"></div>
+		</div>
+	</div>
+</div>
+<!--h2 id="pantheon">Bandits & Pantheon</h2-->
+<h1>Objets</h1>
+<div class="section">
+	<div style="width: auto">
+		<h2>Armes</h2>
+		<div id="weaponDiv"></div>
+	</div>
+	<div>
+		<h2>Torse</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Casque</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Gants</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Bottes</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Accessoires</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Flacons</h2>
+		<div />
+	</div>
+	<div>
+		<h2>Joyaux</h2>
+		<div />
+	</div>
+</div>
+</div>
+<!-- Other Page? -->
 </body>
 </html>

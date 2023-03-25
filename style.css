@@ -4,11 +4,13 @@ body.dark {
 	--body-bg: #111;
 	--nav-bg: #222;
 	--section-bg: #111;
+
+	--text-color: #eee;
 	--text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
 	--text-shadow-hover: -0.1em 0.1em 0.07em #000a, 0em 0em 0.2em #d839, 0em -0.3em 0.6em #fff3;
 	--text-background: -webkit-linear-gradient(#fc6 5%, #b80);
 	--box-shadow: 0.1em 0.1em 0.5em 0.1em #0003 inset;
-	--text-color: #eee;
+
 	--tree-connector: #ddd;
 	--tree-node-small: #fff;
 	--tree-node-medium: #fff;
@@ -16,6 +18,9 @@ body.dark {
 	--tree-node-str: #f66;
 	--tree-node-int: #66f;
 	--tree-node-dex: #6f6;
+	
+	--select-border: #777;
+	--select-focus: #b80;
 }
 
 body.light {
@@ -38,6 +43,10 @@ body.light {
 
 /* Main structure */
 
+* {
+  box-sizing: border-box;
+  outline: 0;
+}
 body {
 	background: var(--body-bg);
 	color: var(--text-color);
@@ -59,18 +68,22 @@ h1, h2 {
 	-webkit-text-fill-color: transparent;
 }
 
-.concept_display, .gem_display, .equipment_display, .passive_display {
+.page {
+	display: none;
+	margin-top: 4rem;
+}
+.section {
 	margin: 2rem;
 	padding: 2rem;
 	background: var(--section-bg);
+	display: flex;
+}
+.filling {
+	
 }
 
 /* Make drop-down menu */
 
-.menu_import, .menu_display {
-  display: none;
-  margin-top: 4rem;
-}
 .navigation_bar {
   position: fixed;
   top: 0;
@@ -181,6 +194,40 @@ li > button:hover {
 ul li:hover > button > .arrow {
   transform: rotate(-225deg);
   margin-top: 4px;
+}
+
+/* Custom select */
+
+select {
+  appearance: none;
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  z-index: 1;
+  outline: none;
+  color: var(--text-color);
+}
+
+.select {
+  display: grid;
+  position: relative;
+
+  min-width: 15ch;
+  max-width: 30ch;
+
+  border: 1px solid var(--select-border);
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+
+  font-size: 1.25rem;
+  cursor: pointer;
+  line-height: 1.1em;
 }
 
 /* Passive tree */

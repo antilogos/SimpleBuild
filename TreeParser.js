@@ -224,10 +224,13 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 	}
 };
 
-function buildPath(nodesObject, style, svg, nodeMap, orbitMap, radiiMap) {
+function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData) {
+	var svg = document.getElementById(elementId).firstChild;
+	var orbitMap = passiveSkillTreeData.constants.skillsPerOrbit;
+	var radiiMap = passiveSkillTreeData.constants.orbitRadii;
 	var filteredNode = [];
 	var svgElements = [];
-	for( let origin of Object.values(nodesObject.tree)) {
+	for( let origin of Object.values(nodesObject.nodes.split(","))) {
         	if(nodeMap[origin]) {
 			filteredNode[origin] = nodeMap[origin];
 		}
@@ -278,7 +281,7 @@ function buildPath(nodesObject, style, svg, nodeMap, orbitMap, radiiMap) {
 	// TODO
 	
 	// Draw masteries
-	nodesObject.mastery.forEach( (value) => {
+	nodesObject.masteryEffects.split("},{").map(m => m.split(",")[0].replaceAll("{","")).forEach( (value) => {
 		const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		nodePoint.setAttribute("cx", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].x);
 		nodePoint.setAttribute("cy", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].y);
