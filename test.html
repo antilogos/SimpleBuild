@@ -115,7 +115,7 @@ function loadItemData(itemGroups) {
 }
 // Add gems HH config
 function loadGemData(gemGroups) {
-	for (let gemGroup of gemGroups) {
+	gemGroups.forEach( (gemGroup, k) => {
 		gemGroup.groups.forEach( (s, i) => {
 			s.gems.forEach( (g, j) => {
 				var config = [], gemData = [], gemSection = [];
@@ -167,20 +167,20 @@ function loadGemData(gemGroups) {
 				gemData.rarity = "Gem";
 				if(skillGem.base_item !== null) {
 					gemData.name = skillGem.base_item.display_name;
-					gemSection.properties = [].concat(skillGem.tags);
+					gemSection.properties = [].concat(skillGem.tags.filter(t => TAG_FILTER.indexOf(t) < 0).join(", "));
 				} else {
 					gemData.name = skillGem.active_skill.display_name;
-					gemSection.properties = [].concat(skillGem.active_skill.types);
+					gemSection.properties = [].concat(skillGem.active_skill.types.filter(t => TAG_FILTER.indexOf(t) < 0).join(", "));
 				}
 				gemData.sections = gemSection;
-				config.reference = "gem_" + i + "_" + j;
+				config.reference = "gem_" + k + "_" + i + "_" + j;
 				config.data = gemData;
 				config.iconUrl = "";
 				hhData.push(config);
 				//console.log("loaded gem", config);
 			})
 		});
-	}
+	})
 }
 // Add passive node HH config
 function loadNodeData(treeGroups) {
@@ -236,19 +236,26 @@ function loadNodeData(treeGroups) {
 }
 
 // Get items from pob (listed under slots) and create div for each of them
-function fillGemProfile(gemGroup) {
+function fillGemProfile(gemGroup, index) {
 	clearProfile([DIV_SETUP]);
 	// Add poe-item for each gem, each group in a single div
 	gemGroup.groups.forEach( (k, i) => {
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+i);
 		k.gems.forEach( (g, j) => {
-			let gemRef = "gem_"+i+"_"+j;
+			var skillGem = allGem[g.skill];
+			var gemName;
+			if(skillGem.base_item !== null) {
+				gemName = skillGem.base_item.display_name;
+			} else {
+				gemName = skillGem.active_skill.display_name;
+			}
+			let gemRef = "gem_"+index+"_"+i+"_"+j;
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
 			displayMode(item, "popup");
-			item.setAttribute("label-text",g.skill);
+			item.setAttribute("label-text",gemName);
 			div.appendChild(item);
 		});
 		document.getElementById(DIV_SETUP).appendChild(div);
@@ -300,11 +307,11 @@ function fillProfile(pobObject) {
 		let optionElement = document.createElement("button");
 		optionElement.innerHTML = option.title;
 		optionElement.addEventListener('click', function (event) {
-			fillGemProfile(option);
+			fillGemProfile(option, pobObject.gemGroups.indexOf(option));
 		});
 		document.getElementById(DIV_ROADMAP).appendChild(optionElement);
 	}
-	fillGemProfile(pobObject.gemGroups[0]);
+	fillGemProfile(pobObject.gemGroups[0], 0);
 	// Add poe-item for each equipment, each group in a single div
 	pobObject.itemGroups.items.forEach( k => {
 		// Creation of the poe-item html element for HoradricHelper
@@ -395,9 +402,10 @@ window.onload = function() {
 </script>
 <!-- Navigation and page script -->
 <script>
-let DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
+const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
 	DIV_WEAPON = "weaponDiv";
+const TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength"];
 
 function displayMenu(page) {
   document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
