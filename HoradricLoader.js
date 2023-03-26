@@ -1,5 +1,8 @@
 // Create the all the data for Horadric Helper
 var hhData = Array();
+// Tag that should not be displayed
+const GEM_TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength"];
+
 function displayMode(elem, type) {
 	if(type == "show") {
 		elem.setAttribute("as-showcase","");
@@ -103,7 +106,10 @@ function loadGemData(gemGroups) {
 					// if stats not displayed from static, it should come from per_level
 					if(stats === null) stats = skillGem.per_level[1].stats[index];
 					var statTranslation;
-					if(skillGem.stat_translation_file !== undefined) statTranslation = mapStatGem[skillGem.stat_translation_file].find(a => a.ids.find(id => id == stats.id));
+					var translationFile = skillGem.stat_translation_file;
+					if(translationFile !== undefined && mapStatGem[translationFile] !== undefined) {
+						statTranslation = mapStatGem[translationFile].find(a => a.ids.find(id => id == stats.id));
+					} 
 					else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
 					// FIXME fix 2-stats modifiers like add X to Y
 					if(statTranslation !== undefined) {
@@ -137,10 +143,10 @@ function loadGemData(gemGroups) {
 				gemData.rarity = "Gem";
 				if(skillGem.base_item !== null) {
 					gemData.name = skillGem.base_item.display_name;
-					gemSection.properties = [].concat(skillGem.tags.filter(t => TAG_FILTER.indexOf(t) < 0).join(", "));
+					gemSection.properties = [].concat(skillGem.tags.filter(t => GEM_TAG_FILTER.indexOf(t) < 0).join(", "));
 				} else {
 					gemData.name = skillGem.active_skill.display_name;
-					gemSection.properties = [].concat(skillGem.active_skill.types.filter(t => TAG_FILTER.indexOf(t) < 0).join(", "));
+					gemSection.properties = [].concat(skillGem.active_skill.types.filter(t => GEM_TAG_FILTER.indexOf(t) < 0).join(", "));
 				}
 				gemData.sections = gemSection;
 				config.reference = "gem_" + k + "_" + i + "_" + j;
@@ -179,7 +185,7 @@ function loadNodeData(treeGroups) {
 			}
 		});
 		var masteryGroup = new Map();
-		treeGroup.masteryEffects.split("},{").forEach( (k, i) => {
+		treeGroup.masteryEffects.split("},{").filter(s => s.length > 0).forEach( (k, i) => {
 			let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 			let slave = k.split(",")[1].replaceAll("\{","").replaceAll("\}","");
 			let mastery = treeNodes[master].name;
@@ -205,4 +211,9 @@ function loadNodeData(treeGroups) {
 			//console.log("loaded mastery", config);
 		});
 	}
+}
+
+function loadHoradricHelper() {
+	//console.log("launch HH");
+	window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
 }

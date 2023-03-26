@@ -29,6 +29,8 @@ fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParse
 <!-- Translate pob code into javascript object with pako library to unzip -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script src="PobParser.js"></script>
+<!-- Saved builds -->
+<script src="ListBuild.js"></script>
 <script>
 
 // Get items from pob (listed under slots) and create div for each of them
@@ -80,7 +82,7 @@ function fillTreeProfile(treeGroup) {
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated
 	var masteryGroup = new Map();
-	treeGroup.masteryEffects.split("},{").forEach( (k, i) => {
+	treeGroup.masteryEffects.split("},{").filter(s => s.length > 0).forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
 		let mastery = treeNodes[master].name;
 		masteryGroup[mastery] = master;
@@ -150,16 +152,7 @@ function fillProfile(pobObject) {
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
 }
-function loadHoradricHelper() {
-	//console.log("launch HH");
-	window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
-}
-function waitForLoadAsync() {
-	if(!loadStats || !loadGem || !loadPassive) return;
-	else {
-		console.log("finish loading");
-	}
-}
+
 function clearProfile(divList) {
 	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_WEAPON];
 	for (let divId of divList) {
@@ -192,25 +185,62 @@ function parseAndLoadCode() {
 		}
 	}
 }
-// ONLOAD
-window.onload = function() {
+function displayBuild(build) {
+	var pobObject = pobCodeToObject(build.pob);
+	displayMenu('home');
+	// Clear old
+	clearProfile();
+	hhData = [];
+	// Load new
+	var pobData = loadPobData(pobObject);
+	fillProfile(pobData);
 }
 </script>
 <!-- Navigation and page script -->
 <script>
+// Constants
 const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
-	DIV_WEAPON = "weaponDiv";
-const TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength"];
+	DIV_WEAPON = "weaponDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
 
-function displayMenu(page) {
-  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
-  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-  //document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+// Initialization
+let loadBuildlist = false;
+function waitForLoadAsync() {
+	if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
+	else {
+		console.log("finish loading");
+		displayMenu('search');
+	}
 }
+window.onload = function() {
+	displayMenu('loader');
+	let tagList = new Set(listBuild.flatMap(b => b.tag));
+	for (let tag of tagList) {
+		var item = document.createElement("button");
+		item.innerHTML = tag;
+		item.addEventListener('click', function (event) {
+			
+		});
+		document.getElementById(DIV_SEARCH).appendChild(item);
+	}
+	for (let build of listBuild) {
+		var item = document.createElement("button");
+		item.innerHTML = build.title;
+		item.addEventListener('click', function (event) {
+			displayBuild(build);
+		});
+		document.getElementById(DIV_RESULT).appendChild(item);
+	}
+	loadBuildlist = true;
+	waitForLoadAsync();
+}
+// Navigation
+function displayMenu(page) {
+  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
+  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
+  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
+}
+// Style
 function selectStyle(theme) {
   document.body.classList = "";
   document.body.classList.add(theme);
@@ -221,11 +251,12 @@ function selectStyle(theme) {
 </head>
 <!-- Body -->
 <body class="dark">
+<!-- Navigation bar -->
 <div class="navigation_bar">
   <div class="navigation_home">
     <nav>
       <ul>
-        <li><button id="home" onclick="displayMenu('home');">Accueil</button></li>
+        <li><button id="home" onclick="displayMenu('search');">Accueil</button></li>
         <li><button id="import" onclick="displayMenu('import');">Importer</button></li>
         <li id="menu_config"><button onclick="displayMenu('config');">Options</button>
           <ul class="dropmenu">
@@ -272,6 +303,11 @@ function selectStyle(theme) {
       </ul>
     </nav>
   </div>
+</div>
+<!-- Loader Page -->
+<div class="page" id="page_loader">
+<h1>Chargement...</h1>
+<div class="loader"></div>
 </div>
 <!-- Import Page -->
 <div class="page" id="page_import">
@@ -331,32 +367,43 @@ function selectStyle(theme) {
 	</div>
 	<div>
 		<h2>Torse</h2>
-		<div />
+		<div id="bodyDiv"></div>
 	</div>
 	<div>
 		<h2>Casque</h2>
-		<div />
+		<div id="helmetDiv"></div>
 	</div>
 	<div>
 		<h2>Gants</h2>
-		<div />
+		<div id="glovesDiv"></div>
 	</div>
 	<div>
 		<h2>Bottes</h2>
-		<div />
+		<div id="bootsDiv"></div>
 	</div>
 	<div>
 		<h2>Accessoires</h2>
-		<div />
+		<div id="acessoryDiv"></div>
 	</div>
 	<div>
 		<h2>Flacons</h2>
-		<div />
+		<div id="flaskDiv"></div>
 	</div>
 	<div>
 		<h2>Joyaux</h2>
-		<div />
+		<div id="jewelDiv"></div>
 	</div>
+</div>
+</div>
+<!-- Search Page -->
+<div class="page" id="page_search">
+<h1>Critères</h1>
+<div class="section">
+	<div id="searchDiv" style="width: auto"></div>
+</div>
+<h1>Résultats</h1>
+<div class="section">
+	<div id="resultDiv"></div>
 </div>
 </div>
 <!-- Other Page? -->

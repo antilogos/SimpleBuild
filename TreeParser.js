@@ -281,7 +281,7 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 	// TODO
 	
 	// Draw masteries
-	nodesObject.masteryEffects.split("},{").map(m => m.split(",")[0].replaceAll("{","")).forEach( (value) => {
+	nodesObject.masteryEffects.split("},{").filter(s => s.length > 0).map(m => m.split(",")[0].replaceAll("{","")).forEach( (value) => {
 		const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		nodePoint.setAttribute("cx", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].x);
 		nodePoint.setAttribute("cy", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].y);

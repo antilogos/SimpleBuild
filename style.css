@@ -82,6 +82,25 @@ h1, h2 {
 	
 }
 
+/* Loader */
+.loader {
+  position: absolute;
+  top: 40vh; 
+  left: 50vw;
+  margin-left:-60px;
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Make drop-down menu */
 
 .navigation_bar {
@@ -91,7 +110,6 @@ h1, h2 {
   width: 100%;
   background: var(--nav-bg);
   display: flex;
-  align-items:center;
   padding: 0.5rem;
 }
 .navigation_home {
