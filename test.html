@@ -236,6 +236,7 @@ window.onload = function() {
 }
 // Navigation
 function displayMenu(page) {
+  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
   document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
   document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
   document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
