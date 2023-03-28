@@ -24,23 +24,31 @@ function conditionToFormat(sentence, cn, statValue) {
 	}
 }
 
-function translateStats(gemStat) {
+function translateStats(gemStat, gemTranslate) {
 	var skillModifiers = [];
-	// TODO regroup value of shared mod id
 	//console.log("readable stats:",gemStat);
-	gemStat.forEach( (stats, index) => {
+	Object.entries(gemTranslate).forEach( keyValue => {
 		// Assure that translation in specific language exists
-		if(stats.translate.English !== undefined) {
-			// from each sentence available, only one can be displayed? XXX replace find with filter later to test
-			let translation = stats.translate.English.filter( sentence => {
+		if(keyValue[1].English !== undefined && gemStat[keyValue[0]] !== undefined) {
+			let valueByStat = [];
+			keyValue[1].ids.forEach( idStat => {
+				let value = 0;
+				// Merge same stat id with multiple value
+				gemStat[keyValue[0]].filter(s => s.id == idStat).forEach( statValue => {
+					value = value + statValue.value;
+				});
+				valueByStat.push(value);
+			});
+			// from each sentence available, only one can be displayed
+			let translation = keyValue[1].English.filter( sentence => {
 				// check if all condition apply
 				return sentence.condition.every( condition => {
 					if(condition.hasOwnProperty("min")) {
 						if(condition.hasOwnProperty("max")) {
-							return condition.min <= stats.value && condition.max >= stats.value;
-						} else return condition.min <= stats.value;
+							return condition.min <= valueByStat[0] && condition.max >= valueByStat[0];
+						} else return condition.min <= valueByStat[0];
 					} else if(condition.hasOwnProperty("max")) {
-						return condition.max >= stats.value;
+						return condition.max >= valueByStat[0];
 					} else if(Object.keys(condition).length === 0) {
 						// free match
 						return true;
@@ -50,16 +58,18 @@ function translateStats(gemStat) {
 					}
 				})
 			})
-			// TODO traitement après condition trouvé
 			if(translation !== undefined) {
 				var baseString, ignore = false;
 				// TODO what is index_handlers?
-				//conditionToFormat(translation[0], 0, stats.value);
 				translation.forEach( sentence => {
 					if(sentence.format !== undefined && sentence.format.indexOf("ignore") > 0) {
 						ignore = true;
 					} else {
-						baseString = sentence.string.replaceAll("\{0\}", sentence.format[0].replaceAll("#", stats.value));
+						baseString = sentence.string;
+						// Replace all value per index
+						valueByStat.forEach( (stats, index) => {
+							baseString = baseString.replaceAll("\{"+index+"\}", sentence.format[index].replaceAll("#", stats));
+						});
 					}
 				});
 				if(baseString !== undefined && !ignore) skillModifiers.push(baseString);
@@ -69,8 +79,7 @@ function translateStats(gemStat) {
 			// console.log("not found ",statGroup," for ",stats," with file ", skillGem.stat_translation_file);
 		}
 	});
-	//var indexInStat = statGroup.ids.findIndex(id => id == statsDescription[0].id);
-	//console.log("find stat",skillModifiers);
+	// console.log("find stat",skillModifiers);
 	return skillModifiers;
 }
 // Add items HH applyConfig
@@ -100,7 +109,7 @@ function loadGemData(gemGroups) {
 					// Support skill gem
 					// XXX no gem description for support ?
 				}
-				var gemStat = [];
+				var gemStat = {}, gemTranslate = {};
 				// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
 				skillGem.static.stats.forEach( (stats, index) => {
 					// if stats not displayed from static, it should come from per_level
@@ -109,34 +118,48 @@ function loadGemData(gemGroups) {
 					var translationFile = skillGem.stat_translation_file;
 					if(translationFile !== undefined && mapStatGem[translationFile] !== undefined) {
 						statTranslation = mapStatGem[translationFile].find(a => a.ids.find(id => id == stats.id));
-					} 
+					}
 					else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
 					// FIXME fix 2-stats modifiers like add X to Y
 					if(statTranslation !== undefined) {
 						var keyValueStat = {};
 						keyValueStat.id = stats.id;
+						let tranlationKey = statTranslation.ids.join(",");
 						if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
 						else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
 						keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
-						keyValueStat.translate = statTranslation;
-						gemStat.push(keyValueStat);
+						if(gemStat.hasOwnProperty(tranlationKey)) {
+							gemStat[tranlationKey].push(keyValueStat);
+						} else {
+							gemStat[tranlationKey] = [];
+							gemStat[tranlationKey].push(keyValueStat);
+							gemTranslate[tranlationKey] = statTranslation;
+						}
 					} else {
 						//console.log("translation not found", stats, g[1].getAttribute("skillId"));
 					}
 				});
 				// Include stat from appropriate quality and normalized it with quality value (base on 2000)
 				let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
-				if(qualityStat !== undefined) {
+				if(qualityStat !== undefined && qualityStat.value > 0) {
 					let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
 					if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
 						var keyValueStat = {};
 						keyValueStat.id = qualityStat.id;
-						keyValueStat.value = qualityStat.value / 2000 * g.quality;
-						keyValueStat.translate = qualityTranslation;
-						gemStat.push(keyValueStat);
+						let tranlationKey = qualityTranslation.ids.join(",");
+						keyValueStat.value = qualityStat.value / 1000 * g.quality;
+						if(gemStat.hasOwnProperty(qualityTranslation.ids.join(","))) {
+							gemStat[tranlationKey].push(keyValueStat);
+						} else {
+							gemStat[tranlationKey] = [];
+							gemStat[tranlationKey].push(keyValueStat);
+							gemTranslate[tranlationKey] = qualityTranslation;
+						}
 					}
-					skillModifiers.push(translateStats(gemStat));
 				}
+				// Translate gemStats into description
+				//console.log(gemStat);
+				skillModifiers.push(translateStats(gemStat, gemTranslate));
 				//console.log(skillModifiers);
 
 				if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
