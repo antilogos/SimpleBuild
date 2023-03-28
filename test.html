@@ -96,7 +96,9 @@ function fillTreeProfile(treeGroup) {
 		document.getElementById(DIV_MASTERY).appendChild(item);
 	});
 	// Tree Preview
-	buildSvgTree(DIV_PREVIEW, treeNodes);
+	var ascendClassId = "";
+	if(treeGroup.ascendClassId) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
+	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, {"stroke":"#166","width":96}, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
 }
 function fillProfile(pobObject) {
@@ -104,7 +106,8 @@ function fillProfile(pobObject) {
 	// Add div for each gems setup and a link to raodmap
 	for (let option of pobObject.gemGroups) {
 		let optionElement = document.createElement("button");
-		optionElement.innerHTML = option.title;
+		if(option.title !== null) optionElement.innerHTML = option.title;
+		else optionElement.innerHTML = "par défaut";
 		optionElement.addEventListener('click', function (event) {
 			fillGemProfile(option, pobObject.gemGroups.indexOf(option));
 		});
@@ -141,11 +144,18 @@ function fillProfile(pobObject) {
 	fillTreeProfile(pobObject.treeGroups[0]);
 
 	// Notes
-	let notesDiv = document.createElement("div");
-	notesDiv.setAttribute("class", "passive_display");
-	notesDiv.id = "notesDiv";
-	notesDiv.innerHTML = pobObject.notes.replaceAll("\n","<br/>").replaceAll(/\^x([0-9A-Fa-f]{6})(.*?)\^7/g,"<font color='#$1'>$2</font>").replaceAll(/\^x([0-9A-Fa-f]{6})/g,"").replaceAll(/\^7/g,"");
-	document.getElementById(DIV_NOTES).appendChild(notesDiv);
+	if(pobObject.notes !== null && pobObject.notes.trim().length > 0) { 
+		let notesDiv = document.createElement("div");
+		notesDiv.setAttribute("class", "passive_display");
+		notesDiv.id = "notesDiv";
+		notesDiv.innerHTML = pobObject.notes.replaceAll("\n","<br/>").replaceAll(/\^x([0-9A-Fa-f]{6})(.*?)\^7/g,"<font color='#$1'>$2</font>").replaceAll(/\^x([0-9A-Fa-f]{6})/g,"").replaceAll(/\^7/g,"");
+		document.getElementById(DIV_NOTES).appendChild(notesDiv);
+		document.getElementById("notes").style.display = "block";
+		document.getElementById(DIV_NOTES).parentNode.style.display = "block";
+	} else {
+		document.getElementById("notes").style.display = "none";
+		document.getElementById(DIV_NOTES).parentNode.style.display = "none";
+	}
 	
 	loadItemData(pobObject.itemGroups);
 	loadNodeData(pobObject.treeGroups);
@@ -325,7 +335,7 @@ function selectStyle(theme) {
 </div>
 <h1>Gemmes</h1>
 <div class="section">
-	<div style="width: auto">
+	<div style="width: auto; min-width: 60%;">
 		<h2>Groupes</h2>
 		<div id="setupDiv"></div>
 	</div>
