@@ -97,7 +97,7 @@ function fillTreeProfile(treeGroup) {
 	});
 	// Tree Preview
 	var ascendClassId = "";
-	if(treeGroup.ascendClassId) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
+	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, {"stroke":"#166","width":96}, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
 }
