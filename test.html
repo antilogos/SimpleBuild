@@ -16,7 +16,7 @@
 <script src="TreeParser.js"></script>
 <script>
 var passiveSkillTreeData, treeNodes, loadPassive = false;
-fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-320.json").then(response => response.json()).then(parsed => {
+fetch("https://raw.githubusercontent.com/grindinggear/skilltree-export/master/data.json").then(response => response.json()).then(parsed => {
 	passiveSkillTreeData = parsed;
 	treeNodes = extractNodesData(parsed);
 	loadPassive = true;
