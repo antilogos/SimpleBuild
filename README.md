@@ -13,7 +13,7 @@ How:
 
 TODO:
 * :art: better search page for saved build
-* :art: see where and how image for items can be found and displayed
+* :art: see where and how image for items can be found and displayed (https://github.com/lvlvllvlvllvlvl/RePoE/tree/master/RePoE?)
 * :art: find out why there is no description for support gem
 * :construction: add support for french, and maybe other language?
 * :construction: add roadmap of gems
