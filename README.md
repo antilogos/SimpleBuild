@@ -12,12 +12,13 @@ How:
 * save build to display them by storing them in a js file with meta-field, no publication mechanism
 
 TODO:
-* better search page for savec build
+* better search page for saved build
 * add support for french, and maybe other language?
 * see if there is api for a passive skill tree in json preventing copy-paste each league
 * find out why there is no description for support gem
+* add roadmap of gems
 * see where and how image for items can be found and displayed
-* see if possible to read a pastebin page
+* see if possible to read a pastebin page (cors shenanigans)
 * separate page construction and navigation from the main html
 * see if possible to read an account from official website
 
