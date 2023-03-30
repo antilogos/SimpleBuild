@@ -12,7 +12,7 @@ How:
 * save build to display them by storing them in a js file with meta-field, no publication mechanism
 
 TODO:
-* better search page for saved build
+* :art: better search page for saved build
 * add support for french, and maybe other language?
 * see if there is api for a passive skill tree in json preventing copy-paste each league
 * find out why there is no description for support gem
