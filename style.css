@@ -177,12 +177,8 @@ li > button:hover {
   cursor: pointer;
 	min-width: 2em;
 }
-#menu_stream:hover .dropmenu {
-  height: 4em;
-  transition: height ease 0.4s;
-}
-#menu_first:hover .dropmenu {
-  height: 36em;
+#menu_test:hover .dropmenu {
+  height: 2em; /* should be 2em per item */
   transition: height ease 0.4s;
 }
 .dropmenu > li {
