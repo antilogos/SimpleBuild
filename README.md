@@ -19,6 +19,7 @@ TODO:
 * see where and how image for items can be found and displayed
 * see if possible to read a pastebin page
 * separate page construction and navigation from the main html
+* see if possible to read an account from official website
 
 # Files
 
