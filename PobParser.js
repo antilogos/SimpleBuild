@@ -84,8 +84,14 @@ function loadPobData(dataPoB) {
 			}
 		}
 	}
+	// Parse notes to extract references
+	var pobnotes = dataPoB.getElementsByTagName("Notes")[0].innerHTML;
+	var extract = pobnotes.match(/#_([^#]*)#_/g);
+	extract.forEach( match => pobnotes = pobnotes.replaceAll(match, ""));
+	var references = {};
+	extract.map( match => references[match.replaceAll(/#_([\w]*).*/g,"$1")] = match.replaceAll(/#_([\w]* )?/g,""));
+	var notes = {"header": pobnotes, "refs": references};
 	// TODO add socketed jewel to specific tree?
-	var notes = dataPoB.getElementsByTagName("Notes")[0];
-	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups, "notes": notes.innerHTML};
+	var pobObject = {"gemGroups": gemGroups, "treeGroups": treeGroups, "itemGroups": itemGroups, "notes": notes};
 	return pobObject;
 }

@@ -31,181 +31,8 @@ fetch("https://raw.githubusercontent.com/grindinggear/skilltree-export/master/da
 <script src="PobParser.js"></script>
 <!-- Saved builds -->
 <script src="ListBuild.js"></script>
-<script>
-
-// Get items from pob (listed under slots) and create div for each of them
-function fillGemProfile(gemGroup, index) {
-	clearProfile([DIV_SETUP]);
-	// Add poe-item for each gem, each group in a single div
-	gemGroup.groups.forEach( (k, i) => {
-		var div = document.createElement("div");
-		div.setAttribute("id", "gem_"+i);
-		k.gems.forEach( (g, j) => {
-			var skillGem = allGem[g.skill];
-			var gemName;
-			if(skillGem.base_item !== null) {
-				gemName = skillGem.base_item.display_name;
-			} else {
-				gemName = skillGem.active_skill.display_name;
-			}
-			let gemRef = "gem_"+index+"_"+i+"_"+j;
-			// Creation of the poe-item html element for HoradricHelper
-			var item = document.createElement("poe-item");
-			item.setAttribute("reference", gemRef);
-			displayMode(item, "popup");
-			item.setAttribute("label-text",gemName);
-			div.appendChild(item);
-		});
-		document.getElementById(DIV_SETUP).appendChild(div);
-	});
-	//TODO link to roadmap
-}
-function fillTreeProfile(treeGroup) {
-	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW]);
-	// Add poe-passive for each ascendancy and keystone allocated
-	treeGroup.nodes.split(",").forEach( (k, i) => {
-		let node = treeNodes[k];
-		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
-			// Creation of the poe-item html element for HoradricHelper
-			var item = document.createElement("poe-passive");
-			item.setAttribute("reference", "node_"+k);
-			displayMode(item, "show");
-			item.setAttribute("label-text", node.name);
-			// Depending on the type of nodes
-			if(node.ascendancyName !== undefined) {
-				document.getElementById(DIV_ASCENDANCY).appendChild(item);
-			} else if(node.isKeystone) {
-				document.getElementById(DIV_KEYSTONE).appendChild(item);
-			}
-		} else {
-		}
-	});
-	// Add poe-passive for Masteris group with their effect from all masteries allocated
-	var masteryGroup = new Map();
-	treeGroup.masteryEffects.split("},{").filter(s => s.length > 0).forEach( (k, i) => {
-		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");
-		let mastery = treeNodes[master].name;
-		masteryGroup[mastery] = master;
-	});
-	Object.entries(masteryGroup).forEach( k => {
-		// Creation of the poe-item html element for HoradricHelper
-		var item = document.createElement("poe-passive");
-		item.setAttribute("reference", "mastery_"+k[0]);
-		displayMode(item, "show");
-		item.setAttribute("label-text", k[0]);
-		document.getElementById(DIV_MASTERY).appendChild(item);
-	});
-	// Tree Preview
-	var ascendClassId = "";
-	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
-	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
-	buildPath(treeGroup, {"stroke":"#166","width":96}, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
-}
-function fillProfile(pobObject) {
-	console.log(pobObject);
-	// Add div for each gems setup and a link to raodmap
-	for (let option of pobObject.gemGroups) {
-		let optionElement = document.createElement("button");
-		if(option.title !== null) optionElement.innerHTML = option.title;
-		else optionElement.innerHTML = "par défaut";
-		optionElement.addEventListener('click', function (event) {
-			fillGemProfile(option, pobObject.gemGroups.indexOf(option));
-		});
-		document.getElementById(DIV_ROADMAP).appendChild(optionElement);
-	}
-	fillGemProfile(pobObject.gemGroups[0], 0);
-	// Add poe-item for each equipment, each group in a single div
-	pobObject.itemGroups.items.forEach( k => {
-		// Creation of the poe-item html element for HoradricHelper
-		var item = document.createElement("poe-item");
-		item.setAttribute("reference", k.itemId);
-		displayMode(item, "show");
-		// TODO item.setAttribute("label-text","maybe latter");
-		var brotherDiv;
-		// Depending on the name of the slot, we put this under different header
-		if(k.itemId.startsWith("Jewel")) {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		} else if(k.itemId.startsWith("Flask")) {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		} else {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		}
-	})
-	
-	// Add div for each tree setup and a link to the official tree
-	for (let option of pobObject.treeGroups) {
-		let optionElement = document.createElement("button");
-		optionElement.innerHTML = option.title + " (" + option.nodes.split(",").length + " points)";
-		optionElement.addEventListener('click', function (event) {
-			fillTreeProfile(option);
-		});
-		document.getElementById(DIV_TREE).appendChild(optionElement);
-	}
-	fillTreeProfile(pobObject.treeGroups[0]);
-
-	// Notes
-	if(pobObject.notes !== null && pobObject.notes.trim().length > 0) { 
-		let notesDiv = document.createElement("div");
-		notesDiv.setAttribute("class", "passive_display");
-		notesDiv.id = "notesDiv";
-		notesDiv.innerHTML = pobObject.notes.replaceAll("\n","<br/>").replaceAll(/\^x([0-9A-Fa-f]{6})(.*?)\^7/g,"<font color='#$1'>$2</font>").replaceAll(/\^x([0-9A-Fa-f]{6})/g,"").replaceAll(/\^7/g,"");
-		document.getElementById(DIV_NOTES).appendChild(notesDiv);
-		document.getElementById("notes").style.display = "block";
-		document.getElementById(DIV_NOTES).parentNode.style.display = "block";
-	} else {
-		document.getElementById("notes").style.display = "none";
-		document.getElementById(DIV_NOTES).parentNode.style.display = "none";
-	}
-	
-	loadItemData(pobObject.itemGroups);
-	loadNodeData(pobObject.treeGroups);
-	loadGemData(pobObject.gemGroups);
-	loadHoradricHelper();
-}
-
-function clearProfile(divList) {
-	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_WEAPON];
-	for (let divId of divList) {
-		let divElement = document.getElementById(divId);
-		while(divElement.firstChild) {
-			divElement.removeChild(divElement.firstChild);
-		}
-	}
-}
-function parseAndLoadCode() {
-	var input = document.getElementById("pobinput").value.trim();
-	if(input.startsWith("https://pastebin.com")) {
-		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
-	} else if(input.startsWith("https://pobb.in")) {
-		window.open(input, "_blank");
-	} else if(input.startsWith("https://poe.ninja")) {
-		window.open(input, "_blank");
-	} else {
-		// Trying loading input
-		var pobObject = pobCodeToObject(input);
-		if(pobObject !== undefined) {
-			// If valid code, clear before load
-			displayMenu('home');
-			// Clear old
-			clearProfile();
-			hhData = [];
-			// Load new
-			var pobData = loadPobData(pobObject);
-			fillProfile(pobData);
-		}
-	}
-}
-function displayBuild(build) {
-	var pobObject = pobCodeToObject(build.pob);
-	displayMenu('home');
-	// Clear old
-	clearProfile();
-	hhData = [];
-	// Load new
-	var pobData = loadPobData(pobObject);
-	fillProfile(pobData);
-}
-</script>
+<!-- Fill the different div from a parsed object -->
+<script src="FormFill.js"></script>
 <!-- Navigation and page script -->
 <script>
 // Constants
@@ -218,12 +45,12 @@ let loadBuildlist = false;
 function waitForLoadAsync() {
 	if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
 	else {
-		console.log("finish loading");
 		displayMenu('search');
 	}
 }
 window.onload = function() {
 	displayMenu('loader');
+	// Setup for search and filter build
 	let tagList = new Set(listBuild.flatMap(b => b.tag));
 	for (let tag of tagList) {
 		var item = document.createElement("button");
@@ -250,6 +77,18 @@ function displayMenu(page) {
   document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
   document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
   document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
+}
+function parseAndLoadCode() {
+	var input = document.getElementById("pobinput").value.trim();
+	if(input.startsWith("https://pastebin.com")) {
+		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
+	} else if(input.startsWith("https://pobb.in")) {
+		window.open(input, "_blank");
+	} else if(input.startsWith("https://poe.ninja")) {
+		window.open(input, "_blank");
+	} else {
+		displayBuild(input);
+	}
 }
 // Style
 function selectStyle(theme) {

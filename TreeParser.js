@@ -91,7 +91,7 @@ function extractNodesData(jsonData) {
 	const nodeMap = new Map();
 	for( let[key, value] of Object.entries(passiveSkillTreeData.nodes)) {
     // No cluster jewels, no standard nodes
-		if(!value.isMultipleChoice && (!value.spc || value.spc.length == 0)) {
+		if(!value.spc || value.spc.length == 0) {
 			nodeMap[key] = value;
 		}
 	}
@@ -132,7 +132,7 @@ function displayedNode(node, classId, ascendClassId) {
 	return node.id && !node.isMastery 
 			&& ((!node.isAscendancyStart && !node.ascendancyName) || node.ascendancyName == ascendClassId) 
 			&& (node.classStartIndex == null || node.classStartIndex == classId)
-			&& (!node.isMultipleChoice && !node.isMultipleChoiceOption)
+			&& !node.isMultipleChoiceOption
 			&& !node.isBlighted && (!node.spc || node.spc.length == 0)
 }
 
@@ -150,7 +150,8 @@ function buildSvgTree(elementId, treeNodes, classId, ascendClassId) {
 			const target = treeNodes[nodeTo];
 			// Some nodes out point to ascendancy or large cluster jewel
 			if(target && target.x && target.y && displayedNode(target, classId, ascendClassId) 
-				&& !((value.classStartIndex && target.isAscendancyStart) || (value.isAscendancyStart && target.classStartIndex))) {
+				&& !((value.classStartIndex !== undefined && target.isAscendancyStart) || (value.isAscendancyStart && target.classStartIndex !== undefined)
+					|| (value.grantedPassivePoints == 2 && !target.grantedPassivePoints) || (target.grantedPassivePoints == 2 && !value.grantedPassivePoints))) {
 				// If nodes are of the same group with orbit, draw arc
 				svg.appendChild(buildSvgConnection(value, target, passiveSkillTreeData.constants.skillsPerOrbit, passiveSkillTreeData.constants.orbitRadii));
 			}
@@ -211,7 +212,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 		nodeConnection = document.createElementNS("http://www.w3.org/2000/svg", "path");
 		let diffIndexOrbit = dest.orbitIndex - origin.orbitIndex;
 		let isBefore = "1";
-		if((diffIndexOrbit > 0 && diffIndexOrbit < numberInOrbit/2) || (diffIndexOrbit < 0 && diffIndexOrbit + numberInOrbit < numberInOrbit/2) ) isBefore = "1";
+		if((diffIndexOrbit > 0 && diffIndexOrbit < numberInOrbit/2) || (diffIndexOrbit < 0 && diffIndexOrbit + numberInOrbit < numberInOrbit/2)) isBefore = "1";
 		else isBefore = "0";
 		//if(value.orbitIndex > target.orbitIndex) isBefore = "0";
 		nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
@@ -219,13 +220,14 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 		nodeConnection.setAttribute("stroke", "var(--tree-connector)");
 		nodeConnection.setAttribute("stroke-width", "24");
 	} else {
-		// Draw line between dex
+		// Draw line between
 		nodeConnection = document.createElementNS("http://www.w3.org/2000/svg", "line");
 		nodeConnection.setAttribute("x1", origin.x);
 		nodeConnection.setAttribute("y1", origin.y);
 		nodeConnection.setAttribute("x2", dest.x);
 		nodeConnection.setAttribute("y2", dest.y);
 	}
+	// Different colours if link between attributes
 	if(origin.grantedDexterity && origin.grantedDexterity == 10 && !origin.grantedIntelligence && !origin.grantedStrength
 		&& dest.grantedDexterity && dest.grantedDexterity == 10 && !dest.grantedIntelligence && !dest.grantedStrength) {	
 		nodeConnection.setAttribute("style", "stroke:var(--tree-node-dex);stroke-width:24");
@@ -274,7 +276,8 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);
-					} else if(!((origin.classStartIndex && dest.isAscendancyStart) || (origin.isAscendancyStart && dest.classStartIndex))) {
+					} else if(!((origin.classStartIndex !== undefined && dest.isAscendancyStart) || (origin.isAscendancyStart && dest.classStartIndex !== undefined) 
+						|| (origin.grantedPassivePoints == 2 && !dest.grantedPassivePoints) || (dest.grantedPassivePoints == 2 && !origin.grantedPassivePoints))) {
 						// Draw line if not between start class and ascendancy
 						const nodeConnection = document.createElementNS("http://www.w3.org/2000/svg", "line");
 						nodeConnection.setAttribute("x1", origin.x);
@@ -287,7 +290,20 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);	
 					} else {
-						// Else, don't draw
+						// Else, surely a descendant ascendancy that do not connect with anything
+						const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+						if(dest.ascendancyName) {
+							nodePoint.setAttribute("cx", origin.x);
+							nodePoint.setAttribute("cy", origin.y);
+						} else {
+							nodePoint.setAttribute("cx", dest.x);
+							nodePoint.setAttribute("cy", dest.y);
+						}
+						nodePoint.setAttribute("stroke", style.stroke);
+						nodePoint.setAttribute("stroke-width", style.width);
+						nodePoint.setAttribute("r", 58);
+						svg.appendChild(nodePoint);
+						svgElements.push(nodePoint);
 					}
 				}
 			}
