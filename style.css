@@ -11,16 +11,19 @@ body.dark {
 	--text-background: -webkit-linear-gradient(#fc6 5%, #b80);
 	--box-shadow: 0.1em 0.1em 0.5em 0.1em #0003 inset;
 
-	--tree-connector: #ddd;
+	--tree-connector: #999;
 	--tree-node-small: #fff;
 	--tree-node-medium: #fff;
-	--tree-node-large: #ff0;
-	--tree-node-str: #f66;
-	--tree-node-int: #66f;
-	--tree-node-dex: #6f6;
+	--tree-node-large: #990;
+	--tree-node-str: #966;
+	--tree-node-int: #669;
+	--tree-node-dex: #696;
+	--tree-node-path: #6ff;
+	--tree-radiant-background: conic-gradient(#11111A, #111a11 120deg, #1a1111 240deg, #11111a);
 	
 	--select-border: #777;
 	--select-focus: #b80;
+	
 }
 
 body.light {
@@ -80,6 +83,9 @@ h1, h2 {
 }
 .filling {
 	
+}
+.socketGroup div {
+	display: inline-block;
 }
 
 /* Loader */
@@ -245,3 +251,8 @@ select {
 }
 
 /* Passive tree */
+
+.skillTree {
+	background-image: var(--tree-radiant-background);
+	border-radius: 35%;
+}

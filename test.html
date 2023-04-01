@@ -64,7 +64,7 @@ window.onload = function() {
 		var item = document.createElement("button");
 		item.innerHTML = build.title;
 		item.addEventListener('click', function (event) {
-			displayBuild(build);
+			displayBuild(build.pob);
 		});
 		document.getElementById(DIV_RESULT).appendChild(item);
 	}

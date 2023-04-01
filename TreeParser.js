@@ -1,3 +1,5 @@
+/* Extract */
+
 // Function found on the web to decode Base64 in pure javascript
 function decodeBase64(s) {
 	var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
@@ -85,6 +87,8 @@ function parseUrl(url) {
 	return {tree: passiveNodes, cluster: clusterNodes, mastery: masteryNodes, startingClass: characterClass};
 };
 
+/* Transform */
+
 // Take the passive skill tree and extract all the nodes that are relevant with added coordinates
 function extractNodesData(jsonData) {
 	// keep a map of nodes that matters
@@ -128,6 +132,8 @@ function extractNodesData(jsonData) {
 	return nodeMap;
 };
 
+/* Load */
+
 function displayedNode(node, classId, ascendClassId) {
 	return node.id && !node.isMastery 
 			&& ((!node.isAscendancyStart && !node.ascendancyName) || node.ascendancyName == ascendClassId) 
@@ -138,6 +144,7 @@ function displayedNode(node, classId, ascendClassId) {
 
 function buildSvgTree(elementId, treeNodes, classId, ascendClassId) {
 	const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
+	svg.setAttribute("class","skillTree");
 	svg.setAttribute("width","100%");
 	svg.setAttribute("height","95vh");
 	svg.setAttribute("xmlns","http://www.w3.org/2000/svg")
@@ -243,7 +250,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 	return nodeConnection;
 };
 
-function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData) {
+function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 	var svg = document.getElementById(elementId).firstChild;
 	var orbitMap = passiveSkillTreeData.constants.skillsPerOrbit;
 	var radiiMap = passiveSkillTreeData.constants.orbitRadii;
@@ -271,8 +278,8 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 						//if(value.orbitIndex > target.orbitIndex) isBefore = "0";
 						nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
 						nodeConnection.setAttribute("fill", "none");
-						nodeConnection.setAttribute("stroke", style.stroke);
-						nodeConnection.setAttribute("stroke-width", style.width);
+						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
+						nodeConnection.setAttribute("stroke-width", "96");
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);
@@ -284,8 +291,8 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 						nodeConnection.setAttribute("y1", origin.y);
 						nodeConnection.setAttribute("x2", dest.x);
 						nodeConnection.setAttribute("y2", dest.y);
-						nodeConnection.setAttribute("stroke", style.stroke);
-						nodeConnection.setAttribute("stroke-width", style.width);
+						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
+						nodeConnection.setAttribute("stroke-width", "96");
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);	
@@ -299,8 +306,8 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 							nodePoint.setAttribute("cx", dest.x);
 							nodePoint.setAttribute("cy", dest.y);
 						}
-						nodePoint.setAttribute("stroke", style.stroke);
-						nodePoint.setAttribute("stroke-width", style.width);
+						nodePoint.setAttribute("stroke", "var(--tree-node-path)");
+						nodePoint.setAttribute("stroke-width", "96");
 						nodePoint.setAttribute("r", 58);
 						svg.appendChild(nodePoint);
 						svgElements.push(nodePoint);
@@ -318,9 +325,9 @@ function buildPath(nodesObject, style, elementId, nodeMap, passiveSkillTreeData)
 		const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		nodePoint.setAttribute("cx", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].x);
 		nodePoint.setAttribute("cy", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].y);
-		nodePoint.setAttribute("fill", "#0FF");
-		nodePoint.setAttribute("stroke", style.stroke);
-		nodePoint.setAttribute("stroke-width", style.width/4+28);
+		nodePoint.setAttribute("fill", "var(--tree-node-path)");
+		nodePoint.setAttribute("stroke", "var(--tree-node-path)");
+		nodePoint.setAttribute("stroke-width", "52");
 		nodePoint.setAttribute("r", 64);
 		nodePoint.setAttribute("id", "node_"+passiveSkillTreeData.nodes[value].id);
 		svg.appendChild(nodePoint);

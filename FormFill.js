@@ -26,6 +26,7 @@ function fillGemProfile(gemGroup, index, references) {
 		// Gem group reference
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+index+"_"+i);
+		div.setAttribute("class", "socketGroup");
 		addReference(div, references, true);
 		k.gems.forEach( (g, j) => {
 			var skillGem = allGem[g.skill];
@@ -59,6 +60,11 @@ function fillTreeProfile(treeGroup, references) {
 	treeGroup.nodes.split(",").forEach( (k, i) => {
 		let node = treeNodes[k];
 		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
+			// Passif reference
+			var nodeDiv = document.createElement("div");
+			//nodeDiv.setAttribute("id", gemRef);
+			//addReference(nodeDiv, references, false);
+			//div.appendChild(nodeDiv);
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k);
@@ -92,8 +98,10 @@ function fillTreeProfile(treeGroup, references) {
 	var ascendClassId = "";
 	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
-	buildPath(treeGroup, {"stroke":"#166","width":96}, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
+	buildPath(treeGroup, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
 }
+
+// Parent fill for all
 function fillProfile(pobObject) {
 	console.log(pobObject);
 	// Add div for each gems setup and a link to raodmap
@@ -169,7 +177,7 @@ function clearProfile(divList) {
 }
 
 function displayBuild(build) {
-	var pobObject = pobCodeToObject(build.pob);
+	var pobObject = pobCodeToObject(build);
 	if(pobObject !== undefined) {
 		// If valid code, clear before load
 		displayMenu('home');
