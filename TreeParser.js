@@ -134,6 +134,8 @@ function extractNodesData(jsonData) {
 
 /* Load */
 
+const LARGE_NODE_SIZE = 96, MEDIUM_NODE_SIZE = 58, SMALL_NODE_SIZE = 32, CONNECTION_SIZE = 32, ALLOCATED_NODE = 72, ALLOCATED_PATH = 96;
+
 function displayedNode(node, classId, ascendClassId) {
 	return node.id && !node.isMastery 
 			&& ((!node.isAscendancyStart && !node.ascendancyName) || node.ascendancyName == ascendClassId) 
@@ -184,27 +186,27 @@ function buildSvgNode(node) {
 	
 	if(node.isKeystone) {
 		nodePoint.setAttribute("fill", "var(--tree-node-large)");
-		nodePoint.setAttribute("r", 96);
+		nodePoint.setAttribute("r", LARGE_NODE_SIZE);
 	} else if(node.isNotable) {
 		nodePoint.setAttribute("fill", "var(--tree-node-medium)");
-		nodePoint.setAttribute("r", 64);
+		nodePoint.setAttribute("r", MEDIUM_NODE_SIZE);
 	} else if(node.isJewelSocket) {
 		nodePoint.setAttribute("fill", "none");
 		nodePoint.setAttribute("stroke", "var(--tree-connector)");
 		nodePoint.setAttribute("stroke-width", "16");
-		nodePoint.setAttribute("r", 58);
+		nodePoint.setAttribute("r", MEDIUM_NODE_SIZE);
 	} else if(node.grantedStrength && node.grantedStrength == 10 && !node.grantedIntelligence && !node.grantedDexterity) {
 		nodePoint.setAttribute("fill", "var(--tree-node-str)");
-		nodePoint.setAttribute("r", 32);
+		nodePoint.setAttribute("r", SMALL_NODE_SIZE);
 	} else if(node.grantedDexterity && node.grantedDexterity == 10 && !node.grantedStrength && !node.grantedIntelligence) {
 		nodePoint.setAttribute("fill", "var(--tree-node-dex)");
-		nodePoint.setAttribute("r", 32);
+		nodePoint.setAttribute("r", SMALL_NODE_SIZE);
 	} else if(node.grantedIntelligence && node.grantedIntelligence == 10 && !node.grantedStrength && !node.grantedDexterity) {
 		nodePoint.setAttribute("fill", "var(--tree-node-int)");
-		nodePoint.setAttribute("r", 32);
+		nodePoint.setAttribute("r", SMALL_NODE_SIZE);
 	} else {
 		nodePoint.setAttribute("fill", "var(--tree-node-small)");
-		nodePoint.setAttribute("r", 32);
+		nodePoint.setAttribute("r", SMALL_NODE_SIZE);
 	}
 	nodePoint.setAttribute("id", "node_"+node.id);
 	
@@ -225,7 +227,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 		nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
 		nodeConnection.setAttribute("fill", "none");
 		nodeConnection.setAttribute("stroke", "var(--tree-connector)");
-		nodeConnection.setAttribute("stroke-width", "24");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE);
 	} else {
 		// Draw line between
 		nodeConnection = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -236,19 +238,28 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 	}
 	// Different colours if link between attributes
 	if(origin.grantedDexterity && origin.grantedDexterity == 10 && !origin.grantedIntelligence && !origin.grantedStrength
-		&& dest.grantedDexterity && dest.grantedDexterity == 10 && !dest.grantedIntelligence && !dest.grantedStrength) {	
-		nodeConnection.setAttribute("style", "stroke:var(--tree-node-dex);stroke-width:24");
+		&& dest.grantedDexterity && dest.grantedDexterity == 10 && !dest.grantedIntelligence && !dest.grantedStrength) {
+		nodeConnection.setAttribute("stroke", "var(--tree-node-dex)");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE);
 	} else if(origin.grantedIntelligence && origin.grantedIntelligence == 10 && !origin.grantedStrength && !origin.grantedDexterity
-		&& dest.grantedIntelligence && dest.grantedIntelligence == 10 && !dest.grantedStrength && !dest.grantedDexterity) {	
-		nodeConnection.setAttribute("style", "stroke:var(--tree-node-int);stroke-width:24");
+		&& dest.grantedIntelligence && dest.grantedIntelligence == 10 && !dest.grantedStrength && !dest.grantedDexterity) {
+		nodeConnection.setAttribute("stroke", "var(--tree-node-int)");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE);
 	} else if(origin.grantedStrength && origin.grantedStrength == 10 && !origin.grantedIntelligence && !origin.grantedDexterity
-		&& dest.grantedStrength && dest.grantedStrength == 10 && !dest.grantedIntelligence && !dest.grantedDexterity) {	
-		nodeConnection.setAttribute("style", "stroke:var(--tree-node-str);stroke-width:24");
+		&& dest.grantedStrength && dest.grantedStrength == 10 && !dest.grantedIntelligence && !dest.grantedDexterity) {
+		nodeConnection.setAttribute("stroke", "var(--tree-node-str)");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE);
+	} else if(origin.ascendancyName && dest.ascendancyName) {
+		nodeConnection.setAttribute("stroke", "var(--tree-connector)");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE*2);
 	} else {
-		nodeConnection.setAttribute("style", "stroke:var(--tree-connector);stroke-width:24");
+		nodeConnection.setAttribute("stroke", "var(--tree-connector)");
+		nodeConnection.setAttribute("stroke-width", CONNECTION_SIZE);
 	}
 	return nodeConnection;
 };
+
+/* Display higlight of a character's passive tree */
 
 function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 	var svg = document.getElementById(elementId).firstChild;
@@ -275,11 +286,10 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 						let isBefore = "1";
 						if((diffIndexOrbit > 0 && diffIndexOrbit < numberInOrbit/2) || (diffIndexOrbit < 0 && diffIndexOrbit + numberInOrbit < numberInOrbit/2) ) isBefore = "1";
 						else isBefore = "0";
-						//if(value.orbitIndex > target.orbitIndex) isBefore = "0";
 						nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
 						nodeConnection.setAttribute("fill", "none");
 						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
-						nodeConnection.setAttribute("stroke-width", "96");
+						nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);
@@ -292,7 +302,7 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 						nodeConnection.setAttribute("x2", dest.x);
 						nodeConnection.setAttribute("y2", dest.y);
 						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
-						nodeConnection.setAttribute("stroke-width", "96");
+						nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);	
@@ -306,9 +316,8 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 							nodePoint.setAttribute("cx", dest.x);
 							nodePoint.setAttribute("cy", dest.y);
 						}
-						nodePoint.setAttribute("stroke", "var(--tree-node-path)");
-						nodePoint.setAttribute("stroke-width", "96");
-						nodePoint.setAttribute("r", 58);
+						nodePoint.setAttribute("fill", "var(--tree-node-path)");
+						nodePoint.setAttribute("r", ALLOCATED_NODE);
 						svg.appendChild(nodePoint);
 						svgElements.push(nodePoint);
 					}
@@ -326,9 +335,7 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 		nodePoint.setAttribute("cx", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].x);
 		nodePoint.setAttribute("cy", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].y);
 		nodePoint.setAttribute("fill", "var(--tree-node-path)");
-		nodePoint.setAttribute("stroke", "var(--tree-node-path)");
-		nodePoint.setAttribute("stroke-width", "52");
-		nodePoint.setAttribute("r", 64);
+		nodePoint.setAttribute("r", ALLOCATED_NODE);
 		nodePoint.setAttribute("id", "node_"+passiveSkillTreeData.nodes[value].id);
 		svg.appendChild(nodePoint);
 		svgElements.push(nodePoint);	

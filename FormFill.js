@@ -68,13 +68,16 @@ function fillTreeProfile(treeGroup, references) {
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k);
-			displayMode(item, "show");
 			item.setAttribute("label-text", node.name);
 			// Depending on the type of nodes
 			if(node.ascendancyName !== undefined) {
+				displayMode(item, "popup");
 				document.getElementById(DIV_ASCENDANCY).appendChild(item);
 			} else if(node.isKeystone) {
+				displayMode(item, "popup");
 				document.getElementById(DIV_KEYSTONE).appendChild(item);
+			} else {
+				displayMode(item, "show");
 			}
 		} else {
 		}
