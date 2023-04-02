@@ -254,5 +254,5 @@ select {
 
 .skillTree {
 	background-image: var(--tree-radiant-background);
-	border-radius: 35%;
+	border-radius: 30%;
 }
