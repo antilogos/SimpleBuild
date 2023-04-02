@@ -92,17 +92,88 @@ h1, h2 {
 	display: flex;
 }
 .filling {
-	
 }
+
+/* Specific part of display */
+
 .socketGroup {
-	background: var(--section-higlight);    
+	background: var(--section-higlight);
 	border-radius: 1.5em;
     padding: 1em;
     margin: 1em;
 }
-}
+
 .socketGroup div {
 	display: inline-block;
+}
+
+.inventory {
+	display: grid;
+	gap: 0.5em;
+	grid-template-columns: 6em 6em 6em 6em 6em 6em 6em 6em;
+	grid-template-rows: 6em 6em 6em 6em 6em 6em 6em 6em;
+	justify-content: center;
+	width: 100%;
+}
+.inventory > div:not(.flask), .flask > div {
+	background-color: var(--section-higlight);  
+	border-radius: 1.5em;
+	text-align: center;
+	padding: 0em;
+	vertical-align: middle;
+}
+.inventory #mainHand {
+  grid-area: 1 / 1 / 5 / 3;
+}
+.inventory #offHand {
+  grid-area: 1 / 7 / 5 / 9;
+}
+.inventory #chest {
+  grid-area: 3 / 4 / 6 / 6;
+}
+.inventory #helm {
+  grid-area: 1 / 4 / 3 / 6;
+}
+.inventory #gloves {
+  grid-area: 5 / 2 / 7 / 4;
+}
+.inventory #boots {
+  grid-area: 5 / 6 / 7 / 8;
+}
+.inventory #amulet {
+  grid-area: 1 / 6 / 2 / 7;
+}
+.inventory #leftRing {
+  grid-area: 4 / 3 / 5 / 4;
+}
+.inventory #rightRing {
+  grid-area: 4 / 6 / 5 / 7;
+}
+.inventory #belt {
+  grid-area: 6 / 4 / 7 / 6;
+}
+.inventory .flask {
+	display: grid;
+	gap: 0.5em;
+	justify-content: center;
+	grid-template-columns: 5em 5em 5em 5em 5em;
+	grid-template-rows: 5em 5em;
+	grid-area: 7 / 2 / 9 / 8;
+}
+.flask #flask1 {
+  grid-area: 1 / 1 / 3 / 2;
+}
+.flask #flask2 {
+  grid-area: 1 / 2 / 3 / 3;
+}
+.flask #flask3 {
+  grid-area: 1 / 3 / 3 / 4;
+}
+.flask #flask4 {
+  grid-area: 1 / 4 / 3 / 5;
+}
+.flask #flask5 {
+  grid-area: 1 / 5 / 3 / 6;
 }
 
 /* Loader */

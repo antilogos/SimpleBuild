@@ -16,7 +16,7 @@
 <script src="TreeParser.js"></script>
 <script>
 var passiveSkillTreeData, treeNodes, loadPassive = false;
-fetch("https://raw.githubusercontent.com/grindinggear/skilltree-export/master/data.json").then(response => response.json()).then(parsed => {
+fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-320.json").then(response => response.json()).then(parsed => {
 	passiveSkillTreeData = parsed;
 	treeNodes = extractNodesData(parsed);
 	loadPassive = true;
@@ -35,10 +35,6 @@ fetch("https://raw.githubusercontent.com/grindinggear/skilltree-export/master/da
 <script src="FormFill.js"></script>
 <!-- Navigation and page script -->
 <script>
-// Constants
-const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
-	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
-	DIV_WEAPON = "weaponDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
 
 // Initialization
 let loadBuildlist = false;
@@ -189,33 +185,28 @@ function selectStyle(theme) {
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
 <h1>Objets</h1>
 <div class="section">
-	<div style="width: auto">
-		<h2>Armes</h2>
-		<div id="weaponDiv"></div>
+	<div class="inventory">
+		<div id="mainHand">&nbsp;</div>
+		<div id="offHand">&nbsp;</div>
+		<div id="chest">&nbsp;</div>
+		<div id="helm">&nbsp;</div>
+		<div id="gloves">&nbsp;</div>
+		<div id="boots">&nbsp;</div>
+		<div id="amulet">&nbsp;</div>
+		<div id="leftRing">&nbsp;</div>
+		<div id="rightRing">&nbsp;</div>
+		<div id="belt">&nbsp;</div>
+		<div class="flask">
+			<div id="flask1">&nbsp;</div>
+			<div id="flask2">&nbsp;</div>
+			<div id="flask3">&nbsp;</div>
+			<div id="flask4">&nbsp;</div>
+			<div id="flask5">&nbsp;</div>
+		</div>
 	</div>
 	<div>
-		<h2>Torse</h2>
-		<div id="bodyDiv"></div>
-	</div>
-	<div>
-		<h2>Casque</h2>
-		<div id="helmetDiv"></div>
-	</div>
-	<div>
-		<h2>Gants</h2>
-		<div id="glovesDiv"></div>
-	</div>
-	<div>
-		<h2>Bottes</h2>
-		<div id="bootsDiv"></div>
-	</div>
-	<div>
-		<h2>Accessoires</h2>
-		<div id="acessoryDiv"></div>
-	</div>
-	<div>
-		<h2>Flacons</h2>
-		<div id="flaskDiv"></div>
+		<h2>Set</h2>
+		<div id="invenrotySetDiv"></div>
 	</div>
 	<div>
 		<h2>Joyaux</h2>

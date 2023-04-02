@@ -13,6 +13,15 @@ function addReference(div, references, withLineReturn) {
 	}
 }
 
+// Constants
+const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
+	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
+	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
+	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
+	DIV_INVENTORYSET = "invenrotySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
+const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
+ "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
+
 // Get items from pob (listed under slots) and create div for each of them
 function fillGemProfile(gemGroup, index, references) {
 	clearProfile([DIV_SETUP]);
@@ -52,8 +61,10 @@ function fillGemProfile(gemGroup, index, references) {
 		document.getElementById(DIV_SETUP).appendChild(div);
 	});
 	//TODO link to roadmap
+	loadHoradricHelper();
 }
 
+// Create div for ascendancy, mastery and keystone
 function fillTreeProfile(treeGroup, references) {
 	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW]);
 	// Add poe-passive for each ascendancy and keystone allocated
@@ -62,21 +73,22 @@ function fillTreeProfile(treeGroup, references) {
 		if(node !== undefined && (node.ascendancyName || node.isKeystone)) {
 			// Passif reference
 			var nodeDiv = document.createElement("div");
-			//nodeDiv.setAttribute("id", gemRef);
-			//addReference(nodeDiv, references, false);
-			//div.appendChild(nodeDiv);
+			nodeDiv.setAttribute("id", "node_"+k);
+			addReference(nodeDiv, references, false);
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k);
 			item.setAttribute("label-text", node.name);
+			nodeDiv.appendChild(item);
 			// Place node in the right category
 			if(node.ascendancyName !== undefined && !node.isMultipleChoice) {
 				displayMode(item, "popup");
-				document.getElementById(DIV_ASCENDANCY).appendChild(item);
+				document.getElementById(DIV_ASCENDANCY).appendChild(nodeDiv);
 			} else if(node.isKeystone) {
 				displayMode(item, "popup");
-				document.getElementById(DIV_KEYSTONE).appendChild(item);
-			} 
+				document.getElementById(DIV_KEYSTONE).appendChild(nodeDiv);
+			}
+			
 		} else {
 			//TODO order of notable to take
 		}
@@ -89,18 +101,47 @@ function fillTreeProfile(treeGroup, references) {
 		masteryGroup[mastery] = master;
 	});
 	Object.entries(masteryGroup).forEach( k => {
+		// Mastery reference
+		var nodeDiv = document.createElement("div");
+		nodeDiv.setAttribute("id", "mastery_"+k[1]);
+		addReference(nodeDiv, references, false);
 		// Creation of the poe-item html element for HoradricHelper
 		var item = document.createElement("poe-passive");
 		item.setAttribute("reference", "mastery_"+k[0]);
 		displayMode(item, "show");
 		item.setAttribute("label-text", k[0]);
-		document.getElementById(DIV_MASTERY).appendChild(item);
+		nodeDiv.appendChild(item);
+		document.getElementById(DIV_MASTERY).appendChild(nodeDiv);
 	});
 	// Tree Preview
 	var ascendClassId = "";
 	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
+	loadHoradricHelper();
+}
+
+// Create div for items
+function fillInventoryProfile(itemSet, references) {
+	clearProfile([DIV_MAINHAND, DIV_OFFHAND, DIV_CHEST, DIV_HELM, DIV_GLOVES, DIV_BOOTS, DIV_AMULET, DIV_RING1, DIV_RING2, DIV_BELT, DIV_FLASK1, DIV_FLASK2, DIV_FLASK3, DIV_FLASK4, DIV_FLASK5]);
+	// 
+	itemSet.configuration.forEach( k => {
+		if(mapSlotToDiv.hasOwnProperty(k.name)) {
+			var divSlot = document.getElementById(mapSlotToDiv[k.name]);
+			// Creation of the poe-item html element for HoradricHelper
+			var item = document.createElement("poe-item");
+			item.setAttribute("reference", "item_" + k.itemId);
+			displayMode(item, "icon");
+			// TODO item.setAttribute("label-text","maybe latter");
+			divSlot.appendChild(item);
+		} else {
+			// Other slot?
+			console.log(k);
+		}
+	});
+	// TODO jewel
+	
+	loadHoradricHelper();
 }
 
 // Parent fill for all
@@ -109,42 +150,37 @@ function fillProfile(pobObject) {
 	// Add div for each gems setup and a link to raodmap
 	for (let group of pobObject.gemGroups) {
 		let optionElement = document.createElement("button");
-		if(group.title !== null) optionElement.innerHTML = group.title;
-		else optionElement.innerHTML = "par défaut";
+		optionElement.innerHTML = group.title? group.title : "par défaut";
 		optionElement.addEventListener('click', function (event) {
 			fillGemProfile(group, pobObject.gemGroups.indexOf(group), pobObject.notes.refs);
 		});
 		document.getElementById(DIV_ROADMAP).appendChild(optionElement);
 	}
 	fillGemProfile(pobObject.gemGroups[0], 0, pobObject.notes.refs);
-	// Add poe-item for each equipment, each group in a single div
-	pobObject.itemGroups.items.forEach( k => {
-		// Creation of the poe-item html element for HoradricHelper
-		var item = document.createElement("poe-item");
-		item.setAttribute("reference", k.itemId);
-		displayMode(item, "show");
-		// TODO item.setAttribute("label-text","maybe latter");
-		var brotherDiv;
-		// Depending on the name of the slot, we put this under different header
-		if(k.itemId.startsWith("Jewel")) {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		} else if(k.itemId.startsWith("Flask")) {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		} else {
-			document.getElementById(DIV_WEAPON).appendChild(item);
-		}
-	})
 	
-	// Add div for each tree setup and a link to the official tree
+	// Add div for each tree setup
+	// TODO a link to the official tree
 	for (let tree of pobObject.treeGroups) {
 		let optionElement = document.createElement("button");
-		optionElement.innerHTML = tree.title + " (" + tree.nodes.split(",").length + " points)";
+		var title = (tree.title? tree.title : "par défaut") + " (" + tree.nodes.split(",").length + " points)";
+		optionElement.innerHTML = title;
 		optionElement.addEventListener('click', function (event) {
-			fillTreeProfile(tree);
+			fillTreeProfile(tree, pobObject.notes.refs);
 		});
 		document.getElementById(DIV_TREE).appendChild(optionElement);
 	}
-	fillTreeProfile(pobObject.treeGroups[0], pobObject.notes.references);
+	fillTreeProfile(pobObject.treeGroups[0], pobObject.notes.refs);
+
+	// Add div for each items setup
+	for (let group of pobObject.itemGroups.itemSet) {
+		let optionElement = document.createElement("button");
+		optionElement.innerHTML = group.title? group.title : "par défaut";
+		optionElement.addEventListener('click', function (event) {
+			fillInventoryProfile(group, pobObject.notes.refs);
+		});
+		document.getElementById(DIV_INVENTORYSET).appendChild(optionElement);
+	}
+	fillInventoryProfile(pobObject.itemGroups.itemSet[0], pobObject.notes.refs);
 
 	// Notes
 	if(pobObject.notes !== null && pobObject.notes.header !== null && pobObject.notes.header.trim().length > 0) { 
@@ -169,7 +205,8 @@ function fillProfile(pobObject) {
 /* CLEAN UP AND LOAD */
 
 function clearProfile(divList) {
-	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_WEAPON];
+	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_INVENTORYSET,
+		DIV_MAINHAND, DIV_OFFHAND, DIV_CHEST, DIV_HELM, DIV_GLOVES, DIV_BOOTS, DIV_AMULET, DIV_RING1, DIV_RING2, DIV_BELT, DIV_FLASK1, DIV_FLASK2, DIV_FLASK3, DIV_FLASK4, DIV_FLASK5];
 	for (let divId of divList) {
 		let divElement = document.getElementById(divId);
 		while(divElement.firstChild) {

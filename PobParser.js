@@ -78,7 +78,7 @@ function loadPobData(dataPoB) {
 					var slotItem = {};
 					slotItem.name = slot.getAttribute("name");
 					slotItem.itemId = slot.getAttribute("itemId");
-					itemSet.configuration.push(slotItem);
+					if(slotItem.itemId != 0 && slotItem.itemId != null) itemSet.configuration.push(slotItem);
 				}
 				itemGroups.itemSet.push(itemSet);
 			}

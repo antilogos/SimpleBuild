@@ -87,7 +87,7 @@ function loadItemData(itemGroups) {
   // Items
 	itemGroups.items.forEach( k => {
 		var config = [];
-		config.reference = k.itemId;
+		config.reference = "item_"+k.itemId;
 		// Remove PoB lines with ModRange and empty lines
 		config.data = k.innerText.split("\n").filter(line => line.trim().length > 0 && line.indexOf("ModRange") < 0 && line != "Sockets:").join("\n");
 		hhData.push(config);
@@ -236,7 +236,7 @@ function loadNodeData(treeGroups) {
 	}
 }
 
+// Load poe elements in dom
 function loadHoradricHelper() {
-	//console.log("launch HH");
 	window.HoradricHelper.PathOfExile && window.HoradricHelper.PathOfExile.applyConfig(hhData);
 }
