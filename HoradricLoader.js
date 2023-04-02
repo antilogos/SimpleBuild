@@ -186,14 +186,14 @@ function loadNodeData(treeGroups) {
 	for (let treeGroup of treeGroups) {
 		treeGroup.nodes.split(",").forEach( (k, i) => {
 			let node = treeNodes[k];
-			if(node !== undefined && (node.isNotable || node.isKeystone)) {
+			if(node !== undefined && (node.isNotable || node.isKeystone || node.isMultipleChoiceOption)) {
 				var nodeData = [], nodeSection = [], config = [];
 				var stats = node.stats;
 				if(node.reminderText) stats.concat(node.reminderText);
 				nodeSection.description = [].concat(stats);
 				nodeData.sections = nodeSection;
 				nodeData.name = node.name;
-				if(node.ascendancyName !== undefined) {
+				if(node.ascendancyName !== undefined && !node.isMultipleChoice) {
 					nodeData.type = "ascendancy notable"
 				} else if(node.isKeystone !== undefined) {
 					nodeData.type = "keystone"

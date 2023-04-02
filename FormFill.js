@@ -59,7 +59,7 @@ function fillTreeProfile(treeGroup, references) {
 	// Add poe-passive for each ascendancy and keystone allocated
 	treeGroup.nodes.split(",").forEach( (k, i) => {
 		let node = treeNodes[k];
-		if(node !== undefined && (node.isNotable || node.ascendancyName !== undefined || node.isKeystone)) {
+		if(node !== undefined && (node.ascendancyName || node.isKeystone)) {
 			// Passif reference
 			var nodeDiv = document.createElement("div");
 			//nodeDiv.setAttribute("id", gemRef);
@@ -69,17 +69,16 @@ function fillTreeProfile(treeGroup, references) {
 			var item = document.createElement("poe-passive");
 			item.setAttribute("reference", "node_"+k);
 			item.setAttribute("label-text", node.name);
-			// Depending on the type of nodes
-			if(node.ascendancyName !== undefined) {
+			// Place node in the right category
+			if(node.ascendancyName !== undefined && !node.isMultipleChoice) {
 				displayMode(item, "popup");
 				document.getElementById(DIV_ASCENDANCY).appendChild(item);
 			} else if(node.isKeystone) {
 				displayMode(item, "popup");
 				document.getElementById(DIV_KEYSTONE).appendChild(item);
-			} else {
-				displayMode(item, "show");
-			}
+			} 
 		} else {
+			//TODO order of notable to take
 		}
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated
