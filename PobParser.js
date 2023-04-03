@@ -33,6 +33,7 @@ function loadPobData(dataPoB) {
 					gem.level = socketedGem.getAttribute("level");
 					gem.qualityId = socketedGem.getAttribute("qualityId");
 					gem.quality = socketedGem.getAttribute("quality");
+					gem.enabled = socketedGem.getAttribute("enabled");
 					group.gems.push(gem);
 				}
 				setup.groups.push(group);

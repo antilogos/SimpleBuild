@@ -107,6 +107,10 @@ h1, h2 {
 	display: inline-block;
 }
 
+#ascendancyDiv > div, #keystoneDiv > div{
+	display: inline-block;
+}
+
 .inventory {
 	display: grid;
 	gap: 0.5em;

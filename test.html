@@ -24,11 +24,11 @@ fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParse
 </script>
 <!-- External files for mods from RePoE -->
 <script src="Repoe.js"></script>
-<!-- External data for quest reward from https://poe-roadmap.com/api/gems -->
-<script src="GemReward.js"></script>
 <!-- Translate pob code into javascript object with pako library to unzip -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script src="PobParser.js"></script>
+<!-- Data for quest reward -->
+<script src="GemReward.js"></script>
 <!-- Saved builds -->
 <script src="ListBuild.js"></script>
 <!-- Fill the different div from a parsed object -->
@@ -154,6 +154,8 @@ function selectStyle(theme) {
 	</div>
 	<div style="max-width: 40%">
 		<h2>Configurations</h2>
+		<div id="gemconfDiv"></div>
+		<h2>Obtentions</h2>
 		<div id="roadmapDiv"></div>
 	</div>
 </div>

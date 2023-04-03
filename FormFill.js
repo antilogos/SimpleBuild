@@ -14,7 +14,7 @@ function addReference(div, references, withLineReturn) {
 }
 
 // Constants
-const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_ROADMAP = "roadmapDiv", 
+const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "gemconfDiv"; DIV_ROADMAP = "roadmapDiv", 
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
@@ -25,6 +25,7 @@ const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body A
 // Get items from pob (listed under slots) and create div for each of them
 function fillGemProfile(gemGroup, index, references) {
 	clearProfile([DIV_SETUP]);
+	var roadmap = {};
 	// Gem configuration reference
 	var divGroup = document.createElement("div");
 	divGroup.setAttribute("id", "gem_"+index);
@@ -32,10 +33,16 @@ function fillGemProfile(gemGroup, index, references) {
 	addReference(divGroup, references, true);
 	// Add poe-item for each gem, each group in a single div
 	gemGroup.groups.forEach( (k, i) => {
-		// Gem group reference
+		// Gem group reference and title
 		var div = document.createElement("div");
 		div.setAttribute("id", "gem_"+index+"_"+i);
 		div.setAttribute("class", "socketGroup");
+		if(k.label) { 
+			var span = document.createElement("h3");
+			span.innerHTML = pobNoteToHtml(k.label);
+			span.style.display = "block";
+			div.appendChild(span);
+		}
 		addReference(div, references, true);
 		k.gems.forEach( (g, j) => {
 			var skillGem = allGem[g.skill];
@@ -55,12 +62,28 @@ function fillGemProfile(gemGroup, index, references) {
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
 			displayMode(item, "popup");
-			item.setAttribute("label-text",gemName);
+			if(g.enabled == "false") {
+				item.setAttribute("label-text",gemName + " (option)");
+			} else {
+				item.setAttribute("label-text",gemName);
+			}
+			// Add to roadmap if available or the condition to get it
+			if(skillGem.per_level && gemRewards[gemName] && g.qualityId == "Default") {
+				roadmap[gemName] = {"reward": gemRewards[gemName].rewards, "lvl": skillGem.per_level["1"].required_level, "vendor": gemRewards[gemName].vendor};
+			} else if(g.qualityId != "Default") {
+				// TODO add to Heist
+			} else if(gemName.startsWith("Awakened")) {
+				// TODO add to Maven
+			} else if(gemName.startsWith("Vaal")) {
+				// TODO add to Vaal
+			}
 			itemDiv.appendChild(item);
 		});
 		document.getElementById(DIV_SETUP).appendChild(div);
 	});
-	//TODO link to roadmap
+	// Add roadmap for gems
+	console.log(roadmap);
+	//document.getElementById(DIV_ROADMAP).appendChild(div);
 	loadHoradricHelper();
 }
 
@@ -154,7 +177,7 @@ function fillProfile(pobObject) {
 		optionElement.addEventListener('click', function (event) {
 			fillGemProfile(group, pobObject.gemGroups.indexOf(group), pobObject.notes.refs);
 		});
-		document.getElementById(DIV_ROADMAP).appendChild(optionElement);
+		document.getElementById(DIV_GEMCONFIGURATION).appendChild(optionElement);
 	}
 	fillGemProfile(pobObject.gemGroups[0], 0, pobObject.notes.refs);
 	
@@ -205,7 +228,7 @@ function fillProfile(pobObject) {
 /* CLEAN UP AND LOAD */
 
 function clearProfile(divList) {
-	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_INVENTORYSET,
+	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_GEMCONFIGURATION, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_INVENTORYSET,
 		DIV_MAINHAND, DIV_OFFHAND, DIV_CHEST, DIV_HELM, DIV_GLOVES, DIV_BOOTS, DIV_AMULET, DIV_RING1, DIV_RING2, DIV_BELT, DIV_FLASK1, DIV_FLASK2, DIV_FLASK3, DIV_FLASK4, DIV_FLASK5];
 	for (let divId of divList) {
 		let divElement = document.getElementById(divId);
