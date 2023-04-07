@@ -53,6 +53,7 @@ function loadPobData(dataPoB) {
 			tree.ascendClassId = skillTree.getAttribute("ascendClassId");
 			tree.masteryEffects = skillTree.getAttribute("masteryEffects");
 			tree.nodes = skillTree.getAttribute("nodes");
+			tree.url = skillTree.getAttribute("")
 			treeGroups.push(tree);
 		}
 	}

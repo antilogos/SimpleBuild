@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TREE URL REDIRECT</title>
+	<link rel="shortcut icon" type="image/png" href="https://docs.google.com/drawings/d/e/2PACX-1vRmsUqz_w0baXylHjox1oadVVCB2B0kq8LtyvLEx9M7rZTjSr18UDf0IaDljbf5db3uUkd2Fi9MRwHX/pub?w=51&h=50"/>
+	<style>
+	</style>
+	<script src="ListBuild.js" type="text/javascript"></script>
+	<script src="PobParser.js" type="text/javascript"></script>
+	<script src="pako.min.js"></script>
+	<script>
+	const urlParams = new URLSearchParams(window.location.search);
+	const step = {"b1": 0, "b2": 1, "b3": 2, "b4": 3, "e1": 5, "e2": 6, "e3": 7};
+	
+	var tutorial = {};
+	// TODO change label pos by automated boxing
+	tutorial.necromancer = {"labelPos": [100,100], "build": listBuild[0]};
+	tutorial.elementalist = {"labelPos": [100,100], "build": listBuild[1]};
+	tutorial.occultist = {"labelPos": [100,100], "build": listBuild[2]};
+	tutorial.saboteur = {"labelPos": [-5000,100], "build": listBuild[3]};
+	tutorial.trickster = {"labelPos": [-5000,100], "build": listBuild[4]};
+	tutorial.assassin = {"labelPos": [-5000,100], "build": listBuild[5]};
+	tutorial.raider = {"labelPos": [-5000,-5000], "build": listBuild[6]};
+	tutorial.deadeye = {"labelPos": [-5000,-5000], "build": listBuild[7]};
+	tutorial.pathfinder = {"labelPos": [-5000,-5000], "build": listBuild[8]};
+	tutorial.gladiator = {"labelPos": [-5200,-5200], "build": listBuild[9]};
+	tutorial.slayer = {"labelPos": [100,-5000], "build": listBuild[10]};
+	tutorial.champion = {"labelPos": [-5000,-5000], "build": listBuild[11]};
+	tutorial.juggernaut = {"labelPos": [100,-5000], "build": listBuild[12]};
+	tutorial.chieftain = {"labelPos": [100,-5000], "build": listBuild[13]};
+	tutorial.berserker = {"labelPos": [100,-5000], "build": listBuild[14]};
+	tutorial.guardian = {"labelPos": [100,-5000], "build": listBuild[15]};
+	tutorial.hierophant = {"labelPos": [100,100], "build": listBuild[16]};
+	tutorial.inquisitor = {"labelPos": [100,100], "build": listBuild[17]};
+	
+	function init() {
+		// Redirect to a tutorial skill tree
+		if(urlParams.get("link")) {
+			let tutorialBuild = tutorial[urlParams.get("link")].build;
+			if(urlParams.get("step")) {
+				let tutorialStep = step[urlParams.get("step")];
+				console.log(tutorialBuild, tutorialStep);
+				let tree = pobCodeToObject(tutorialBuild.pob).getElementsByTagName("Spec")[tutorialStep].getElementsByTagName("URL")[0].innerHTML.trim();
+				console.log(tree);
+				window.location.href = tree.replaceAll("www.pathofexile.com/passive-skill-tree","fr.pathofexile.com/fullscreen-passive-skill-tree");
+				const redirectText = "Vous allez être redirigez vers " + tree;
+				const text = document.createTextNode(redirectText);
+				document.getElementById("maindiv").appendChild(text);
+			}
+		}
+	}
+	</script>
+</head>
+	<body height="100vh" onload="init()">
+		<div id="maindiv" height="100vh">
+		</div>
+	</body>
+</html>
