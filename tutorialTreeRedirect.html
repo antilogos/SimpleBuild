@@ -13,27 +13,6 @@
 	const urlParams = new URLSearchParams(window.location.search);
 	const step = {"b1": 0, "b2": 1, "b3": 2, "b4": 3, "e1": 5, "e2": 6, "e3": 7};
 	
-	var tutorial = {};
-	// TODO change label pos by automated boxing
-	tutorial.necromancer = {"labelPos": [100,100], "build": listBuild[0]};
-	tutorial.elementalist = {"labelPos": [100,100], "build": listBuild[1]};
-	tutorial.occultist = {"labelPos": [100,100], "build": listBuild[2]};
-	tutorial.saboteur = {"labelPos": [-5000,100], "build": listBuild[3]};
-	tutorial.trickster = {"labelPos": [-5000,100], "build": listBuild[4]};
-	tutorial.assassin = {"labelPos": [-5000,100], "build": listBuild[5]};
-	tutorial.raider = {"labelPos": [-5000,-5000], "build": listBuild[6]};
-	tutorial.deadeye = {"labelPos": [-5000,-5000], "build": listBuild[7]};
-	tutorial.pathfinder = {"labelPos": [-5000,-5000], "build": listBuild[8]};
-	tutorial.gladiator = {"labelPos": [-5200,-5200], "build": listBuild[9]};
-	tutorial.slayer = {"labelPos": [100,-5000], "build": listBuild[10]};
-	tutorial.champion = {"labelPos": [-5000,-5000], "build": listBuild[11]};
-	tutorial.juggernaut = {"labelPos": [100,-5000], "build": listBuild[12]};
-	tutorial.chieftain = {"labelPos": [100,-5000], "build": listBuild[13]};
-	tutorial.berserker = {"labelPos": [100,-5000], "build": listBuild[14]};
-	tutorial.guardian = {"labelPos": [100,-5000], "build": listBuild[15]};
-	tutorial.hierophant = {"labelPos": [100,100], "build": listBuild[16]};
-	tutorial.inquisitor = {"labelPos": [100,100], "build": listBuild[17]};
-	
 	function init() {
 		// Redirect to a tutorial skill tree
 		if(urlParams.get("link")) {

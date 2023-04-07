@@ -261,7 +261,7 @@ function buildSvgConnection(origin, dest, orbitMap, radiiMap) {
 
 /* Display higlight of a character's passive tree */
 
-function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
+function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, customStyle) {
 	var svg = document.getElementById(elementId).firstChild;
 	var orbitMap = passiveSkillTreeData.constants.skillsPerOrbit;
 	var radiiMap = passiveSkillTreeData.constants.orbitRadii;
@@ -288,8 +288,13 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 						else isBefore = "0";
 						nodeConnection.setAttribute("d", ["M",origin.x,origin.y,"A",radiiMap[dest.orbit],radiiMap[dest.orbit],"0","0",isBefore,dest.x,dest.y].join(" "));
 						nodeConnection.setAttribute("fill", "none");
-						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
-						nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
+						if(customStyle) {
+							nodeConnection.setAttribute("stroke", customStyle.stroke);
+							nodeConnection.setAttribute("stroke-width", customStyle.width);
+						} else {
+							nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
+							nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
+						}
 						nodeConnection.setAttribute("stroke-linecap", "round");
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);
@@ -301,9 +306,14 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 						nodeConnection.setAttribute("y1", origin.y);
 						nodeConnection.setAttribute("x2", dest.x);
 						nodeConnection.setAttribute("y2", dest.y);
-						nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
-						nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
-						nodeConnection.setAttribute("stroke-linecap", "round");
+							nodeConnection.setAttribute("stroke-linecap", "round");
+						if(customStyle) {
+							nodeConnection.setAttribute("stroke", customStyle.stroke);
+							nodeConnection.setAttribute("stroke-width", customStyle.width);
+						} else {
+							nodeConnection.setAttribute("stroke-width", ALLOCATED_PATH);
+							nodeConnection.setAttribute("stroke", "var(--tree-node-path)");
+						}
 						svg.appendChild(nodeConnection);
 						svgElements.push(nodeConnection);	
 					} else {
@@ -316,8 +326,13 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData) {
 							nodePoint.setAttribute("cx", dest.x);
 							nodePoint.setAttribute("cy", dest.y);
 						}
-						nodePoint.setAttribute("fill", "var(--tree-node-path)");
-						nodePoint.setAttribute("r", ALLOCATED_NODE);
+						if(customStyle) {
+							nodePoint.setAttribute("stroke", customStyle.stroke);
+							nodePoint.setAttribute("stroke-width", customStyle.width);
+						} else {
+							nodePoint.setAttribute("fill", "var(--tree-node-path)");
+							nodePoint.setAttribute("r", ALLOCATED_NODE);
+						}
 						svg.appendChild(nodePoint);
 						svgElements.push(nodePoint);
 					}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>TREE DATA TO SVG CONVERTER</title>
+	<link rel="shortcut icon" type="image/png" href="https://docs.google.com/drawings/d/e/2PACX-1vRmsUqz_w0baXylHjox1oadVVCB2B0kq8LtyvLEx9M7rZTjSr18UDf0IaDljbf5db3uUkd2Fi9MRwHX/pub?w=51&h=50"/>
+	<style>
+	body {	
+		--tree-connector: #000;
+		--tree-node-small: #222;
+		--tree-node-medium: #f00;
+		--tree-node-large: #f00;
+		--tree-node-str: #f00;
+		--tree-node-int: #00f;
+		--tree-node-dex: #0f0;
+		--tree-node-path: #6ff;
+		--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
+	}
+	</style>
+	<script src="pako.min.js"></script>
+	<script src="PobParser.js"></script>
+	<script src="ListBuild.js"></script>
+	<script src="TreeParser.js"></script>
+	<script>
+	var passiveSkillTreeData, treeNodes, loadPassive = false;
+	fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-321.json").then(response => response.json()).then(parsed => {
+		passiveSkillTreeData = parsed;
+		treeNodes = extractNodesData(parsed);
+		loadPassive = true;
+	}).then(data => init());
+	
+	const urlParams = new URLSearchParams(window.location.search);
+	const stylePerStep = [{"stroke":"#166","width":96},{"stroke":"#A00","width":96},{"stroke":"#C90","width":96},{"stroke":"#15C","width":128},{"stroke":"#090","width":128},{"stroke":"#7C7","width":128}];
+			
+	function init() {
+		// Draw a tutorial skill tree
+		if(urlParams.get("draw")) {
+			let tutorialBuild = loadPobData(pobCodeToObject(tutorial[urlParams.get("draw")].build.pob));
+			let ascendClassId = passiveSkillTreeData.classes[tutorialBuild.treeGroups[1].startClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id
+			buildSvgTree("maindiv", treeNodes, tutorialBuild.treeGroups[1].startClass, ascendClassId);
+				
+			for (const [index, treeGroup] of tutorialBuild.treeGroups.reverse().entries()) {
+				buildPath(treeGroup, "maindiv", treeNodes, passiveSkillTreeData, stylePerStep[index]);
+			}
+			// Draw the explanation box
+			//buildContext(tutorialNodes["labelExt"], tutorialNodes["labelPos"],svg);
+			// Draw the icon of the class
+			//let startingClass = parseUrl(tutorialNodes["b1"]).startingClass;
+			//Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(n, svg));
+			
+			// buildPortrait(tutorialNodes["b1"], svg, nodes);
+		}
+	}
+	</script>
+</head>
+	<body height="100vh">
+		<div id="maindiv" height="100vh">
+		</div>
+	</body>
+</html>
