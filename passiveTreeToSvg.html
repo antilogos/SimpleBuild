@@ -30,25 +30,28 @@
 	}).then(data => init());
 	
 	const urlParams = new URLSearchParams(window.location.search);
+	const MAINDIV = "maindiv";
 	const stylePerStep = [{"stroke":"#166","width":96},{"stroke":"#A00","width":96},{"stroke":"#C90","width":96},{"stroke":"#15C","width":128},{"stroke":"#090","width":128},{"stroke":"#7C7","width":128}];
 			
 	function init() {
 		// Draw a tutorial skill tree
 		if(urlParams.get("draw")) {
 			let tutorialBuild = loadPobData(pobCodeToObject(tutorial[urlParams.get("draw")].build.pob));
-			let ascendClassId = passiveSkillTreeData.classes[tutorialBuild.treeGroups[1].startClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id
-			buildSvgTree("maindiv", treeNodes, tutorialBuild.treeGroups[1].startClass, ascendClassId);
+			let startingClass = tutorialBuild.treeGroups[1].startClass;
+			let ascendClassId = passiveSkillTreeData.classes[startingClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id
+			buildSvgTree(MAINDIV, treeNodes, startingClass, ascendClassId);
 				
 			for (const [index, treeGroup] of tutorialBuild.treeGroups.reverse().entries()) {
-				buildPath(treeGroup, "maindiv", treeNodes, passiveSkillTreeData, stylePerStep[index]);
+				buildPath(treeGroup, MAINDIV, treeNodes, passiveSkillTreeData, stylePerStep[index]);
 			}
 			// Draw the explanation box
-			//buildContext(tutorialNodes["labelExt"], tutorialNodes["labelPos"],svg);
+			let labels = [tutorialBuild.treeGroups[2].title.replaceAll(/Variation \"(\w+)\"/g,"$1"),
+				tutorialBuild.treeGroups[1].title.replaceAll(/Variation \"(\w+)\"/g,"$1"),
+				tutorialBuild.treeGroups[0].title.replaceAll(/Variation \"(\w+)\"/g,"$1")]
+			buildContext(MAINDIV, labels, tutorial[urlParams.get("draw")].labelPos);
 			// Draw the icon of the class
-			//let startingClass = parseUrl(tutorialNodes["b1"]).startingClass;
-			//Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(n, svg));
-			
-			// buildPortrait(tutorialNodes["b1"], svg, nodes);
+			console.log()
+			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n));
 		}
 	}
 	</script>
