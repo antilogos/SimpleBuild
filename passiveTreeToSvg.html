@@ -45,9 +45,9 @@
 				buildPath(treeGroup, MAINDIV, treeNodes, passiveSkillTreeData, stylePerStep[index]);
 			}
 			// Draw the explanation box
-			let labels = [tutorialBuild.treeGroups[2].title.replaceAll(/Variation \"(\w+)\"/g,"$1"),
-				tutorialBuild.treeGroups[1].title.replaceAll(/Variation \"(\w+)\"/g,"$1"),
-				tutorialBuild.treeGroups[0].title.replaceAll(/Variation \"(\w+)\"/g,"$1")]
+			let labels = [tutorialBuild.treeGroups[2].title.replaceAll(/\w* \"(\w+)\"/g,"$1"),
+				tutorialBuild.treeGroups[1].title.replaceAll(/\w* \"(\w+)\"/g,"$1"),
+				tutorialBuild.treeGroups[0].title.replaceAll(/\w* \"(\w+)\"/g,"$1")]
 			buildContext(MAINDIV, labels, tutorial[urlParams.get("draw")].labelPos);
 			// Draw the icon of the class
 			console.log()
