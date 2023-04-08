@@ -176,6 +176,12 @@ function loadGemData(gemGroups) {
 				config.data = gemData;
 				config.iconUrl = "";
 				hhData.push(config);
+				// Second gem description for roadmap
+				var config2 = [];
+				config2.reference = "gem_" + gemData.name.replaceAll(" ", "_");
+				config2.data = gemData;
+				config2.iconUrl = "";
+				hhData.push(config2);
 				//console.log("loaded gem", config);
 			})
 		});

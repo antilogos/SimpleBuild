@@ -69,7 +69,7 @@ function fillGemProfile(gemGroup, index, references) {
 			}
 			// Add to roadmap if available or the condition to get it
 			if(skillGem.per_level && gemRewards[gemName] && g.qualityId == "Default") {
-				roadmap[gemName] = {"reward": gemRewards[gemName].rewards, "lvl": skillGem.per_level["1"].required_level, "vendor": gemRewards[gemName].vendor};
+				roadmap[gemName] = {"reward": gemRewards[gemName].rewards, "level": skillGem.per_level["1"].required_level, "vendor": gemRewards[gemName].vendor};
 			} else if(g.qualityId != "Default") {
 				// TODO add to Heist
 			} else if(gemName.startsWith("Awakened")) {
@@ -81,9 +81,8 @@ function fillGemProfile(gemGroup, index, references) {
 		});
 		document.getElementById(DIV_SETUP).appendChild(div);
 	});
-	// Add roadmap for gems
-	console.log(roadmap);
-	//document.getElementById(DIV_ROADMAP).appendChild(div);
+	// Change roadmap
+	currRoadMapStat.gemGroup = roadmap;
 	loadHoradricHelper();
 }
 
@@ -141,6 +140,8 @@ function fillTreeProfile(treeGroup, references) {
 	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
+	// Change roadmap
+	currRoadMapStat.startingClass = parseInt(treeGroup.startClass);
 	loadHoradricHelper();
 }
 
@@ -159,7 +160,7 @@ function fillInventoryProfile(itemSet, references) {
 			divSlot.appendChild(item);
 		} else {
 			// Other slot?
-			console.log(k);
+			//console.log("gem in other slot", k);
 		}
 	});
 	// TODO jewel
@@ -176,6 +177,7 @@ function fillProfile(pobObject) {
 		optionElement.innerHTML = group.title? group.title : "par défaut";
 		optionElement.addEventListener('click', function (event) {
 			fillGemProfile(group, pobObject.gemGroups.indexOf(group), pobObject.notes.refs);
+			fillRoadmapProfile();
 		});
 		document.getElementById(DIV_GEMCONFIGURATION).appendChild(optionElement);
 	}
@@ -189,6 +191,7 @@ function fillProfile(pobObject) {
 		optionElement.innerHTML = title;
 		optionElement.addEventListener('click', function (event) {
 			fillTreeProfile(tree, pobObject.notes.refs);
+			fillRoadmapProfile();
 		});
 		document.getElementById(DIV_TREE).appendChild(optionElement);
 	}
@@ -219,11 +222,88 @@ function fillProfile(pobObject) {
 		document.getElementById(DIV_NOTES).parentNode.style.display = "none";
 	}
 	
+	// Load first roadmap
+	fillRoadmapProfile();
+	
 	loadItemData(pobObject.itemGroups);
 	loadNodeData(pobObject.treeGroups);
 	loadGemData(pobObject.gemGroups);
 	loadHoradricHelper();
 }
+
+/* ROADMAP VARIABLE */
+
+var currRoadMapStat = {"startingClass": null, "gemGroup": null};
+var questRoad = [{"level":2, "quest": "Arrivé au Guet<br />"},
+	{"level":4, "quest": "Arrivé aux Souterrains<br />"},
+	{"level":8, "quest": "Arrivé à la Prison<br />"},
+	{"level":10, "quest": "Tuer Brutus<br />"},
+	{"level":12, "quest": "Arrivé aux Cavernes<br />"},
+	{"level":16, "quest": "Récupérer Gemme maléfique<br />"},
+	{"level":18, "quest": "Récupérer Pic de Maligaro<br />"},
+	{"level":24, "quest": "Récupérer Bracelet de Tolman<br />"},
+	{"level":28, "quest": "Tuer Gravicius<br />"},
+	{"level":31, "quest": "Arrivé aux Mines<br />"},
+	{"level":38, "quest": "Arrivé aux Entrailles<br />"}];
+
+// Create div for roadmap of quest reward
+function fillRoadmapProfile() {
+	console.log(currRoadMapStat);
+	clearProfile([DIV_ROADMAP]);
+	//document.getElementById(DIV_ROADMAP).appendChild(div);
+	var gemReward = {};
+	var gemVendor = {};
+	var gemOut = [];
+	// Filling quest road
+	for (let quest of questRoad) {
+		gemReward[quest.level] = [];
+		gemVendor[quest.level] = [];
+		// Regroup level 1 and 2 together
+		for (let gem of Object.entries(currRoadMapStat.gemGroup).filter(g => g[1].level == quest.level || (g[1].level == 1 && quest.level ==2))) {
+			if(gem[1].reward.indexOf(currRoadMapStat.startingClass) >= 0) gemReward[quest.level].push(gem[0]);
+			else if(gem[1].vendor.indexOf(currRoadMapStat.startingClass) >= 0) gemVendor[quest.level].push(gem[0]);
+			else gemOut.push(gem[0]);
+		}
+	}
+	for (let quest of questRoad) {
+		if(gemReward[quest.level].length > 0 || gemVendor[quest.level].length > 0) {
+			// Add section for the current quest
+			var questDiv = document.createElement("div");
+			questDiv.setAttribute("class", "socketGroup");
+			questDiv.innerHTML = quest.quest;
+			for (let gem of gemReward[quest.level]) {
+				// Gem as quest reward
+				var item = document.createElement("poe-item");
+				item.setAttribute("reference", "gem_"+gem.replaceAll(" ", "_"));
+				displayMode(item, "icon");
+				questDiv.appendChild(item);
+			}
+			for (let gem of gemVendor[quest.level]) {
+				// Gem as vendor
+				var item = document.createElement("poe-item");
+				item.setAttribute("reference", "gem_"+gem.replaceAll(" ", "_"));
+				displayMode(item, "icon");
+				questDiv.appendChild(item);
+				// TODO make distinctive icon for reward and vendor
+			}
+			document.getElementById(DIV_ROADMAP).appendChild(questDiv);	
+		}
+	}
+	// Gem out of class
+	if(gemOut.length > 0) {
+		var questDiv = document.createElement("div");
+		questDiv.setAttribute("class", "socketGroup");
+		questDiv.innerHTML = "Hors classe <br />";
+		for (let gem of gemOut) {
+			var item = document.createElement("poe-item");
+			item.setAttribute("reference", "gem_"+gem.replaceAll(" ", "_"));
+			displayMode(item, "icon");
+			questDiv.appendChild(item);
+		}
+		document.getElementById(DIV_ROADMAP).appendChild(questDiv);	
+	}
+}
+
 
 /* CLEAN UP AND LOAD */
 

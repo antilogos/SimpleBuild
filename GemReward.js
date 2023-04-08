@@ -41,7 +41,7 @@ var gemRewards = {
 	"vendor": [3,6]
   },
     "Arctic Armour":{
-	"rewards": [3,6,5,0],
+	"rewards": [3,6,2,0],
 	"vendor": [4,5]},
     "Assassin's Mark":{
 	"rewards": [6,4],
@@ -93,7 +93,7 @@ var gemRewards = {
 	"vendor": [3,5,0]},
     "Brutality Support":{
 	"rewards": [1],
-	"vendor": [2,0]},
+	"vendor": [4,0]},
     "Burning Arrow":{
 	"rewards": [2],
 	"vendor": [6,4,0]},
@@ -267,7 +267,7 @@ var gemRewards = {
 	"vendor": [2,1]},
     "Faster Attacks Support":{
 	"rewards": [1,2,4,6,0],
-	"vendor": [5]},
+	"vendor": []},
     "Faster Casting Support":{
 	"rewards": [3,6,5,0],
 	"vendor": []},
