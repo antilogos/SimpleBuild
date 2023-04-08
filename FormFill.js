@@ -248,7 +248,6 @@ var questRoad = [{"level":2, "quest": "Arrivé au Guet<br />"},
 
 // Create div for roadmap of quest reward
 function fillRoadmapProfile() {
-	console.log(currRoadMapStat);
 	clearProfile([DIV_ROADMAP]);
 	//document.getElementById(DIV_ROADMAP).appendChild(div);
 	var gemReward = {};
