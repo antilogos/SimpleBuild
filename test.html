@@ -34,6 +34,7 @@ fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParse
 <!-- Fill the different div from a parsed object -->
 <script src="FormFill.js"></script>
 <!-- Navigation and page script -->
+<script src="Lang.js"></script>
 <script>
 
 // Initialization
@@ -45,6 +46,7 @@ function waitForLoadAsync() {
 	}
 }
 window.onload = function() {
+	selectLang('fr');
 	displayMenu('loader');
 	// Setup for search and filter build
 	let tagList = new Set(listBuild.flatMap(b => b.tag));
@@ -91,6 +93,16 @@ function selectStyle(theme) {
   document.body.classList = "";
   document.body.classList.add(theme);
 }
+const langList = ["fr", "en"];
+var langSelected = "fr";
+function selectLang(lang) {
+	langSelected = lang;
+	for (let l of langList) document.getElementById("lang"+l).classList = "lang";
+	document.getElementById("lang"+lang).classList.add("selectedLang");
+	for (let l of langTranslate) {
+		if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
+	}
+}
 </script>
 <!-- Style -->
 <link rel="stylesheet" href="style.css">
@@ -102,90 +114,95 @@ function selectStyle(theme) {
   <div class="navigation_home">
     <nav>
       <ul>
-        <li><button id="home" onclick="displayMenu('search');">Accueil</button></li>
-        <li><button id="import" onclick="displayMenu('import');">Importer</button></li>
-        <li id="menu_config"><button onclick="displayMenu('config');">Options</button>
+        <li><button id="home" onclick="displayMenu('search');"></button></li>
+        <li><button id="import" onclick="displayMenu('import');"></button></li>
+        <li><button class="hideOnDark" onclick="selectStyle('dark');">Mode &#9790;</button></li>
+        <li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
+		<li><button id="langfr" class="lang selectedLang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
+		<li><button id="langen" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
+        <!--li id="menu_config"><button onclick="displayMenu('config');">Options</button>
           <ul class="dropmenu">
             <li>
               <div style="display: inline; margin-left: 1em;">Mode&nbsp;<button onclick="selectStyle('dark');">&#9790;</button><button onclick="selectStyle('light');">&#9728;</button>
               </div>
             </li>
           </ul>
-        </li>
+        </li-->
       </ul>
     </nav>
   </div>
   <div class="navigation_menu">
     <nav>
       <ul>
-        <li id="menu_test"><button>Menu<span class="arrow"></span></button>
+        <li><a id="googlesite" href="http://sites.google.com/view/poefr/"></a></li>
+        <!--li id="menu_test"><button>Menu<span class="arrow"></span></button>
           <ul class="dropmenu">
             <li><button id="touff" onclick="displayMenu('menu1');">Menu1</button></li>
             <li><button id="fifu" onclick="displayMenu('menu2');">Menu2</button></li>
           </ul>
-        </li>
+        </li-->
       </ul>
     </nav>
   </div>
 </div>
 <!-- Loader Page -->
 <div class="page" id="page_loader">
-<h1>Chargement...</h1>
+<h1 id="loading_header"></h1>
 <div class="loader"></div>
 </div>
 <!-- Import Page -->
 <div class="page" id="page_import">
-<h1>Import</h1>
-<label>POB code:</label>
+<h1 id="import_header"></h1>
+<label id="label_pobcode"></label>
 <input type="text" id="pobinput" size=100 />
-<button type="submit" onclick="parseAndLoadCode();">submit</button>
+<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
 </div>
 <!-- Display Page -->
 <div class="page" id="page_display">
-<h1 id="notes">Concept</h1>
+<h1 id="notes_header"></h1>
 <div class="section">
 	<div class="filling" id="notesDiv"></div>
 </div>
-<h1>Gemmes</h1>
+<h1 id="gem_header"></h1>
 <div class="section">
 	<div style="width: 100%">
-		<h2>Groupes</h2>
+		<h2 id="group_subheader"></h2>
 		<div id="setupDiv"></div>
 	</div>
 	<div style="max-width: 40%">
-		<h2>Configurations</h2>
+		<h2 id="configuration_subheader"></h2>
 		<div id="gemconfDiv"></div>
-		<h2>Obtentions</h2>
+		<h2 id="roadmap_subheader"></h2>
 		<div id="roadmapDiv"></div>
 	</div>
 </div>
-<h1>Talents passifs</h1>
+<h1 id="tree_header"></h1>
 <div class="section">
 	<div style="width: 100%">
-		<h2>Prévisualisation<h2>
+		<h2 id="preview_subheader"><h2>
 		<div id="previewDiv"></div>
 	</div>
 	<div style="display: block; max-width: 30%">
 		<div>
-			<h2>Arbres</h2>
+			<h2 id="treelist_subheader"></h2>
 			<div id="treeDiv"></div>
 		</div>
 		<div>
-			<h2>Ascendance</h2>
+			<h2 id="ascendancy_subheader"></h2>
 			<div id="ascendancyDiv"></div>
 		</div>
 		<div>
-			<h2>Maîtrises</h2>
+			<h2 id="mastery_subheader"></h2>
 			<div id="masteryDiv"></div>
 		</div>
 		<div>
-			<h2>Charnières</h2>
+			<h2 id="keystone_subheader"></h2>
 			<div id="keystoneDiv"></div>
 		</div>
 	</div>
 </div>
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
-<h1>Objets</h1>
+<h1 id="item_header"></h1>
 <div class="section">
 	<div class="inventory">
 		<div id="mainHand">&nbsp;</div>
@@ -207,22 +224,22 @@ function selectStyle(theme) {
 		</div>
 	</div>
 	<div>
-		<h2>Set</h2>
+		<h2 id="set_subheader"></h2>
 		<div id="invenrotySetDiv"></div>
 	</div>
 	<div>
-		<h2>Joyaux</h2>
+		<h2 id="jewel_subheader"></h2>
 		<div id="jewelDiv"></div>
 	</div>
 </div>
 </div>
 <!-- Search Page -->
 <div class="page" id="page_search">
-<h1>Critères</h1>
+<h1 id="criteria_header"></h1>
 <div class="section">
 	<div id="searchDiv" style="width: auto"></div>
 </div>
-<h1>Résultats</h1>
+<h1 id="result_header"></h1>
 <div class="section">
 	<div id="resultDiv"></div>
 </div>

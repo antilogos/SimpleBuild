@@ -221,10 +221,10 @@ function loadNodeData(treeGroups) {
 			let effect = treeNodes[master].masteryEffects.find( e => e.effect == slave);
 			if(effect !== undefined) {
 				if(masteryGroup[mastery] !== undefined) {
-					masteryGroup[mastery] = masteryGroup[mastery].concat(effect.stats);
+					masteryGroup[mastery] = masteryGroup[mastery].concat(" • "+effect.stats);
 				}
-				else masteryGroup[mastery] = [].concat(effect.stats);
-				if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat(effect.reminderText);
+				else masteryGroup[mastery] = [].concat(" • "+effect.stats);
+				if(effect.reminderText !== undefined) masteryGroup[mastery] = masteryGroup[mastery].concat("\n"+effect.reminderText);
 			}
 		});
 		Object.entries(masteryGroup).forEach( k => {

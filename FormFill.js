@@ -235,10 +235,10 @@ function fillProfile(pobObject) {
 		notesDiv.id = "notesDiv";
 		notesDiv.innerHTML = pobNoteToHtml(pobObject.notes.header);
 		document.getElementById(DIV_NOTES).appendChild(notesDiv);
-		document.getElementById("notes").style.display = "block";
+		document.getElementById("notes_header").style.display = "block";
 		document.getElementById(DIV_NOTES).parentNode.style.display = "block";
 	} else {
-		document.getElementById("notes").style.display = "none";
+		document.getElementById("notes_header").style.display = "none";
 		document.getElementById(DIV_NOTES).parentNode.style.display = "none";
 	}
 	

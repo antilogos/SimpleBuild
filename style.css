@@ -25,6 +25,9 @@ body.dark {
 	
 	--select-border: #777;
 	--select-focus: #b80;
+	
+	--display-dark: block;
+	--display-light: none;
 }
 
 body.light {
@@ -52,6 +55,9 @@ body.light {
 	
 	--select-border: #777;
 	--select-focus: #b80;
+	
+	--display-dark: none;
+	--display-light: block;
 }
 
 /* Main structure */
@@ -63,6 +69,7 @@ body.light {
 body {
 	background: var(--body-bg);
 	color: var(--text-color);
+	transition: background 0.2s linear;
 }
 h1 {
 	text-align: center;
@@ -92,6 +99,18 @@ h1, h2 {
 	display: flex;
 }
 .filling {
+}
+.hideOnLight {
+	display: var(--display-dark);
+}
+.hideOnDark {
+	display: var(--display-light);
+}
+.lang {
+	opacity: 0.6;
+}
+.selectedLang {
+	opacity: 1;
 }
 
 /* Specific part of display */
@@ -260,7 +279,7 @@ ul > li {
   position: relative;
   display: inline-block;
 }
-li > button{
+li > button, li > a{
   font-size: 1em;
 	text-transform: uppercase;
   text-decoration: none;
@@ -279,6 +298,9 @@ li > button:hover {
 	text-shadow: var(--text-shadow-hover);
 	background: var(--text-background);
   transition: all 0.4s ease-in-out;
+}
+li > .lefSide {
+	
 }
 .dropmenu {
   height: 0;
