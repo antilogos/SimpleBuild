@@ -44,6 +44,25 @@ function fillGemProfile(gemGroup, index, references) {
 			div.appendChild(span);
 		}
 		addReference(div, references, true);
+		// Add socket image
+		var divSocketColor = document.createElement("div");
+		divSocketColor.setAttribute("class", "socketColourGroup");
+		k.gems.map(g => allGem[g.skill]).forEach(g => {
+			var socketDiv = document.createElement("div");
+			socketDiv.classList.add("socketColour");
+			if(g.tags.indexOf("intelligence") >= 0) {
+				socketDiv.classList.add("socketColourBlue");
+			} else if(g.tags.indexOf("dexterity") >= 0) {
+				socketDiv.classList.add("socketColourGreen");
+			} else if(g.tags.indexOf("strength") >= 0) {
+				socketDiv.classList.add("socketColourRed");
+			} else {
+				socketDiv.classList.add("socketColourWhite");
+			}
+			divSocketColor.appendChild(socketDiv);
+		})
+		div.appendChild(divSocketColor);
+		// Each gem
 		k.gems.forEach( (g, j) => {
 			var skillGem = allGem[g.skill];
 			var gemName;
@@ -56,6 +75,7 @@ function fillGemProfile(gemGroup, index, references) {
 			// Gem reference
 			var itemDiv = document.createElement("div");
 			itemDiv.setAttribute("id", gemRef);
+			itemDiv.setAttribute("class", "socketGem");
 			addReference(itemDiv, references, false);
 			div.appendChild(itemDiv);
 			// Creation of the poe-item html element for HoradricHelper

@@ -2,6 +2,7 @@
 var hhData = Array();
 // Tag that should not be displayed
 const GEM_TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength"];
+const baseImgUrl = "https://poe.ninja/cdn/"
 
 function displayMode(elem, type) {
 	if(type == "show") {
@@ -208,9 +209,8 @@ function loadNodeData(treeGroups) {
 				}
 				config.reference = "node_"+k;
 				config.data = nodeData;
-				config.iconUrl = "";
+				config.iconUrl = baseImgUrl + node.icon;
 				hhData.push(config);
-				//console.log("loaded passive", config);
 			}
 		});
 		var masteryGroup = new Map();

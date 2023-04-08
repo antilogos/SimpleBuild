@@ -103,8 +103,38 @@ h1, h2 {
     margin: 1em;
 }
 
-.socketGroup div {
+.socketGroup .socketGem {
 	display: inline-block;
+}
+
+.socketColourGroup {
+	display: block;
+}
+
+.socketColour {
+	display: inline-block;
+	width: 35px;
+    height: 35px;
+}
+
+.socketColourGreen {
+	background: url(./socket.png) no-repeat;
+    background-position: -105px -70px;
+}
+
+.socketColourBlue {
+	background: url(./socket.png) no-repeat;
+    background-position: -35px -70px;
+}
+
+.socketColourRed {
+	background: url(./socket.png) no-repeat;
+    background-position: -70px -105px;
+}
+
+.socketColourWhite {
+	background: url(./socket.png) no-repeat;
+    background-position: -140px -35px;
 }
 
 #ascendancyDiv > div, #keystoneDiv > div{
