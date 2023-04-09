@@ -109,7 +109,7 @@ function fillGemProfile(gemGroup, index, references) {
 // Create div for ascendancy, mastery and keystone
 function fillTreeProfile(treeGroup, references) {
 	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW,DIV_PATHWAY]);
-	var passives = treeGroup.nodes.split(",").map( n => treeNodes[n]);
+	var passives = treeGroup.nodes.map( n => treeNodes[n]);
 	// Add poe-passive for each ascendancy and keystone allocated
 	passives.filter(node => node !== undefined && (node.ascendancyName || node.isKeystone)).forEach( node => {
 		// Passif reference
@@ -131,9 +131,18 @@ function fillTreeProfile(treeGroup, references) {
 		}
 	});
 	// Sort notable from the last main path
-	var depthResult = depthFromStart(passives.filter(node => node !== undefined && !node.ascendancyName), treeGroup.startClass);
-	console.log(depthResult);
-	passives.filter(node => node !== undefined && !node.ascendancyName && (node.isNotable || node.iskeystone)).sort( (a, b) => {
+	let parentTree = currPob.treeGroups.filter(t => t!=treeGroup).filter( t => 
+		// search which tree could be the parent tree by having all the same nodes
+		t.nodes.filter(n => treeGroup.nodes.indexOf(n) < 0).length == 0
+	).sort( (a, b) => a.length - b.length).pop();
+	var depthResult = depthFromStart(passives.filter(node => node !== undefined && !node.ascendancyName), treeGroup.startClass, parentTree);
+	if(parentTree) {
+		var nodeDiv = document.createElement("span");
+		nodeDiv.setAttribute("class", "parentTree");
+		nodeDiv.innerHTML = "Depuis " + parentTree.title + " 🡢 ";
+		document.getElementById(DIV_PATHWAY).appendChild(nodeDiv);
+	}
+	passives.filter(node => node !== undefined && !node.ascendancyName && (node.isNotable || node.iskeystone) && depthResult[node.skill] > 0).sort( (a, b) => {
 		return depthResult[a.skill] - depthResult[b.skill];
 	}).forEach( node => {
 		// Passif reference
@@ -203,8 +212,9 @@ function fillInventoryProfile(itemSet, references) {
 }
 
 // Parent fill for all
+var currPob;
 function fillProfile(pobObject) {
-	console.log(pobObject);
+	currPob = pobObject;
 	// Add div for each gems setup and a link to raodmap
 	for (let group of pobObject.gemGroups) {
 		let optionElement = document.createElement("button");
@@ -221,7 +231,7 @@ function fillProfile(pobObject) {
 	// TODO a link to the official tree
 	for (let tree of pobObject.treeGroups) {
 		let optionElement = document.createElement("button");
-		var title = (tree.title? tree.title : "par défaut") + " (" + tree.nodes.split(",").length + " points)";
+		var title = (tree.title? tree.title : "par défaut") + " (" + tree.nodes.length + " points)";
 		optionElement.innerHTML = title;
 		optionElement.addEventListener('click', function (event) {
 			fillTreeProfile(tree, pobObject.notes.refs);
@@ -277,7 +287,8 @@ var questRoad = [{"level":2, "quest": "Arrivé au Guet<br />"},
 	{"level":18, "quest": "Récupérer Pic de Maligaro<br />"},
 	{"level":24, "quest": "Récupérer Bracelet de Tolman<br />"},
 	{"level":28, "quest": "Tuer Gravicius<br />"},
-	{"level":31, "quest": "Arrivé aux Mines<br />"},
+	{"level":31, "quest": "Récupérer les pages des archives<br />"},
+	{"level":34, "quest": "Arrivé aux Mines<br />"},
 	{"level":38, "quest": "Arrivé aux Entrailles<br />"}];
 
 // Create div for roadmap of quest reward

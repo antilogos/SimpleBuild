@@ -267,7 +267,7 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, custom
 	var radiiMap = passiveSkillTreeData.constants.orbitRadii;
 	var filteredNode = [];
 	var svgElements = [];
-	for( let origin of Object.values(nodesObject.nodes.split(","))) {
+	for( let origin of Object.values(nodesObject.nodes)) {
         	if(nodeMap[origin]) {
 			filteredNode[origin] = nodeMap[origin];
 		}
@@ -372,10 +372,11 @@ function recurseFillDepth(nodes, depthNodes, i) {
 	if(currNodes.length != 0) recurseFillDepth(nodes, depthNodes, i+1)
 }
 
-function depthFromStart(nodes, classStart) {
+function depthFromStart(nodes, classStart, parentTree) {
 	var depthNodes = {};
 	nodes.forEach(n => {
 		if(n.classStartIndex == classStart) depthNodes[n.skill] = 0;
+		else if(parentTree !== undefined && parentTree.nodes.indexOf(n.skill.toString()) >= 0) depthNodes[n.skill] = 0;
 		else depthNodes[n.skill] = -1;
 	})
 	recurseFillDepth(nodes, depthNodes, 0);

@@ -191,7 +191,7 @@ function loadGemData(gemGroups) {
 // Add passive node HH config
 function loadNodeData(treeGroups) {
 	for (let treeGroup of treeGroups) {
-		treeGroup.nodes.split(",").forEach( (k, i) => {
+		treeGroup.nodes.forEach( (k, i) => {
 			let node = treeNodes[k];
 			if(node !== undefined && (node.isNotable || node.isKeystone || node.isMultipleChoiceOption)) {
 				var nodeData = [], nodeSection = [], config = [];
