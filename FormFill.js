@@ -15,7 +15,7 @@ function addReference(div, references, withLineReturn) {
 
 // Constants
 const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "gemconfDiv"; DIV_ROADMAP = "roadmapDiv", 
-	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv",
+	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv", DIV_PATHWAY = "pathwayDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
 	DIV_INVENTORYSET = "invenrotySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
@@ -108,32 +108,45 @@ function fillGemProfile(gemGroup, index, references) {
 
 // Create div for ascendancy, mastery and keystone
 function fillTreeProfile(treeGroup, references) {
-	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW]);
+	clearProfile([DIV_ASCENDANCY,DIV_KEYSTONE,DIV_MASTERY,DIV_PREVIEW,DIV_PATHWAY]);
+	var passives = treeGroup.nodes.split(",").map( n => treeNodes[n]);
 	// Add poe-passive for each ascendancy and keystone allocated
-	treeGroup.nodes.split(",").forEach( (k, i) => {
-		let node = treeNodes[k];
-		if(node !== undefined && (node.ascendancyName || node.isKeystone)) {
-			// Passif reference
-			var nodeDiv = document.createElement("div");
-			nodeDiv.setAttribute("id", "node_"+k);
-			addReference(nodeDiv, references, false);
-			// Creation of the poe-item html element for HoradricHelper
-			var item = document.createElement("poe-passive");
-			item.setAttribute("reference", "node_"+k);
-			item.setAttribute("label-text", node.name);
-			nodeDiv.appendChild(item);
-			// Place node in the right category
-			if(node.ascendancyName !== undefined && !node.isMultipleChoice) {
-				displayMode(item, "popup");
-				document.getElementById(DIV_ASCENDANCY).appendChild(nodeDiv);
-			} else if(node.isKeystone) {
-				displayMode(item, "popup");
-				document.getElementById(DIV_KEYSTONE).appendChild(nodeDiv);
-			}
-			
-		} else {
-			//TODO order of notable to take
+	passives.filter(node => node !== undefined && (node.ascendancyName || node.isKeystone)).forEach( node => {
+		// Passif reference
+		var nodeDiv = document.createElement("div");
+		nodeDiv.setAttribute("id", "node_"+node.skill);
+		addReference(nodeDiv, references, false);
+		// Creation of the poe-item html element for HoradricHelper
+		var item = document.createElement("poe-passive");
+		item.setAttribute("reference", "node_"+node.skill);
+		item.setAttribute("label-text", node.name);
+		nodeDiv.appendChild(item);
+		// Place node in the right category
+		if(node.ascendancyName !== undefined && !node.isMultipleChoice) {
+			displayMode(item, "popup");
+			document.getElementById(DIV_ASCENDANCY).appendChild(nodeDiv);
+		} else if(node.isKeystone) {
+			displayMode(item, "popup");
+			document.getElementById(DIV_KEYSTONE).appendChild(nodeDiv);
 		}
+	});
+	// Sort notable from the last main path
+	var depthResult = depthFromStart(passives.filter(node => node !== undefined && !node.ascendancyName), treeGroup.startClass);
+	console.log(depthResult);
+	passives.filter(node => node !== undefined && !node.ascendancyName && (node.isNotable || node.iskeystone)).sort( (a, b) => {
+		return depthResult[a.skill] - depthResult[b.skill];
+	}).forEach( node => {
+		// Passif reference
+		var nodeDiv = document.createElement("div");
+		nodeDiv.setAttribute("id", "node_"+node.skill);
+		addReference(nodeDiv, references, false);
+		// Creation of the poe-item html element for HoradricHelper
+		var item = document.createElement("poe-passive");
+		item.setAttribute("reference", "node_"+node.skill);
+		item.setAttribute("label-text", node.name);
+		nodeDiv.appendChild(item);
+		displayMode(item, "popup");
+		document.getElementById(DIV_PATHWAY).appendChild(nodeDiv);
 	});
 	// Add poe-passive for Masteris group with their effect from all masteries allocated
 	var masteryGroup = new Map();
@@ -160,6 +173,7 @@ function fillTreeProfile(treeGroup, references) {
 	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
+	Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == treeGroup.startClass).forEach(n => buildClassIcon(DIV_PREVIEW, n));
 	// Change roadmap
 	currRoadMapStat.startingClass = parseInt(treeGroup.startClass);
 	loadHoradricHelper();
@@ -327,7 +341,7 @@ function fillRoadmapProfile() {
 /* CLEAN UP AND LOAD */
 
 function clearProfile(divList) {
-	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_GEMCONFIGURATION, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_INVENTORYSET,
+	if(divList == null) divList = [DIV_NOTES, DIV_SETUP, DIV_GEMCONFIGURATION, DIV_ROADMAP, DIV_ASCENDANCY, DIV_TREE, DIV_MASTERY, DIV_PREVIEW, DIV_KEYSTONE, DIV_PATHWAY, DIV_INVENTORYSET,
 		DIV_MAINHAND, DIV_OFFHAND, DIV_CHEST, DIV_HELM, DIV_GLOVES, DIV_BOOTS, DIV_AMULET, DIV_RING1, DIV_RING2, DIV_BELT, DIV_FLASK1, DIV_FLASK2, DIV_FLASK3, DIV_FLASK4, DIV_FLASK5];
 	for (let divId of divList) {
 		let divElement = document.getElementById(divId);

@@ -156,8 +156,11 @@ h1, h2 {
     background-position: -140px -35px;
 }
 
-#ascendancyDiv > div, #keystoneDiv > div{
+#ascendancyDiv > div, #keystoneDiv > div, #pathwayDiv > div{
 	display: inline-block;
+}
+#pathwayDiv .poe-icon-label {
+	display: none;
 }
 
 .inventory {

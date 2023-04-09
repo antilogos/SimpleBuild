@@ -359,6 +359,60 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, custom
 	return svgElements;
 };
 
+/* Other utility */
+
+function recurseFillDepth(nodes, depthNodes, i) {
+	if(i > 1000) { console.log("something went wrong"); return -1;}
+	var currNodes = nodes.filter(n => depthNodes[n.skill] == i);
+	currNodes.forEach( c => {
+		nodes.filter(n => depthNodes[n.skill] == -1 && (n.in.indexOf(c.skill.toString()) >= 0 || n.out.indexOf(c.skill.toString()) >= 0)).forEach( n => {
+			depthNodes[n.skill] = i+1;
+		})
+	});
+	if(currNodes.length != 0) recurseFillDepth(nodes, depthNodes, i+1)
+}
+
+function depthFromStart(nodes, classStart) {
+	var depthNodes = {};
+	nodes.forEach(n => {
+		if(n.classStartIndex == classStart) depthNodes[n.skill] = 0;
+		else depthNodes[n.skill] = -1;
+	})
+	recurseFillDepth(nodes, depthNodes, 0);
+	return depthNodes;
+}
+
+function buildClassIcon(elementId, node) {
+	var svg = document.getElementById(elementId).firstChild;
+	let imageUrl = "./inventory-sprite.png";
+	let classPosition = [{x:658,y:80},{x:658,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580},{x:80,y:580}];
+	let imageSize = {x:76,y:80};
+	let zoom = 10;
+	let offsetClipX = classPosition[node.classStartIndex-1].x + node.x/zoom;
+	let offsetClipY = classPosition[node.classStartIndex-1].y + node.y/zoom;
+	const clipPath = document.createElementNS("http://www.w3.org/2000/svg","clipPath");
+	clipPath.setAttribute("id","clipper");
+	const rectClip = document.createElementNS("http://www.w3.org/2000/svg","rect");
+	rectClip.setAttribute("x", offsetClipX);
+	rectClip.setAttribute("y", offsetClipY);
+	rectClip.setAttribute("width", imageSize.x);
+	rectClip.setAttribute("height", imageSize.y);
+	clipPath.appendChild(rectClip);
+	svg.appendChild(clipPath);
+	const gPanel = document.createElementNS("http://www.w3.org/2000/svg","g");
+	gPanel.setAttribute("transform","scale("+zoom+") translate("+(-1*classPosition[node.classStartIndex-1].x-imageSize.x/2)+","+(-1*classPosition[node.classStartIndex-1].y-imageSize.y/2)+")");
+	const img = document.createElementNS("http://www.w3.org/2000/svg","image");
+	img.setAttribute("x", node.x/zoom);
+	img.setAttribute("y", node.y/zoom);
+	img.setAttribute("width", 788);
+	img.setAttribute("height", 710);
+	img.setAttribute("href",imageUrl);
+	img.setAttribute("xlink:href",imageUrl);
+	img.setAttribute("clip-path","url(#clipper)");
+	gPanel.appendChild(img);
+	svg.appendChild(gPanel);
+};
+
 /* Utility for first character tutorial */
 
 function buildContext(elementId, labels, pos) {
@@ -471,35 +525,4 @@ function buildContext(elementId, labels, pos) {
 	textE3.textContent = labels[2];
 	textB1.appendChild(textE3);
 	svg.appendChild(textB1);
-};
-
-function buildClassIcon(elementId, node) {
-	var svg = document.getElementById(elementId).firstChild;
-	let imageUrl = "./inventory-sprite.png";
-	let classPosition = [{x:658,y:80},{x:658,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580},{x:80,y:580}];
-	let imageSize = {x:76,y:80};
-	let zoom = 10;
-	let offsetClipX = classPosition[node.classStartIndex-1].x + node.x/zoom;
-	let offsetClipY = classPosition[node.classStartIndex-1].y + node.y/zoom;
-	const clipPath = document.createElementNS("http://www.w3.org/2000/svg","clipPath");
-	clipPath.setAttribute("id","clipper");
-	const rectClip = document.createElementNS("http://www.w3.org/2000/svg","rect");
-	rectClip.setAttribute("x", offsetClipX);
-	rectClip.setAttribute("y", offsetClipY);
-	rectClip.setAttribute("width", imageSize.x);
-	rectClip.setAttribute("height", imageSize.y);
-	clipPath.appendChild(rectClip);
-	svg.appendChild(clipPath);
-	const gPanel = document.createElementNS("http://www.w3.org/2000/svg","g");
-	gPanel.setAttribute("transform","scale("+zoom+") translate("+(-1*classPosition[node.classStartIndex-1].x-imageSize.x/2)+","+(-1*classPosition[node.classStartIndex-1].y-imageSize.y/2)+")");
-	const img = document.createElementNS("http://www.w3.org/2000/svg","image");
-	img.setAttribute("x", node.x/zoom);
-	img.setAttribute("y", node.y/zoom);
-	img.setAttribute("width", 788);
-	img.setAttribute("height", 710);
-	img.setAttribute("href",imageUrl);
-	img.setAttribute("xlink:href",imageUrl);
-	img.setAttribute("clip-path","url(#clipper)");
-	gPanel.appendChild(img);
-	svg.appendChild(gPanel);
 };

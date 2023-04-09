@@ -6,8 +6,8 @@
 <!-- Add check if non-readable or empty pob -->
 <!-- Add check everywhere necessary -->
 <!-- Add fetch pob url like pastbin, ninja and other -->
-<!-- Add support for different item setups -->
 <!-- Add display of class -->
+<!-- Add higlight in preview when passive-item is hover -->
 <!-- Horadric Helper -->
 <script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
@@ -160,11 +160,11 @@ function selectLang(lang) {
 </div>
 <!-- Display Page -->
 <div class="page" id="page_display">
-	<h1 id="notes_header"></h1>
+	<h1 id="notes_header"></h1><!-- NOTE -->
 	<div class="section">
 		<div class="filling" id="notesDiv"></div>
 	</div>
-	<h1 id="gem_header"></h1>
+	<h1 id="gem_header"></h1><!-- GEM -->
 	<div class="section">
 		<div style="width: 100%">
 			<h2 id="group_subheader"></h2>
@@ -177,7 +177,7 @@ function selectLang(lang) {
 			<div id="roadmapDiv"></div>
 		</div>
 	</div>
-	<h1 id="tree_header"></h1>
+	<h1 id="tree_header"></h1><!-- TREE -->
 	<div class="section">
 		<div style="width: 100%">
 			<h2 id="preview_subheader"><h2>
@@ -202,8 +202,14 @@ function selectLang(lang) {
 			</div>
 		</div>
 	</div>
+	<div class="section">
+		<div style="width: 100%">
+			<h2 id="pathway_subheader"><h2>
+			<div id="pathwayDiv" style="width: 100%"></div>
+		</div>
+	</div>
 <!--h2 id="pantheon">Bandits & Pantheon</h2-->
-	<h1 id="item_header"></h1>
+	<h1 id="item_header"></h1><!-- ITEM -->
 	<div class="section">
 		<div class="inventory">
 			<div id="mainHand">&nbsp;</div>
@@ -233,8 +239,7 @@ function selectLang(lang) {
 			<div id="jewelDiv"></div>
 		</div>
 	</div>
-	<!-- Table of content -->
-	<div class="toc">
+	<div class="toc"><!-- TOC -->
 		<a id="toc_notes" href="#notes_header"></a>
 		<a id="toc_gem" href="#gem_header"></a>
 		<a id="toc_tree" href="#tree_header"></a>

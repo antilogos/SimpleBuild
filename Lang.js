@@ -53,6 +53,9 @@ const langTranslate=[
 	},{"_id": "keystone_subheader", 
 		"en": "Keystone", 
 		"fr": "Charnières"
+	},{"_id": "pathway_subheader", 
+		"en": "Pathway", 
+		"fr": "Cheminement"
 	},{"_id": "item_header", 
 		"en": "Items", 
 		"fr": "Objets"
