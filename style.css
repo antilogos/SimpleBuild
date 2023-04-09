@@ -360,6 +360,35 @@ ul li:hover > button > .arrow {
   margin-top: 4px;
 }
 
+.toc {
+	background: var(--nav-bg);
+	position: fixed;
+	top: 30vh;
+	display: block;
+	float: left;
+	height: 140px;
+	align-items: center;
+}
+.toc > a {
+	display: block;
+	width: 35px;
+    height: 35px;
+}
+#toc_notes {
+	background: url(./favicon.ico) no-repeat;
+}
+#toc_gem {
+	background: url(./socket.png) no-repeat;
+    background-position: -70px -35px;
+}
+#toc_tree {
+	background: url(./socket.png) no-repeat;
+    background-position: -105px -140px;
+}
+#toc_item {
+	background: url(./socket.png) no-repeat;
+    background-position: -140px -140px;
+}
 /* Custom select */
 
 select {
