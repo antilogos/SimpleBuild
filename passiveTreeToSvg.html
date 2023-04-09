@@ -31,9 +31,9 @@
 	
 	const urlParams = new URLSearchParams(window.location.search);
 	const MAINDIV = "maindiv";
-	const stylePerStep = [{"stroke":"#166","width":96}, 
+	const stylePerStep = [{"stroke":"#C90","width":96}, 
 		{"stroke":"#A00","width":96},
-		{"stroke":"#C90","width":96},
+		{"stroke":"#166","width":96},
 		{"stroke":"#15C","width":128},
 		{"stroke":"#7AF","width":128},
 		{"stroke":"#090","width":128},
@@ -56,7 +56,6 @@
 				tutorialBuild.treeGroups[0].title.replaceAll(/\w* \"(\w+)\"/g,"$1")]
 			buildContext(MAINDIV, labels, tutorial[urlParams.get("draw")].labelPos);
 			// Draw the icon of the class
-			console.log()
 			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n));
 		}
 	}
