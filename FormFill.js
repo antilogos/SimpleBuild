@@ -47,10 +47,12 @@ function fillGemProfile(gemGroup, index, references) {
 		// Add socket image
 		var divSocketColor = document.createElement("div");
 		divSocketColor.setAttribute("class", "socketColourGroup");
-		k.gems.map(g => allGem[g.skill]).forEach(g => {
+		k.gems.filter( g => allGem[g.skill] != undefined ).map(g => allGem[g.skill]).forEach(g => {
 			var socketDiv = document.createElement("div");
 			socketDiv.classList.add("socketColour");
-			if(g.tags.indexOf("intelligence") >= 0) {
+			if(g.tags == undefined) {
+				socketDiv.classList.add("socketColourIntegrated");
+			} else if(g.tags.indexOf("intelligence") >= 0) {
 				socketDiv.classList.add("socketColourBlue");
 			} else if(g.tags.indexOf("dexterity") >= 0) {
 				socketDiv.classList.add("socketColourGreen");
@@ -63,7 +65,7 @@ function fillGemProfile(gemGroup, index, references) {
 		})
 		div.appendChild(divSocketColor);
 		// Each gem
-		k.gems.forEach( (g, j) => {
+		k.gems.filter( g => allGem[g.skill] != undefined ).forEach( (g, j) => {
 			var skillGem = allGem[g.skill];
 			var gemName;
 			if(skillGem.base_item !== null) {
@@ -81,11 +83,13 @@ function fillGemProfile(gemGroup, index, references) {
 			// Creation of the poe-item html element for HoradricHelper
 			var item = document.createElement("poe-item");
 			item.setAttribute("reference", gemRef);
-			displayMode(item, "popup");
-			if(g.enabled == "false") {
-				item.setAttribute("label-text",gemName + " (option)");
-			} else {
-				item.setAttribute("label-text",gemName);
+			displayMode(item, "icon");
+			if(gemRewards[gemName]) {
+				if(g.enabled == "false") {
+					item.setAttribute("label-text",gemRewards[gemName].lang[langSelected] + " (option)");
+				} else {
+					item.setAttribute("label-text",gemRewards[gemName].lang[langSelected]);
+				}
 			}
 			// Add to roadmap if available or the condition to get it
 			if(skillGem.per_level && gemRewards[gemName] && g.qualityId == "Default") {
@@ -279,18 +283,18 @@ function fillProfile(pobObject) {
 /* ROADMAP VARIABLE */
 
 var currRoadMapStat = {"startingClass": null, "gemGroup": null};
-var questRoad = [{"level":2, "quest": "Arrivé au Guet<br />"},
-	{"level":4, "quest": "Arrivé aux Souterrains<br />"},
-	{"level":8, "quest": "Arrivé à la Prison<br />"},
-	{"level":10, "quest": "Tuer Brutus<br />"},
-	{"level":12, "quest": "Arrivé aux Cavernes<br />"},
-	{"level":16, "quest": "Récupérer Gemme maléfique<br />"},
-	{"level":18, "quest": "Récupérer Pic de Maligaro<br />"},
-	{"level":24, "quest": "Récupérer Bracelet de Tolman<br />"},
-	{"level":28, "quest": "Tuer Gravicius<br />"},
-	{"level":31, "quest": "Récupérer les pages des archives<br />"},
-	{"level":34, "quest": "Arrivé aux Mines<br />"},
-	{"level":38, "quest": "Arrivé aux Entrailles<br />"}];
+var questRoad = [{"level":2, "questId": "label_quest_lyoneye"},
+	{"level":4, "questId": "label_quest_submerged"},
+	{"level":8, "questId": "label_quest_prison"},
+	{"level":10, "questId": "label_quest_brutus"},
+	{"level":12, "questId": "label_quest_cavern"},
+	{"level":16, "questId": "label_quest_balefulgem"},
+	{"level":18, "questId": "label_quest_maligarospike"},
+	{"level":24, "questId": "label_quest_tolman"},
+	{"level":28, "questId": "label_quest_gravicius"},
+	{"level":31, "questId": "label_quest_archives"},
+	{"level":34, "questId": "label_quest_mines"},
+	{"level":38, "questId": "label_quest_belly"}];
 
 // Create div for roadmap of quest reward
 function fillRoadmapProfile() {
@@ -315,7 +319,10 @@ function fillRoadmapProfile() {
 			// Add section for the current quest
 			var questDiv = document.createElement("div");
 			questDiv.setAttribute("class", "socketGroup");
-			questDiv.innerHTML = quest.quest;
+			var questHeader = document.createElement("div");
+			questHeader.setAttribute("id", quest.questId);
+			questHeader.innerHTML = langTranslate.find(l => l._id == quest.questId)[langSelected];
+			questDiv.appendChild(questHeader);
 			for (let gem of gemReward[quest.level]) {
 				// Gem as quest reward
 				var item = document.createElement("poe-item");

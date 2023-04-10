@@ -14,14 +14,6 @@
 <script src="HoradricLoader.js"></script>
 <!-- Passive Skill Tree parser -->
 <script src="TreeParser.js"></script>
-<script>
-var passiveSkillTreeData, treeNodes, loadPassive = false;
-fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-321.json").then(response => response.json()).then(parsed => {
-	passiveSkillTreeData = parsed;
-	treeNodes = extractNodesData(parsed);
-	loadPassive = true;
-}).then(data => waitForLoadAsync());
-</script>
 <!-- External files for mods from RePoE -->
 <script src="Repoe.js"></script>
 <!-- Translate pob code into javascript object with pako library to unzip (from https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js) -->
@@ -35,14 +27,31 @@ fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParse
 <script src="FormFill.js"></script>
 <!-- Navigation and page script -->
 <script src="Lang.js"></script>
+<script src="itemoverview.js"></script>
 <script>
 
 // Initialization
 let loadBuildlist = false;
+var passiveSkillTreeData, treeNodes, loadPassive = false;
 function waitForLoadAsync() {
 	if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
 	else {
-		displayMenu('search');
+		if(currPob) {
+			clearProfile();
+			hhData = [];
+			fillProfile(currPob);
+		} else {
+			displayMenu('search');
+		}
+		/*
+		gemNinja.lines.filter(n => n.name.indexOf("Vaal") < 0 && n.name.indexOf("Anomalous") < 0 && n.name.indexOf("Divergent") < 0 && n.name.indexOf("Phantasmal") < 0 && n.name.indexOf("Awakened") < 0 ).forEach(n => {
+			if(gemRewards.hasOwnProperty(n.name)) {
+				gemRewards[n.name].lang = {};
+				gemRewards[n.name].lang["fr"] = gemNinja.language.translations[n.name];
+				gemRewards[n.name].lang["en"] = n.name;
+			} else 
+				console.log("no entry for ", n.name);
+		})*/
 	}
 }
 window.onload = function() {
@@ -102,6 +111,8 @@ function selectLang(lang) {
 	for (let l of langTranslate) {
 		if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
 	}
+	loadPassive = false;
+	fetchTreeData(lang).then(data => waitForLoadAsync());
 }
 </script>
 <!-- Style -->

@@ -1,5 +1,25 @@
 /* Extract */
 
+// Load tree data per lang 
+function fetchTreeData(lang) {
+	if(lang == "fr") {
+		// Mine
+		return fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-321.json").then(response => response.json()).then(parsed => {
+			passiveSkillTreeData = parsed;
+			treeNodes = extractNodesData(parsed);
+			loadPassive = true;
+		});
+	} else {
+		// GGG Official
+		return fetch("https://raw.githubusercontent.com/grindinggear/skilltree-export/master/data.json").then(response => response.json()).then(parsed => {
+			passiveSkillTreeData = parsed;
+			treeNodes = extractNodesData(parsed);
+			loadPassive = true;
+		});
+	}
+}
+
+
 // Function found on the web to decode Base64 in pure javascript
 function decodeBase64(s) {
 	var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
@@ -386,11 +406,11 @@ function depthFromStart(nodes, classStart, parentTree) {
 function buildClassIcon(elementId, node) {
 	var svg = document.getElementById(elementId).firstChild;
 	let imageUrl = "./inventory-sprite.png";
-	let classPosition = [{x:658,y:80},{x:658,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580},{x:80,y:580}];
+	let classPosition = [{x:80,y:580},{x:658,y:80},{x:658,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580}];
 	let imageSize = {x:76,y:80};
 	let zoom = 10;
-	let offsetClipX = classPosition[node.classStartIndex-1].x + node.x/zoom;
-	let offsetClipY = classPosition[node.classStartIndex-1].y + node.y/zoom;
+	let offsetClipX = classPosition[node.classStartIndex].x + node.x/zoom;
+	let offsetClipY = classPosition[node.classStartIndex].y + node.y/zoom;
 	const clipPath = document.createElementNS("http://www.w3.org/2000/svg","clipPath");
 	clipPath.setAttribute("id","clipper");
 	const rectClip = document.createElementNS("http://www.w3.org/2000/svg","rect");
@@ -401,7 +421,7 @@ function buildClassIcon(elementId, node) {
 	clipPath.appendChild(rectClip);
 	svg.appendChild(clipPath);
 	const gPanel = document.createElementNS("http://www.w3.org/2000/svg","g");
-	gPanel.setAttribute("transform","scale("+zoom+") translate("+(-1*classPosition[node.classStartIndex-1].x-imageSize.x/2)+","+(-1*classPosition[node.classStartIndex-1].y-imageSize.y/2)+")");
+	gPanel.setAttribute("transform","scale("+zoom+") translate("+(-1*classPosition[node.classStartIndex].x-imageSize.x/2)+","+(-1*classPosition[node.classStartIndex].y-imageSize.y/2)+")");
 	const img = document.createElementNS("http://www.w3.org/2000/svg","image");
 	img.setAttribute("x", node.x/zoom);
 	img.setAttribute("y", node.y/zoom);

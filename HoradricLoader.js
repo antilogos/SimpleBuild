@@ -1,7 +1,7 @@
 // Create the all the data for Horadric Helper
 var hhData = Array();
 // Tag that should not be displayed
-const GEM_TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength"];
+const GEM_TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength", "low_max_level"];
 const baseImgUrl = "https://poe.ninja/cdn/"
 
 function displayMode(elem, type) {
@@ -102,88 +102,96 @@ function loadGemData(gemGroups) {
 			s.gems.forEach( (g, j) => {
 				var config = [], gemData = [], gemSection = [];
 				var skillGem = allGem[g.skill];
-				var skillModifiers = [];
-				if(skillGem.active_skill !== undefined) {
-					// Active skill gem
-					gemSection.gemDescription = [].concat(skillGem.active_skill.description);
-				} else {
-					// Support skill gem
-					// XXX no gem description for support ?
-				}
-				var gemStat = {}, gemTranslate = {};
-				// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
-				skillGem.static.stats.forEach( (stats, index) => {
-					// if stats not displayed from static, it should come from per_level
-					if(stats === null) stats = skillGem.per_level[1].stats[index];
-					var statTranslation;
-					var translationFile = skillGem.stat_translation_file;
-					if(translationFile !== undefined && mapStatGem[translationFile] !== undefined) {
-						statTranslation = mapStatGem[translationFile].find(a => a.ids.find(id => id == stats.id));
-					}
-					else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
-					// FIXME fix 2-stats modifiers like add X to Y
-					if(statTranslation !== undefined) {
-						var keyValueStat = {};
-						keyValueStat.id = stats.id;
-						let tranlationKey = statTranslation.ids.join(",");
-						if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
-						else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
-						keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
-						if(gemStat.hasOwnProperty(tranlationKey)) {
-							gemStat[tranlationKey].push(keyValueStat);
-						} else {
-							gemStat[tranlationKey] = [];
-							gemStat[tranlationKey].push(keyValueStat);
-							gemTranslate[tranlationKey] = statTranslation;
-						}
-					} else {
-						//console.log("translation not found", stats, g[1].getAttribute("skillId"));
-					}
-				});
-				// Include stat from appropriate quality and normalized it with quality value (base on 2000)
-				let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
-				if(qualityStat !== undefined && qualityStat.value > 0) {
-					let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
-					if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
-						var keyValueStat = {};
-						keyValueStat.id = qualityStat.id;
-						let tranlationKey = qualityTranslation.ids.join(",");
-						keyValueStat.value = qualityStat.value / 1000 * g.quality;
-						if(gemStat.hasOwnProperty(qualityTranslation.ids.join(","))) {
-							gemStat[tranlationKey].push(keyValueStat);
-						} else {
-							gemStat[tranlationKey] = [];
-							gemStat[tranlationKey].push(keyValueStat);
-							gemTranslate[tranlationKey] = qualityTranslation;
-						}
-					}
-				}
-				// Translate gemStats into description
-				//console.log(gemStat);
-				skillModifiers.push(translateStats(gemStat, gemTranslate));
-				//console.log(skillModifiers);
-
-				if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
-				gemData.rarity = "Gem";
+				// Try to get the name of the gem and find the data in gemRewards for translation and icon
+				var gemNameId;
 				if(skillGem.base_item !== null) {
-					gemData.name = skillGem.base_item.display_name;
+					gemNameId = skillGem.base_item.display_name;
 					gemSection.properties = [].concat(skillGem.tags.filter(t => GEM_TAG_FILTER.indexOf(t) < 0).join(", "));
 				} else {
-					gemData.name = skillGem.active_skill.display_name;
+					gemNameId = skillGem.active_skill.display_name;
 					gemSection.properties = [].concat(skillGem.active_skill.types.filter(t => GEM_TAG_FILTER.indexOf(t) < 0).join(", "));
 				}
-				gemData.sections = gemSection;
-				config.reference = "gem_" + k + "_" + i + "_" + j;
-				config.data = gemData;
-				config.iconUrl = "";
-				hhData.push(config);
-				// Second gem description for roadmap
-				var config2 = [];
-				config2.reference = "gem_" + gemData.name.replaceAll(" ", "_");
-				config2.data = gemData;
-				config2.iconUrl = "";
-				hhData.push(config2);
-				//console.log("loaded gem", config);
+				// Skip all gems not found (skill not from gem, and vaal, altqual, awakened gems)
+				if(skillGem && skillGem.base_item && gemRewards[gemNameId] !== undefined) {
+					var skillModifiers = [];
+					if(skillGem.active_skill !== undefined) {
+						// Active skill gem
+						gemSection.gemDescription = [].concat(skillGem.active_skill.description);
+					} else {
+						// Support skill gem
+						// XXX no gem description for support ?
+					}
+					var gemStat = {}, gemTranslate = {};
+					// Parse stats and per level stats to keep only stats that have description with the value of base or appropriate level
+					skillGem.static.stats.forEach( (stats, index) => {
+						// if stats not displayed from static, it should come from per_level
+						if(stats === null) stats = skillGem.per_level[1].stats[index];
+						var statTranslation;
+						var translationFile = skillGem.stat_translation_file;
+						if(translationFile !== undefined && mapStatGem[translationFile] !== undefined) {
+							statTranslation = mapStatGem[translationFile].find(a => a.ids.find(id => id == stats.id));
+						}
+						else statTranslation = allStats.find(a => a.ids.find(id => id == stats.id));
+						// FIXME fix 2-stats modifiers like add X to Y
+						if(statTranslation !== undefined) {
+							var keyValueStat = {};
+							keyValueStat.id = stats.id;
+							let tranlationKey = statTranslation.ids.join(",");
+							if(stats.hasOwnProperty("value")) keyValueStat.value = stats.value;
+							else if(skillGem.per_level[g.level] && skillGem.per_level[g.level].stats[index] && skillGem.per_level[g.level].stats[index].value)
+							keyValueStat.value = skillGem.per_level[g.level].stats[index].value;
+							if(gemStat.hasOwnProperty(tranlationKey)) {
+								gemStat[tranlationKey].push(keyValueStat);
+							} else {
+								gemStat[tranlationKey] = [];
+								gemStat[tranlationKey].push(keyValueStat);
+								gemTranslate[tranlationKey] = statTranslation;
+							}
+						} else {
+							//console.log("translation not found", stats, g[1].getAttribute("skillId"));
+						}
+					});
+					// Include stat from appropriate quality and normalized it with quality value (base on 2000)
+					let qualityStat = skillGem.static.quality_stats[qualityIdMap[g.qualityId]];
+					if(qualityStat !== undefined && qualityStat.value > 0) {
+						let qualityTranslation = allStats.find(a => a.ids.find(id => id == qualityStat.id));
+						if(g.quality !== undefined && g.quality > 0 && qualityTranslation !== undefined) {
+							var keyValueStat = {};
+							keyValueStat.id = qualityStat.id;
+							let tranlationKey = qualityTranslation.ids.join(",");
+							keyValueStat.value = qualityStat.value / 1000 * g.quality;
+							if(gemStat.hasOwnProperty(qualityTranslation.ids.join(","))) {
+								gemStat[tranlationKey].push(keyValueStat);
+							} else {
+								gemStat[tranlationKey] = [];
+								gemStat[tranlationKey].push(keyValueStat);
+								gemTranslate[tranlationKey] = qualityTranslation;
+							}
+						}
+					}
+					// Translate gemStats into description
+					//console.log(gemStat);
+					skillModifiers.push(translateStats(gemStat, gemTranslate));
+					//console.log(skillModifiers);
+
+					if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
+					gemData.rarity = "Gem";
+					gemData.name = gemRewards[gemNameId].lang[langSelected];
+					gemData.sections = gemSection;
+					config.reference = "gem_" + k + "_" + i + "_" + j;
+					config.data = gemData;
+					config.iconUrl = gemRewards[gemNameId].icon;
+					hhData.push(config);
+					// Second gem description for roadmap
+					var config2 = [];
+					config2.reference = "gem_" + gemNameId.replaceAll(" ", "_");
+					config2.data = gemData;
+					config2.iconUrl = gemRewards[gemNameId].icon;
+					hhData.push(config2);
+					//console.log("loaded gem", config);
+				} else {
+					// Skill not from gem (enchant, object, ascendancy, etc.)
+				}
 			})
 		});
 	})

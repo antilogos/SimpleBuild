@@ -179,10 +179,15 @@ footer {
     background-position: -140px -35px;
 }
 
+.socketColourIntegrated {
+	background: url(./socket.png) no-repeat;
+    background-position: -70px -35px;
+}
+
 #ascendancyDiv > div, #keystoneDiv > div, #pathwayDiv > div{
 	display: inline-block;
 }
-#pathwayDiv .noLabel .poe-icon-label {
+#pathwayDiv .noLabel .poe-icon-label, #roadmapDiv .poe-icon-label {
 	display: none;
 }
 

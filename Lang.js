@@ -83,5 +83,41 @@ const langTranslate=[
 	},{"_id": "label_footer", 
 		"en": "This site is fan made and isn't official. It isn't affiliated with or endorsed by Grinding Gear Games in any way.", 
 		"fr": "Ce site est réalisé par un fan et n'est pas officiel. Il n'est pas affilié à ou approuvé par Grinding Gear Game."
+	},{"_id": "label_quest_lyoneye", 
+		"en": "Enter Lyoneye's Watch", 
+		"fr": "Arrivé au Guet<br />"
+	},{"_id": "label_quest_submerged", 
+		"en": "Enter Submerged passage", 
+		"fr": "Arrivé aux Souterrains<br />"
+	},{"_id": "label_quest_prison", 
+		"en": "Enter Axiom's prison", 
+		"fr": "Arrivé à la Prison<br />"
+	},{"_id": "label_quest_brutus", 
+		"en": "Kill Brutus", 
+		"fr": "Tuer Brutus<br />"
+	},{"_id": "label_quest_cavern", 
+		"en": "Enter Merveil's Caverns", 
+		"fr": "Arrivé aux Cavernes<br />"
+	},{"_id": "label_quest_balefulgem", 
+		"en": "Pickup the Baleful Gem", 
+		"fr": "Récupérer Gemme maléfique<br />"
+	},{"_id": "label_quest_maligarospike", 
+		"en": "Pickup Maligaro's spike", 
+		"fr": "Récupérer Pic de Maligaro<br />"
+	},{"_id": "label_quest_tolman", 
+		"en": "Pickup Tolman's bracelet", 
+		"fr": "Récupérer Bracelet de Tolman<br />"
+	},{"_id": "label_quest_gravicius", 
+		"en": "Kill Gravicius", 
+		"fr": "Tuer Gravicius<br />"
+	},{"_id": "label_quest_archives", 
+		"en": "Pickup the golden pages", 
+		"fr": "Récupérer les pages des archives<br />"
+	},{"_id": "label_quest_mines", 
+		"en": "Enter the mines", 
+		"fr": "Arrivé aux Mines<br />"
+	},{"_id": "label_quest_belly", 
+		"en": "Enter the belly of the beast", 
+		"fr": "Arrivé aux Entrailles<br />"
 	}
 ]
