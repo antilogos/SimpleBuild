@@ -80,5 +80,8 @@ const langTranslate=[
 	},{"_id": "complement_tree_points", 
 		"en": " points", 
 		"fr": " points"
+	},{"_id": "label_footer", 
+		"en": "This site is fan made and isn't official. It isn't affiliated with or endorsed by Grinding Gear Games in any way.", 
+		"fr": "Ce site est réalisé par un fan et n'est pas officiel. Il n'est pas affilié à ou approuvé par Grinding Gear Game."
 	}
 ]

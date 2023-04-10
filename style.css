@@ -5,7 +5,7 @@ body.dark {
 	--nav-bg: #000;
 	
 	--section-bg: #111C;
-	--section-higlight: #000;
+	--section-highlight: #000;
 
 	--text-color: #eee;
 	--text-shadow: -0.1em 0.1em 0.07em #0004, 0em 0em 0.2em #d833, 0em -0.3em 0.6em #fff3;
@@ -35,7 +35,7 @@ body.light {
 	--nav-bg: #0c343d;
 	
 	--section-bg: #efefefcc;
-	--section-higlight: #aaa;
+	--section-highlight: #aaa;
 	
 	--text-color: #000;
 	--text-shadow: -0.02em 0.01em 0.07em #0c343d30, 0.01em 0.01em 0.06em #fff6;
@@ -54,7 +54,7 @@ body.light {
 	--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
 	
 	--select-border: #777;
-	--select-focus: #b80;
+	--select-focus: #022;
 	
 	--display-dark: none;
 	--display-light: block;
@@ -70,6 +70,10 @@ body {
 	background-image: var(--body-bg);
 	color: var(--text-color);
 	transition: background 0.2s linear;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	margin: 0px;
 }
 h1 {
 	text-align: center;
@@ -113,11 +117,29 @@ h1, h2 {
 .selectedLang {
 	opacity: 1;
 }
+.flex-box {
+	flez: 1 0 auto;
+}
+.footer_filler {
+	-webkit-flex: 1 0 auto;
+	flex: 1 1 auto;
+}
+footer {
+	display: block;
+	background: var(--nav-bg);
+	flex: 0 1 2rem;
+    padding: 1em;
+    margin: 1em;
+	text-align: center;
+}
+.label_footer {
+	display: inline-block;
+}
 
 /* Specific part of display */
 
 .socketGroup {
-	background: var(--section-higlight);
+	background: var(--section-highlight);
 	border-radius: 1.5em;
     padding: 1em;
     margin: 1em;
@@ -173,7 +195,7 @@ h1, h2 {
 	width: 100%;
 }
 .inventory > div:not(.flask), .flask > div {
-	background-color: var(--section-higlight);  
+	background-color: var(--section-highlight);  
 	border-radius: 1.5em;
 	text-align: center;
 	padding: 0em;
@@ -425,6 +447,20 @@ select {
   font-size: 1.25rem;
   cursor: pointer;
   line-height: 1.1em;
+}
+
+#gemconfDiv button, #treeDiv button, #searchDiv button, #resultDiv button {
+	transition-duration: 0.4s;
+	background-color: var(--section-highlight);
+	color: var(--text-color);
+	border: 1px solid var(--select-focus);
+	padding: 0.4em;
+	margin: 0.4em;
+	border-radius: 0.2em;
+}
+#gemconfDiv button:hover, #treeDiv button:hover, #searchDiv button:hover, #resultDiv button:hover {
+	color: var(--section-highlight);
+	background-color: var(--select-focus);
 }
 
 /* Passive tree */
