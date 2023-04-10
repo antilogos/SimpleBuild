@@ -117,10 +117,6 @@ function selectLang(lang) {
       <ul>
         <li><button id="home" onclick="displayMenu('search');"></button></li>
         <li><button id="import" onclick="displayMenu('import');"></button></li>
-        <li><button class="hideOnDark" onclick="selectStyle('dark');">Mode &#9790;</button></li>
-        <li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
-		<li><button id="langfr" class="lang selectedLang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
-		<li><button id="langen" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
         <!--li id="menu_config"><button onclick="displayMenu('config');">Options</button>
           <ul class="dropmenu">
             <li>
@@ -135,6 +131,10 @@ function selectLang(lang) {
   <div class="navigation_menu">
     <nav>
       <ul>
+        <li><button class="hideOnDark" onclick="selectStyle('dark');">Mode &#9790;</button></li>
+        <li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
+		<li><button id="langfr" class="lang selectedLang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
+		<li><button id="langen" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
         <li><a id="googlesite" href="http://sites.google.com/view/poefr/"></a></li>
         <!--li id="menu_test"><button>Menu<span class="arrow"></span></button>
           <ul class="dropmenu">
@@ -193,12 +193,12 @@ function selectLang(lang) {
 				<div id="ascendancyDiv"></div>
 			</div>
 			<div>
-				<h2 id="mastery_subheader"></h2>
-				<div id="masteryDiv"></div>
-			</div>
-			<div>
 				<h2 id="keystone_subheader"></h2>
 				<div id="keystoneDiv"></div>
+			</div>
+			<div>
+				<h2 id="mastery_subheader"></h2>
+				<div id="masteryDiv"></div>
 			</div>
 		</div>
 	</div>

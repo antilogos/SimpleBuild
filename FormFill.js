@@ -147,6 +147,7 @@ function fillTreeProfile(treeGroup, references) {
 	}).forEach( node => {
 		// Passif reference
 		var nodeDiv = document.createElement("div");
+		//if(!parentTree && )
 		nodeDiv.setAttribute("id", "node_"+node.skill);
 		addReference(nodeDiv, references, false);
 		// Creation of the poe-item html element for HoradricHelper
@@ -157,7 +158,7 @@ function fillTreeProfile(treeGroup, references) {
 		displayMode(item, "popup");
 		document.getElementById(DIV_PATHWAY).appendChild(nodeDiv);
 	});
-	// Add poe-passive for Masteris group with their effect from all masteries allocated
+	// Add poe-passive for Masteries group with their effect from all masteries allocated
 	var masteryGroup = new Map();
 	treeGroup.masteryEffects.split("},{").filter(s => s.length > 0).forEach( (k, i) => {
 		let master = k.split(",")[0].replaceAll("\{","").replaceAll("\}","");

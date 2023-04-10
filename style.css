@@ -1,10 +1,10 @@
 /* Theme */
 
 body.dark {
-	--body-bg: #111;
-	--nav-bg: #222;
+	--body-bg: url("./BackgroundAmbient_PoE_Crucible.png");
+	--nav-bg: #000;
 	
-	--section-bg: #111;
+	--section-bg: #111C;
 	--section-higlight: #000;
 
 	--text-color: #eee;
@@ -31,16 +31,16 @@ body.dark {
 }
 
 body.light {
-	--body-bg: #eee;
-	--nav-bg: #ddd;
+	--body-bg: url("./BackgroundAmbient_PoE_Crucible.png");
+	--nav-bg: #0c343d;
 	
-	--section-bg: #ccc;
+	--section-bg: #efefefcc;
 	--section-higlight: #aaa;
 	
 	--text-color: #000;
-	--text-shadow: -0.03em 0.03em 0.07em #0d39f294, 0em 0em 0.1em #1e22aaeb, 0em -0.1em 0.02em #fff3;
-	--text-shadow-hover: -0.1em 0.1em 0.07em #fffd, 0em 0em 0.2em #0501ff, 0em -0.3em 0.6em #fff3;
-	--text-background: -webkit-linear-gradient(#99f 5%, #11f);
+	--text-shadow: -0.02em 0.01em 0.07em #0c343d30, 0.01em 0.01em 0.06em #fff6;
+	--text-shadow-hover: 0em 0em 0.05em #fff, -0.1em 0.01em 0.1em #6aaf;
+	--text-background: -webkit-linear-gradient(#2aa 5%, #022);
 	--box-shadow: 0.1em 0.1em 0.5em 0.1em #0003 inset;
 	
 	--tree-connector: #000;
@@ -67,7 +67,7 @@ body.light {
   outline: 0;
 }
 body {
-	background: var(--body-bg);
+	background-image: var(--body-bg);
 	color: var(--text-color);
 	transition: background 0.2s linear;
 }
@@ -96,7 +96,8 @@ h1, h2 {
 	margin: 2rem;
 	padding: 2rem;
 	background: var(--section-bg);
-	display: flex;
+	display: flex;    
+	border-radius: 5em;
 }
 .filling {
 }
@@ -159,7 +160,7 @@ h1, h2 {
 #ascendancyDiv > div, #keystoneDiv > div, #pathwayDiv > div{
 	display: inline-block;
 }
-#pathwayDiv .poe-icon-label {
+#pathwayDiv .noLabel .poe-icon-label {
 	display: none;
 }
 
