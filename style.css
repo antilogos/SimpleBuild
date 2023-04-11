@@ -260,7 +260,40 @@ footer {
   grid-area: 1 / 5 / 3 / 6;
 }
 
+/* Responsive adaptation */
+
+.sideGem {
+	max-width: 40%;
+}
+.sideTree {
+	display: block;
+	max-width: 30%;
+}
+
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+	.section {
+		display: block;
+		padding: 0.1em;
+		margin: 0.1em;
+		border-radius: 0.1em;
+	}
+	.sideGem, .sideTree {
+		width: 100%;
+		max-width: 100%;
+	}
+	.inventory, .flask {
+		gap: 0.1em;
+	}
+}
+
+@media only screen and (max-width:500px) {
+  /* For mobile phones: */
+  
+}
+
 /* Loader */
+
 .loader {
   position: absolute;
   top: 40vh; 
