@@ -58,7 +58,27 @@ function waitForLoadAsync() {
 window.onload = function() {
 	selectLang('fr');
 	displayMenu('loader');
+	setupSearch();
+	waitForLoadAsync();
+}
+// List of builds 
+function setupSearch() {
+	//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
+	//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
 	// Setup for search and filter build
+	for (let build of listBuild.filter(b => b.pob)) {
+		build.parsed = loadPobData(pobCodeToObject(build.pob));
+	}
+	for (let build of listBuild.filter(b => b.parsed)) {
+		var item = document.createElement("button");
+		item.innerHTML = build.title;
+		item.addEventListener('click', function (event) {
+			displayParsed(build.parsed);
+		});
+		document.getElementById(DIV_RESULT).appendChild(item);
+	}
+	
+	
 	let tagList = new Set(listBuild.flatMap(b => b.tag));
 	for (let tag of tagList) {
 		var item = document.createElement("button");
@@ -67,14 +87,6 @@ window.onload = function() {
 			
 		});
 		document.getElementById(DIV_SEARCH).appendChild(item);
-	}
-	for (let build of listBuild) {
-		var item = document.createElement("button");
-		item.innerHTML = build.title;
-		item.addEventListener('click', function (event) {
-			displayBuild(build.pob);
-		});
-		document.getElementById(DIV_RESULT).appendChild(item);
 	}
 	loadBuildlist = true;
 	waitForLoadAsync();
@@ -245,7 +257,7 @@ function selectLang(lang) {
 		</div>
 		<div>
 			<h2 id="set_subheader"></h2>
-			<div id="invenrotySetDiv"></div>
+			<div id="inventorySetDiv"></div>
 		</div>
 		<div>
 			<h2 id="jewel_subheader"></h2>

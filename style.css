@@ -21,6 +21,7 @@ body.dark {
 	--tree-node-int: #669;
 	--tree-node-dex: #696;
 	--tree-node-path: #6ff;
+	--tree-node-oldpath: #099;
 	--tree-radiant-background: conic-gradient(#11111A, #111a11 120deg, #1a1111 240deg, #11111a);
 	
 	--select-border: #777;
@@ -51,6 +52,7 @@ body.light {
 	--tree-node-int: #00f;
 	--tree-node-dex: #0f0;
 	--tree-node-path: #6ff;
+	--tree-node-oldpath: #099;
 	--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
 	
 	--select-border: #777;
@@ -159,6 +161,16 @@ footer {
     height: 35px;
 }
 
+.socketColour {
+	display: inline-block;
+	width: 35px;
+    height: 35px;
+}
+
+.socketColour.optional{
+	opacity: 0.5;
+}
+
 .socketColourGreen {
 	background: url(./socket.png) no-repeat;
     background-position: -105px -70px;
@@ -258,6 +270,13 @@ footer {
 }
 .flask #flask5 {
   grid-area: 1 / 5 / 3 / 6;
+}
+
+.classIconRound {
+	border-radius: 100em;
+	height: 2em;
+	width: 1em;
+	object-fit: cover;
 }
 
 /* Responsive adaptation */
@@ -487,7 +506,7 @@ select {
   line-height: 1.1em;
 }
 
-#gemconfDiv button, #treeDiv button, #searchDiv button, #resultDiv button {
+#gemconfDiv button, #treeDiv button, #searchDiv button, #resultDiv button, #inventorySetDiv button {
 	transition-duration: 0.4s;
 	background-color: var(--section-highlight);
 	color: var(--text-color);
@@ -496,7 +515,7 @@ select {
 	margin: 0.4em;
 	border-radius: 0.2em;
 }
-#gemconfDiv button:hover, #treeDiv button:hover, #searchDiv button:hover, #resultDiv button:hover {
+#gemconfDiv button:hover, #treeDiv button:hover, #searchDiv button:hover, #resultDiv button:hover, #inventorySetDiv button:hover {
 	color: var(--section-highlight);
 	background-color: var(--select-focus);
 }
@@ -506,4 +525,6 @@ select {
 .skillTree {
 	background-image: var(--tree-radiant-background);
 	border-radius: 25%;
+	width: 100%;
+	height: 100vh;
 }

@@ -16,6 +16,12 @@
 		--tree-node-path: #6ff;
 		--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
 	}
+	.skillTree {
+		background-image: var(--tree-radiant-background);
+		border-radius: 25%;
+		width: 100%;
+		height: 100vh;
+	}
 	</style>
 	<script src="pako.min.js"></script>
 	<script src="PobParser.js"></script>
@@ -44,7 +50,8 @@
 		if(urlParams.get("draw")) {
 			let tutorialBuild = loadPobData(pobCodeToObject(tutorial[urlParams.get("draw")].build.pob));
 			let startingClass = tutorialBuild.treeGroups[1].startClass;
-			let ascendClassId = passiveSkillTreeData.classes[startingClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id
+			let ascendClassId = passiveSkillTreeData.classes[startingClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id;
+			let startClassAscend = Object.values(passiveSkillTreeData.nodes).find(n => n.isAscendancyStart && n.ascendancyName == ascendClassId);
 			buildSvgTree(MAINDIV, treeNodes, startingClass, ascendClassId);
 				
 			for (const [index, treeGroup] of tutorialBuild.treeGroups.reverse().entries()) {
@@ -56,7 +63,7 @@
 				tutorialBuild.treeGroups[0].title.replaceAll(/\w* \"(\w+)\"/g,"$1")]
 			buildContext(MAINDIV, labels, tutorial[urlParams.get("draw")].labelPos);
 			// Draw the icon of the class
-			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n));
+			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n, startClassAscend));
 		}
 	}
 	</script>

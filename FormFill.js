@@ -18,7 +18,7 @@ const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "ge
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv", DIV_PATHWAY = "pathwayDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
-	DIV_INVENTORYSET = "invenrotySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
+	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
 const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
  "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
 
@@ -47,26 +47,28 @@ function fillGemProfile(gemGroup, index, references) {
 		// Add socket image
 		var divSocketColor = document.createElement("div");
 		divSocketColor.setAttribute("class", "socketColourGroup");
-		k.gems.filter( g => allGem[g.skill] != undefined ).map(g => allGem[g.skill]).forEach(g => {
+		k.gems.filter( g => allGem[g.skill] != undefined ).forEach(g => {
+			let skillGem = allGem[g.skill];
 			var socketDiv = document.createElement("div");
 			socketDiv.classList.add("socketColour");
-			if(g.tags == undefined) {
+			if(skillGem.tags == undefined) {
 				socketDiv.classList.add("socketColourIntegrated");
-			} else if(g.tags.indexOf("intelligence") >= 0) {
+			} else if(skillGem.tags.indexOf("intelligence") >= 0) {
 				socketDiv.classList.add("socketColourBlue");
-			} else if(g.tags.indexOf("dexterity") >= 0) {
+			} else if(skillGem.tags.indexOf("dexterity") >= 0) {
 				socketDiv.classList.add("socketColourGreen");
-			} else if(g.tags.indexOf("strength") >= 0) {
+			} else if(skillGem.tags.indexOf("strength") >= 0) {
 				socketDiv.classList.add("socketColourRed");
 			} else {
 				socketDiv.classList.add("socketColourWhite");
 			}
+			if(g.enabled == "false") socketDiv.classList.add("optional");
 			divSocketColor.appendChild(socketDiv);
 		})
 		div.appendChild(divSocketColor);
 		// Each gem
 		k.gems.filter( g => allGem[g.skill] != undefined ).forEach( (g, j) => {
-			var skillGem = allGem[g.skill];
+			let skillGem = allGem[g.skill];
 			var gemName;
 			if(skillGem.base_item !== null) {
 				gemName = skillGem.base_item.display_name;
@@ -187,7 +189,12 @@ function fillTreeProfile(treeGroup, references) {
 	if(treeGroup.ascendClassId > 0) ascendClassId = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
 	buildSvgTree(DIV_PREVIEW, treeNodes, treeGroup.startClass, ascendClassId);
 	buildPath(treeGroup, DIV_PREVIEW, treeNodes, passiveSkillTreeData);
-	Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == treeGroup.startClass).forEach(n => buildClassIcon(DIV_PREVIEW, n));
+	if(parentTree) {
+		buildPath(parentTree, DIV_PREVIEW, treeNodes, passiveSkillTreeData, {"stroke": "var(--tree-node-oldpath)", "width": ALLOCATED_PATH});
+	}
+	let startClass = Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == treeGroup.startClass)[0];
+	let startClassAscend = Object.values(passiveSkillTreeData.nodes).find(n => n.isAscendancyStart && n.ascendancyName == ascendClassId);
+	buildClassIcon(DIV_PREVIEW, startClass, startClassAscend);
 	// Change roadmap
 	currRoadMapStat.startingClass = parseInt(treeGroup.startClass);
 	loadHoradricHelper();
@@ -236,7 +243,9 @@ function fillProfile(pobObject) {
 	// TODO a link to the official tree
 	for (let tree of pobObject.treeGroups) {
 		let optionElement = document.createElement("button");
-		var title = (tree.title? tree.title : "par défaut") + " (" + tree.nodes.length + " points)";
+		let points =  tree.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
+		let ascendancyPoints =  tree.nodes.filter(n => !treeNodes[n].isAscendancyStart && treeNodes[n].ascendancyName).length;
+		var title = (tree.title? tree.title : "par défaut") + " (" + points + " points, " + ascendancyPoints + " ascendances)";
 		optionElement.innerHTML = title;
 		optionElement.addEventListener('click', function (event) {
 			fillTreeProfile(tree, pobObject.notes.refs);
@@ -373,14 +382,17 @@ function clearProfile(divList) {
 function displayBuild(build) {
 	var pobObject = pobCodeToObject(build);
 	if(pobObject !== undefined) {
-		// If valid code, clear before load
-		displayMenu('home');
-		clearProfile();
-		hhData = [];
-		// Load new
-		var pobData = loadPobData(pobObject);
-		fillProfile(pobData);
+		displayParsed(loadPobData(pobObject));
 	} else {
 		//TODO display error message
 	}
+}
+
+function displayParsed(pobData) {
+	// If valid code, clear before load
+	displayMenu('home');
+	clearProfile();
+	hhData = [];
+	// Load new
+	fillProfile(pobData);
 }

@@ -155,6 +155,9 @@ function extractNodesData(jsonData) {
 /* Load */
 
 const LARGE_NODE_SIZE = 96, MEDIUM_NODE_SIZE = 58, SMALL_NODE_SIZE = 32, CONNECTION_SIZE = 32, ALLOCATED_NODE = 72, ALLOCATED_PATH = 96;
+const classPosition = [{x:80,y:580},{x:660,y:80},{x:660,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580}];
+const ascendancyPosition = {'Ascendant':{x:220,y:180}, 'Juggernaut':{x:660,y:0}, 'Berserker':{x:330,y:340}, 'Chieftain':{x:0,y:500}, 'Raider':{x:660,y:400}, 'Deadeye':{x:80,y:500}, 'Pathfinder':{x:660,y:320}, 'Occultist':{x:660,y:240}, 'Elementalist':{x:240,y:500}, 'Necromancer':{x:660,y:160}, 'Slayer':{x:240,y:580}, 'Gladiator':{x:320,y:500}, 'Champion':{x:440,y:420}, 'Inquisitor':{x:560,y:500}, 'Hierophant':{x:480,y:500}, 'Guardian':{x:400,y:500}, 'Assassin':{x:330,y:260}, 'Trickster':{x:400,y:580}, 'Saboteur':{x:0,y:580}};
+const classImageSize = {x:76,y:80};
 
 function displayedNode(node, classId, ascendClassId) {
 	return node.id && !node.isMastery 
@@ -167,8 +170,6 @@ function displayedNode(node, classId, ascendClassId) {
 function buildSvgTree(elementId, treeNodes, classId, ascendClassId) {
 	const svg = document.createElementNS("http://www.w3.org/2000/svg","svg");
 	svg.setAttribute("class","skillTree");
-	svg.setAttribute("width","100%");
-	svg.setAttribute("height","95vh");
 	svg.setAttribute("xmlns","http://www.w3.org/2000/svg")
 	
 	// Drawing the links between nodes
@@ -369,8 +370,13 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, custom
 		const nodePoint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 		nodePoint.setAttribute("cx", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].x);
 		nodePoint.setAttribute("cy", passiveSkillTreeData.groups[passiveSkillTreeData.nodes[value].group].y);
-		nodePoint.setAttribute("fill", "var(--tree-node-path)");
-		nodePoint.setAttribute("r", ALLOCATED_NODE);
+		if(customStyle) {
+			nodePoint.setAttribute("fill", customStyle.stroke);
+			nodePoint.setAttribute("r", customStyle.width);
+		} else {
+			nodePoint.setAttribute("fill", "var(--tree-node-path)");
+			nodePoint.setAttribute("r", ALLOCATED_NODE);
+		}
 		nodePoint.setAttribute("id", "node_"+passiveSkillTreeData.nodes[value].id);
 		svg.appendChild(nodePoint);
 		svgElements.push(nodePoint);	
@@ -403,12 +409,11 @@ function depthFromStart(nodes, classStart, parentTree) {
 	return depthNodes;
 }
 
-function buildClassIcon(elementId, node) {
+function buildClassIcon(elementId, node, ascendClassNode) {
 	var svg = document.getElementById(elementId).firstChild;
 	let imageUrl = "./inventory-sprite.png";
-	let classPosition = [{x:80,y:580},{x:658,y:80},{x:658,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580}];
-	let imageSize = {x:76,y:80};
 	let zoom = 10;
+	// Base class image clip
 	let offsetClipX = classPosition[node.classStartIndex].x + node.x/zoom;
 	let offsetClipY = classPosition[node.classStartIndex].y + node.y/zoom;
 	const clipPath = document.createElementNS("http://www.w3.org/2000/svg","clipPath");
@@ -416,12 +421,15 @@ function buildClassIcon(elementId, node) {
 	const rectClip = document.createElementNS("http://www.w3.org/2000/svg","rect");
 	rectClip.setAttribute("x", offsetClipX);
 	rectClip.setAttribute("y", offsetClipY);
-	rectClip.setAttribute("width", imageSize.x);
-	rectClip.setAttribute("height", imageSize.y);
+	rectClip.setAttribute("width", classImageSize.x);
+	rectClip.setAttribute("height", classImageSize.y);
 	clipPath.appendChild(rectClip);
 	svg.appendChild(clipPath);
+	// Base class image
 	const gPanel = document.createElementNS("http://www.w3.org/2000/svg","g");
-	gPanel.setAttribute("transform","scale("+zoom+") translate("+(-1*classPosition[node.classStartIndex].x-imageSize.x/2)+","+(-1*classPosition[node.classStartIndex].y-imageSize.y/2)+")");
+	let offsetImageX = -1*classPosition[node.classStartIndex].x-classImageSize.x/2;
+	let offsetImageY = -1*classPosition[node.classStartIndex].y-classImageSize.y/2;
+	gPanel.setAttribute("transform","scale("+zoom+") translate("+offsetImageX+","+offsetImageY+")");
 	const img = document.createElementNS("http://www.w3.org/2000/svg","image");
 	img.setAttribute("x", node.x/zoom);
 	img.setAttribute("y", node.y/zoom);
@@ -432,6 +440,34 @@ function buildClassIcon(elementId, node) {
 	img.setAttribute("clip-path","url(#clipper)");
 	gPanel.appendChild(img);
 	svg.appendChild(gPanel);
+	// Ascendancy image clip
+	if(ascendClassNode && ascendancyPosition[ascendClassNode.ascendancyName]) {
+		let offsetClipAscX = ascendancyPosition[ascendClassNode.ascendancyName].x + ascendClassNode.x/zoom;
+		let offsetClipAscY = ascendancyPosition[ascendClassNode.ascendancyName].y + ascendClassNode.y/zoom;
+		const clipAscPath = document.createElementNS("http://www.w3.org/2000/svg","clipPath");
+		clipAscPath.setAttribute("id","clipperAsc");
+		const rectClipAsc = document.createElementNS("http://www.w3.org/2000/svg","rect");
+		rectClipAsc.setAttribute("x", offsetClipAscX);
+		rectClipAsc.setAttribute("y", offsetClipAscY);
+		rectClipAsc.setAttribute("width", classImageSize.x);
+		rectClipAsc.setAttribute("height", classImageSize.y);
+		clipAscPath.appendChild(rectClipAsc);
+		svg.appendChild(clipAscPath);
+		const gPanelAsc = document.createElementNS("http://www.w3.org/2000/svg","g");
+		offsetImageAscX = -1*ascendancyPosition[ascendClassNode.ascendancyName].x + classImageSize.x/2;
+		offsetImageAscY = -1*ascendancyPosition[ascendClassNode.ascendancyName].y + classImageSize.y/2;
+		gPanelAsc.setAttribute("transform","scale("+zoom+") translate("+offsetImageAscX+","+offsetImageAscY+")");
+		const img = document.createElementNS("http://www.w3.org/2000/svg","image");
+		img.setAttribute("x", ascendClassNode.x/zoom);
+		img.setAttribute("y", ascendClassNode.y/zoom);
+		img.setAttribute("width", 788);
+		img.setAttribute("height", 710);
+		img.setAttribute("href",imageUrl);
+		img.setAttribute("xlink:href",imageUrl);
+		img.setAttribute("clip-path","url(#clipperAsc)");
+		gPanelAsc.appendChild(img);
+		svg.appendChild(gPanelAsc);
+}
 };
 
 /* Utility for first character tutorial */
