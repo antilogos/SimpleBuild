@@ -10,286 +10,299 @@
 <!-- Add higlight in preview when passive-item is hover -->
 <!-- Horadric Helper -->
 	<title>Simple Build Displayer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
-<script src="HoradricLoader.js"></script>
-<!-- Passive Skill Tree parser -->
-<script src="TreeParser.js"></script>
-<!-- External files for mods from RePoE -->
-<script src="Repoe.js"></script>
-<!-- Translate pob code into javascript object with pako library to unzip (from https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js) -->
-<script src="pako.min.js"></script>
-<script src="PobParser.js"></script>
-<!-- Data for quest reward -->
-<script src="GemReward.js"></script>
-<!-- Saved builds -->
-<script src="ListBuild.js"></script>
-<!-- Fill the different div from a parsed object -->
-<script src="FormFill.js"></script>
-<!-- Navigation and page script -->
-<script src="Lang.js"></script>
-<script src="itemoverview.js"></script>
-<script>
-
-// Initialization
-let loadBuildlist = false;
-var passiveSkillTreeData, treeNodes, loadPassive = false;
-function waitForLoadAsync() {
-	if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
-	else {
-		if(currPob) {
-			clearProfile();
-			hhData = [];
-			fillProfile(currPob);
-		} else {
-			displayMenu('search');
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
+	<script src="HoradricLoader.js"></script>
+	<!-- Passive Skill Tree parser -->
+	<script src="TreeParser.js"></script>
+	<!-- External files for mods from RePoE -->
+	<script src="Repoe.js"></script>
+	<!-- Translate pob code into javascript object with pako library to unzip (from https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js) -->
+	<script src="pako.min.js"></script>
+	<script src="PobParser.js"></script>
+	<!-- Data for quest reward -->
+	<script src="GemReward.js"></script>
+	<!-- Saved builds -->
+	<script src="ListBuild.js"></script>
+	<!-- Fill the different div from a parsed object -->
+	<script src="FormFill.js"></script>
+	<!-- Navigation and page script -->
+	<script src="Lang.js"></script>
+	<script src="itemoverview.js"></script>
+	<script>
+	// Initialization
+	let loadBuildlist = false;
+	var passiveSkillTreeData, treeNodes, loadPassive = false;
+	function waitForLoadAsync() {
+		if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
+		else {
+			if(currPob) {
+				clearProfile();
+				hhData = [];
+				fillProfile(currPob);
+			} else {
+				displayMenu('search');
+			}
 		}
-		/*
-		gemNinja.lines.filter(n => n.name.indexOf("Vaal") < 0 && n.name.indexOf("Anomalous") < 0 && n.name.indexOf("Divergent") < 0 && n.name.indexOf("Phantasmal") < 0 && n.name.indexOf("Awakened") < 0 ).forEach(n => {
-			if(gemRewards.hasOwnProperty(n.name)) {
-				gemRewards[n.name].lang = {};
-				gemRewards[n.name].lang["fr"] = gemNinja.language.translations[n.name];
-				gemRewards[n.name].lang["en"] = n.name;
-			} else 
-				console.log("no entry for ", n.name);
-		})*/
 	}
-}
-window.onload = function() {
-	selectLang('fr');
-	displayMenu('loader');
-	setupSearch();
-	waitForLoadAsync();
-}
-// List of builds 
-function setupSearch() {
-	//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
-	//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
-	// Setup for search and filter build
-	for (let build of listBuild.filter(b => b.pob)) {
-		build.parsed = loadPobData(pobCodeToObject(build.pob));
+	window.onload = function() {
+		// Load items from local storage
+		if(localStorage.getItem("lang")) {
+			selectLang(localStorage.getItem("lang"));
+		} else if(navigator.language) {
+			selectLang(navigator.language);
+		} else if(navigator.userLanguage) {
+			selectLang(navigator.userLanguage);
+		} else {
+			selectLang("fr");
+		}
+		// Display loader and load the searchPage
+		displayMenu('loader');
+		setupSearch();
+		waitForLoadAsync();
 	}
-	for (let build of listBuild.filter(b => b.parsed)) {
-		var item = document.createElement("button");
-		item.innerHTML = build.title;
-		item.addEventListener('click', function (event) {
-			displayParsed(build.parsed);
-		});
-		document.getElementById(DIV_RESULT).appendChild(item);
+	// List of builds 
+	function setupSearch() {
+		//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
+		//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
+		// Setup for search and filter build
+		for (let build of listBuild.filter(b => b.pob)) {
+			build.parsed = loadPobData(pobCodeToObject(build.pob));
+		}
+		for (let build of listBuild.filter(b => b.parsed)) {
+			var item = document.createElement("button");
+			item.innerHTML = build.title;
+			item.addEventListener('click', function (event) {
+				displayParsed(build.parsed);
+			});
+			document.getElementById(DIV_RESULT).appendChild(item);
+		}
+		
+		
+		let tagList = new Set(listBuild.flatMap(b => b.tag));
+		for (let tag of tagList) {
+			var item = document.createElement("button");
+			item.innerHTML = tag;
+			item.addEventListener('click', function (event) {
+				
+			});
+			document.getElementById(DIV_SEARCH).appendChild(item);
+		}
+		loadBuildlist = true;
+		waitForLoadAsync();
 	}
-	
-	
-	let tagList = new Set(listBuild.flatMap(b => b.tag));
-	for (let tag of tagList) {
-		var item = document.createElement("button");
-		item.innerHTML = tag;
-		item.addEventListener('click', function (event) {
-			
-		});
-		document.getElementById(DIV_SEARCH).appendChild(item);
+	// Navigation
+	function displayMenu(page) {
+	  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+	  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
+	  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
+	  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
 	}
-	loadBuildlist = true;
-	waitForLoadAsync();
-}
-// Navigation
-function displayMenu(page) {
-  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
-  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
-  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
-}
-function parseAndLoadCode() {
-	var input = document.getElementById("pobinput").value.trim();
-	if(input.startsWith("https://pastebin.com")) {
-		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
-	} else if(input.startsWith("https://pobb.in")) {
-		window.open(input, "_blank");
-	} else if(input.startsWith("https://poe.ninja")) {
-		window.open(input, "_blank");
-	} else {
-		displayBuild(input);
+	function parseAndLoadCode() {
+		var input = document.getElementById("pobinput").value.trim();
+		if(input.startsWith("https://pastebin.com")) {
+			window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
+		} else if(input.startsWith("https://pobb.in")) {
+			window.open(input, "_blank");
+		} else if(input.startsWith("https://poe.ninja")) {
+			window.open(input, "_blank");
+		} else {
+			displayBuild(input);
+		}
 	}
-}
-// Style
-function selectStyle(theme) {
-  document.body.classList = "";
-  document.body.classList.add(theme);
-}
-const langList = ["fr", "en"];
-var langSelected = "fr";
-function selectLang(lang) {
-	langSelected = lang;
-	for (let l of langList) document.getElementById("lang"+l).classList = "lang";
-	document.getElementById("lang"+lang).classList.add("selectedLang");
-	for (let l of langTranslate) {
-		if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
+	// Style
+	function selectStyle(theme) {
+	  document.body.classList = "";
+	  document.body.classList.add(theme);
 	}
-	loadPassive = false;
-	fetchTreeData(lang).then(data => waitForLoadAsync());
-}
-</script>
-<!-- Style -->
-<link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+	function toggleHistoryPanel() {
+		if(document.getElementById("historyPanel").classList.length == 0) document.getElementById("historyPanel").classList.add("openPanel");
+		else document.getElementById("historyPanel").classList = "";
+	}
+	// Language
+	function selectLang(lang) {
+		// Get only code A2 from browser lang
+		if (lang.length > 2) lang = lang.substring(0,2).toLowerCase();
+		localStorage.setItem("lang", lang);
+		// Change style of flags
+		for (let l of ["fr", "en"]) document.getElementById("lang_"+l).classList = "lang";
+		document.getElementById("lang_"+lang).classList.add("selectedLang");
+		// Load all div text
+		for (let l of langTranslate) {
+			if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
+		}
+		// Force reload on tree passives
+		loadPassive = false;
+		fetchTreeData(lang).then(data => waitForLoadAsync());
+	}
+	</script>
+	<!-- Style -->
+	<link rel="stylesheet" href="style.css">
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <!-- Body -->
 <body class="dark">
-<div class="flex-box">
-<!-- Navigation bar -->
-<div class="navigation_bar">
-  <div class="navigation_home">
-    <nav>
-      <ul>
-        <li><button id="home" onclick="displayMenu('search');"></button></li>
-        <li><button id="import" onclick="displayMenu('import');"></button></li>
-        <!--li id="menu_config"><button onclick="displayMenu('config');">Options</button>
-          <ul class="dropmenu">
-            <li>
-              <div style="display: inline; margin-left: 1em;">Mode&nbsp;<button onclick="selectStyle('dark');">&#9790;</button><button onclick="selectStyle('light');">&#9728;</button>
-              </div>
-            </li>
-          </ul>
-        </li-->
-      </ul>
-    </nav>
-  </div>
-  <div class="navigation_menu">
-    <nav>
-      <ul>
-        <li><button class="hideOnDark" onclick="selectStyle('dark');">Mode &#9790;</button></li>
-        <li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
-		<li><button id="langfr" class="lang selectedLang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
-		<li><button id="langen" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
-        <li><a id="googlesite" href="http://sites.google.com/view/poefr/"></a></li>
-        <!--li id="menu_test"><button>Menu<span class="arrow"></span></button>
-          <ul class="dropmenu">
-            <li><button id="touff" onclick="displayMenu('menu1');">Menu1</button></li>
-            <li><button id="fifu" onclick="displayMenu('menu2');">Menu2</button></li>
-          </ul>
-        </li-->
-      </ul>
-    </nav>
-  </div>
-</div>
-<!-- Loader Page -->
-<div class="page" id="page_loader">
-<h1 id="loading_header"></h1>
-<div class="loader"></div>
-</div>
-<!-- Import Page -->
-<div class="page" id="page_import">
-<h1 id="import_header"></h1>
-<label id="label_pobcode"></label>
-<input type="text" id="pobinput" size=100 />
-<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
-</div>
-<!-- Display Page -->
-<div class="page" id="page_display">
-	<h1 id="notes_header"></h1><!-- NOTE -->
-	<div class="section">
-		<div class="filling" id="notesDiv"></div>
-	</div>
-	<h1 id="gem_header"></h1><!-- GEM -->
-	<div class="section">
-		<div style="width: 100%">
-			<h2 id="group_subheader"></h2>
-			<div id="setupDiv"></div>
+	<div class="flex-box">
+		<!-- Navigation bar -->
+		<div class="navigation_bar">
+		  <div class="navigation_home">
+			<nav>
+			  <ul>
+				<li><button id="home" onclick="displayMenu('search');"></button></li>
+				<li><button id="import" onclick="displayMenu('import');"></button></li>
+				<!--li id="menu_config"><button onclick="displayMenu('config');">Options</button>
+				  <ul class="dropmenu">
+					<li>
+					  <div style="display: inline; margin-left: 1em;">Mode&nbsp;<button onclick="selectStyle('dark');">&#9790;</button><button onclick="selectStyle('light');">&#9728;</button>
+					  </div>
+					</li>
+				  </ul>
+				</li-->
+			  </ul>
+			</nav>
+		  </div>
+		  <div class="navigation_menu">
+			<nav>
+			  <ul>
+				<li><button class="hideOnDark" onclick="selectStyle('dark');">Mode &#9790;</button></li>
+				<li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
+				<li><button id="lang_fr" class="lang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
+				<li><button id="lang_en" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
+				<li><button onclick="toggleHistoryPanel();">&#8635;</button></li>
+				<!--li><a id="googlesite" href="http://sites.google.com/view/poefr/"></a></li-->
+				<!--li id="menu_test"><button>Menu<span class="arrow"></span></button>
+				  <ul class="dropmenu">
+					<li><button id="touff" onclick="displayMenu('menu1');">Menu1</button></li>
+					<li><button id="fifu" onclick="displayMenu('menu2');">Menu2</button></li>
+				  </ul>
+				</li-->
+			  </ul>
+			</nav>
+		  </div>
 		</div>
-		<div class="sideGem">
-			<h2 id="configuration_subheader"></h2>
-			<div id="gemconfDiv"></div>
-			<h2 id="roadmap_subheader"></h2>
-			<div id="roadmapDiv"></div>
+		<!-- Loader Page -->
+		<div class="page" id="page_loader">
+		<h1 id="loading_header"></h1>
+		<div class="loader"></div>
 		</div>
-	</div>
-	<h1 id="tree_header"></h1><!-- TREE -->
-	<div class="section">
-		<div style="width: 100%">
-			<h2 id="preview_subheader"></h2>
-			<div id="previewDiv"></div>
+		<!-- Import Page -->
+		<div class="page" id="page_import">
+		<h1 id="import_header"></h1>
+		<label id="label_pobcode"></label>
+		<input type="text" id="pobinput" size=100 />
+		<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
 		</div>
-		<div class="sideTree">
-			<div>
-				<h2 id="treelist_subheader"></h2>
-				<div id="treeDiv"></div>
+		<!-- Display Page -->
+		<div class="page" id="page_display">
+			<h1 id="notes_header"></h1><!-- NOTE -->
+			<div class="section">
+				<div class="filling" id="notesDiv"></div>
 			</div>
-			<div>
-				<h2 id="ascendancy_subheader"></h2>
-				<div id="ascendancyDiv"></div>
+			<h1 id="gem_header"></h1><!-- GEM -->
+			<div class="section">
+				<div style="width: 100%">
+					<h2 id="group_subheader"></h2>
+					<div id="setupDiv"></div>
+				</div>
+				<div class="sideGem">
+					<h2 id="configuration_subheader"></h2>
+					<div id="gemconfDiv"></div>
+					<h2 id="roadmap_subheader"></h2>
+					<div id="roadmapDiv"></div>
+				</div>
 			</div>
-			<div>
-				<h2 id="keystone_subheader"></h2>
-				<div id="keystoneDiv"></div>
+			<h1 id="tree_header"></h1><!-- TREE -->
+			<div class="section">
+				<div style="width: 100%">
+					<h2 id="preview_subheader"></h2>
+					<div id="previewDiv"></div>
+				</div>
+				<div class="sideTree">
+					<div>
+						<h2 id="treelist_subheader"></h2>
+						<div id="treeDiv"></div>
+					</div>
+					<div>
+						<h2 id="ascendancy_subheader"></h2>
+						<div id="ascendancyDiv"></div>
+					</div>
+					<div>
+						<h2 id="keystone_subheader"></h2>
+						<div id="keystoneDiv"></div>
+					</div>
+					<div>
+						<h2 id="mastery_subheader"></h2>
+						<div id="masteryDiv"></div>
+					</div>
+				</div>
 			</div>
-			<div>
-				<h2 id="mastery_subheader"></h2>
-				<div id="masteryDiv"></div>
+			<div class="section">
+				<div style="width: 100%">
+					<h2 id="pathway_subheader"></h2>
+					<div id="pathwayDiv" style="width: 100%"></div>
+				</div>
+			</div>
+		<!--h2 id="pantheon">Bandits & Pantheon</h2-->
+			<h1 id="item_header"></h1><!-- ITEM -->
+			<div class="section">
+				<div class="inventory">
+					<div id="mainHand">&nbsp;</div>
+					<div id="offHand">&nbsp;</div>
+					<div id="chest">&nbsp;</div>
+					<div id="helm">&nbsp;</div>
+					<div id="gloves">&nbsp;</div>
+					<div id="boots">&nbsp;</div>
+					<div id="amulet">&nbsp;</div>
+					<div id="leftRing">&nbsp;</div>
+					<div id="rightRing">&nbsp;</div>
+					<div id="belt">&nbsp;</div>
+					<div class="flask">
+						<div id="flask1">&nbsp;</div>
+						<div id="flask2">&nbsp;</div>
+						<div id="flask3">&nbsp;</div>
+						<div id="flask4">&nbsp;</div>
+						<div id="flask5">&nbsp;</div>
+					</div>
+				</div>
+				<div>
+					<h2 id="set_subheader"></h2>
+					<div id="inventorySetDiv"></div>
+				</div>
+				<div>
+					<h2 id="jewel_subheader"></h2>
+					<div id="jewelDiv"></div>
+				</div>
+			</div>
+			<div class="toc"><!-- TOC -->
+				<a id="toc_notes" href="#notes_header"></a>
+				<a id="toc_gem" href="#gem_header"></a>
+				<a id="toc_tree" href="#tree_header"></a>
+				<a id="toc_item" href="#item_header"></a>
 			</div>
 		</div>
-	</div>
-	<div class="section">
-		<div style="width: 100%">
-			<h2 id="pathway_subheader"></h2>
-			<div id="pathwayDiv" style="width: 100%"></div>
-		</div>
-	</div>
-<!--h2 id="pantheon">Bandits & Pantheon</h2-->
-	<h1 id="item_header"></h1><!-- ITEM -->
-	<div class="section">
-		<div class="inventory">
-			<div id="mainHand">&nbsp;</div>
-			<div id="offHand">&nbsp;</div>
-			<div id="chest">&nbsp;</div>
-			<div id="helm">&nbsp;</div>
-			<div id="gloves">&nbsp;</div>
-			<div id="boots">&nbsp;</div>
-			<div id="amulet">&nbsp;</div>
-			<div id="leftRing">&nbsp;</div>
-			<div id="rightRing">&nbsp;</div>
-			<div id="belt">&nbsp;</div>
-			<div class="flask">
-				<div id="flask1">&nbsp;</div>
-				<div id="flask2">&nbsp;</div>
-				<div id="flask3">&nbsp;</div>
-				<div id="flask4">&nbsp;</div>
-				<div id="flask5">&nbsp;</div>
+		<!-- Search Page -->
+		<div class="page" id="page_search">
+			<h1 id="criteria_header"></h1>
+			<div class="section">
+				<div id="searchDiv" style="width: auto"></div>
+			</div>
+			<h1 id="result_header"></h1>
+			<div class="section">
+				<div id="resultDiv"></div>
 			</div>
 		</div>
-		<div>
-			<h2 id="set_subheader"></h2>
-			<div id="inventorySetDiv"></div>
-		</div>
-		<div>
-			<h2 id="jewel_subheader"></h2>
-			<div id="jewelDiv"></div>
-		</div>
+		<!-- Other Page? -->
 	</div>
-	<div class="toc"><!-- TOC -->
-		<a id="toc_notes" href="#notes_header"></a>
-		<a id="toc_gem" href="#gem_header"></a>
-		<a id="toc_tree" href="#tree_header"></a>
-		<a id="toc_item" href="#item_header"></a>
+	<div id="historyPanel"><!-- HITORY -->
+		<h2 id="history_subheader"></h2>
+		<div id="historytDiv"></div>
 	</div>
-</div>
-<!-- Search Page -->
-<div class="page" id="page_search">
-<h1 id="criteria_header"></h1>
-<div class="section">
-	<div id="searchDiv" style="width: auto"></div>
-</div>
-<h1 id="result_header"></h1>
-<div class="section">
-	<div id="resultDiv"></div>
-</div>
-</div>
-<!-- Other Page? -->
-<!-- Footer -->
-</div>
-<div class="footer_filler"></div>
-<footer>
-	<div id="label_footer"></div>
-	<!--a href="https://github.com/antilogos/SimpleBuild" style="display: inline-block;" target="_blank" aria-label="Source code on GitHub"><svg style="height: 32; width: 32;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg></a-->
-</footer>
+	<!-- Footer -->
+	<div class="footer_filler"></div>
+	<footer>
+		<div id="label_footer"></div>
+		<!--a href="https://github.com/antilogos/SimpleBuild" style="display: inline-block;" target="_blank" aria-label="Source code on GitHub"><svg style="height: 32; width: 32;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg></a-->
+	</footer>
 </body>
 </html>

@@ -119,5 +119,8 @@ const langTranslate=[
 	},{"_id": "label_quest_belly", 
 		"en": "Enter the belly of the beast", 
 		"fr": "Arrivé aux Entrailles<br />"
+	},{"_id": "history_subheader", 
+		"en": "History", 
+		"fr": "Historique<br />"
 	}
 ]

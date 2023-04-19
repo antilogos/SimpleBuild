@@ -443,6 +443,8 @@ ul li:hover > button > .arrow {
   margin-top: 4px;
 }
 
+/* Table of content */
+
 .toc {
 	background: var(--nav-bg);
 	position: fixed;
@@ -472,6 +474,29 @@ ul li:hover > button > .arrow {
 	background: url(./socket.png) no-repeat;
     background-position: -140px -140px;
 }
+
+/* History panel */
+
+#historyPanel {
+	position: fixed;
+	right: 0;
+	left: auto;
+	top: 3rem;
+	display: flex;
+	width: 20rem;
+	height: 100%;
+	opacity: 0.9;
+	background: var(--nav-bg);
+	transition: transform 300ms ease-in-out;
+}
+
+#historyPanel .openPanel {
+	transform: translateX(0);
+}
+#historyPanel:not(.openPanel) {
+	transform: translate(100%, 0);
+}
+
 /* Custom select */
 
 select {

@@ -176,7 +176,7 @@ function loadGemData(gemGroups) {
 
 					if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
 					gemData.rarity = "Gem";
-					gemData.name = gemRewards[gemNameId].lang[langSelected];
+					gemData.name = gemRewards[gemNameId].lang[localStorage.getItem("lang")];
 					gemData.sections = gemSection;
 					config.reference = "gem_" + k + "_" + i + "_" + j;
 					config.data = gemData;

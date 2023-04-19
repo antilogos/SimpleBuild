@@ -88,9 +88,9 @@ function fillGemProfile(gemGroup, index, references) {
 			displayMode(item, "icon");
 			if(gemRewards[gemName]) {
 				if(g.enabled == "false") {
-					item.setAttribute("label-text",gemRewards[gemName].lang[langSelected] + " (option)");
+					item.setAttribute("label-text",gemRewards[gemName].lang[localStorage.getItem("lang")] + " (option)");
 				} else {
-					item.setAttribute("label-text",gemRewards[gemName].lang[langSelected]);
+					item.setAttribute("label-text",gemRewards[gemName].lang[localStorage.getItem("lang")]);
 				}
 			}
 			// Add to roadmap if available or the condition to get it
@@ -330,7 +330,7 @@ function fillRoadmapProfile() {
 			questDiv.setAttribute("class", "socketGroup");
 			var questHeader = document.createElement("div");
 			questHeader.setAttribute("id", quest.questId);
-			questHeader.innerHTML = langTranslate.find(l => l._id == quest.questId)[langSelected];
+			questHeader.innerHTML = langTranslate.find(l => l._id == quest.questId)[localStorage.getItem("lang")];
 			questDiv.appendChild(questHeader);
 			for (let gem of gemReward[quest.level]) {
 				// Gem as quest reward
