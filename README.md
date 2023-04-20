@@ -42,8 +42,11 @@ Read the json passive skill tree data and build a svg image. Can also add a path
 * HoradricLoader.js
 Used to transform the jsobject of a pob into horadric-helper datas. Need the stats of the gems from RePoE and the passive skill tree data.
 
+* Lang.js
+Multilang support (EN and FR for now).
+
 * style.css
-Stylesheet
+Stylesheet for everything.
 
 * test.html
 Entry and global layout of the page.
