@@ -460,7 +460,7 @@ function addHistory(pobData) {
 		}
 	}
 	historyItem = {"pobData": pobData, "timestamp": Date.now()};
-	prevHistory.push(historyItem);
+	prevHistory.unshift(historyItem);
 	localStorage.setItem("buildHistory",JSON.stringify(prevHistory, null, 0));
 	loadHistory();
 }
