@@ -483,6 +483,7 @@ ul li:hover > button > .arrow {
 	left: auto;
 	top: 3rem;
 	display: flex;
+	flex-direction: column;
 	width: 20rem;
 	height: 100%;
 	opacity: 0.9;
@@ -495,6 +496,14 @@ ul li:hover > button > .arrow {
 }
 #historyPanel:not(.openPanel) {
 	transform: translate(100%, 0);
+}
+#historyDiv {
+	display: flex;
+	flex-direction: column;
+}
+#historyDiv button{
+	margin: 1rem;
+	display: inline-flex;
 }
 
 /* Custom select */

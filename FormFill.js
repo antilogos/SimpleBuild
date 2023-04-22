@@ -18,9 +18,60 @@ const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "ge
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv", DIV_PATHWAY = "pathwayDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
-	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv";
+	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
 const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
  "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
+
+const langTimeDictionnary = {'y': {
+		"fr": " années", 
+		"en": " years"
+	}, 'M': {
+		"fr": " mois", 
+		"en": " month"
+	}, 'd': {
+		"fr": " jours", 
+		"en": " days"
+	}, 'h': {
+		"fr": " heures", 
+		"en": " hours"
+	}, 'm': {
+		"fr": " minutes", 
+		"en": " minutes"
+	}, 's': {
+		"fr": " secondes", 
+		"en": " seconds"
+	}
+};
+function timeSince(date) {
+	let baseSentence;
+	if(localStorage.getItem("lang") == "fr") {
+		baseSentence = "Il y a $1 $2";
+	} else {
+		baseSentence = "$1 $2 ago";
+	}
+	var seconds = Math.floor((new Date() - date) / 1000);
+	var interval = seconds / 31536000;
+	if (interval > 1) {
+		return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['y'][localStorage.getItem("lang")]);
+	}
+	interval = seconds / 2592000;
+	if (interval > 1) {
+		return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['M'][localStorage.getItem("lang")]);
+	}
+	interval = seconds / 86400;
+	if (interval > 1) {
+		return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['d'][localStorage.getItem("lang")]);
+	}
+	interval = seconds / 3600;
+	if (interval > 1) {
+		return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['h'][localStorage.getItem("lang")]);
+	}
+	interval = seconds / 60;
+	if (interval > 1) {
+		return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['m'][localStorage.getItem("lang")]);
+	}
+	return baseSentence.replaceAll("$1", Math.floor(interval)).replaceAll("$2", langTimeDictionnary['s'][localStorage.getItem("lang")]);
+}
 
 // Get items from pob (listed under slots) and create div for each of them
 function fillGemProfile(gemGroup, index, references) {
@@ -390,9 +441,118 @@ function displayBuild(build) {
 
 function displayParsed(pobData) {
 	// If valid code, clear before load
+	addHistory(pobData);
 	displayMenu('home');
 	clearProfile();
 	hhData = [];
 	// Load new
 	fillProfile(pobData);
+}
+
+function addHistory(pobData) {
+	var prevHistory = JSON.parse("[]");
+	if(localStorage.getItem("buildHistory")) {
+		prevHistory = JSON.parse( localStorage.getItem("buildHistory"));
+		// Remove and push on top if already in history
+		let lookup = prevHistory.find( n => JSON.stringify(pobData, null, 0) == JSON.stringify(n.pobData, null, 0));
+		if(lookup !== undefined) {
+			prevHistory.splice(prevHistory.indexOf(lookup), 1);
+		}
+	}
+	historyItem = {"pobData": pobData, "timestamp": Date.now()};
+	prevHistory.push(historyItem);
+	localStorage.setItem("buildHistory",JSON.stringify(prevHistory, null, 0));
+	loadHistory();
+}
+
+function fillBuildButton(pobData, timestamp) {
+	let historyElement = document.createElement("button");
+	// Add class icon element from tree
+	let historyIconElement = document.createElement("img");
+	historyIconElement.src = "./inventory-sprite.png";
+	historyIconElement.style.width = "394px"; // 788/2
+	historyIconElement.style.height = "355px"; // 710/2
+	// Add class title element
+	let historyTitleElement = document.createElement("div");
+	historyTitleElement.innerHTML = "random title";
+	// Select the biggest tree and gem to display it
+	var tree;
+	if(pobData.treeGroups.length > 1) {
+		// Multiple tree
+		tree = pobData.treeGroups.map( treeGroup => {
+			var className = passiveSkillTreeData.classes[treeGroup.startClass].name;
+			var iconPosition = classPosition[treeGroup.startClass];
+			if(treeGroup.ascendClassId > 0) {
+				className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
+				iconPosition = ascendancyPosition[className];
+			}
+			var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
+			return {"className": className, "iconPosition": iconPosition, "passivePoints": passivePoints};
+		}).sort( (a, b) => a.passivePoints - b.passivePoints).slice(-1)[0];
+		historyIconElement.style.margin = "-"+(tree.iconPosition.y/2)+"px 0 0 -" +(tree.iconPosition.x/2)+ "px";
+		historyTitleElement.innerHTML = tree.className + " (" + tree.passivePoints+" points)";
+	} else {
+		// Single tree
+		let treeGroup = pobData.treeGroups[0];
+		var className = passiveSkillTreeData.classes[treeGroup.startClass].name;
+		var iconPosition = classPosition[treeGroup.startClass];
+		if(treeGroup.ascendClassId > 0) {
+			className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
+			iconPosition = ascendancyPosition[className];
+		}
+		var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
+		historyIconElement.style.margin = "-"+(iconPosition.y/2)+"px 0 0 -" +(iconPosition.x/2)+ "px";
+		historyTitleElement.innerHTML = className + " (" + passivePoints+" points)";
+	}
+	// Select the biggest gem to display it
+	var gemName;
+	var skillGem = allGem[pobData.gemGroups[0].groups.sort( (a, b) => a.gems.filter(g => g.enabled).length - b.gems.filter(g => g.enabled).length).slice(-1)[0].gems.filter(n => !n.skill.startsWith("Support"))[0].skill];
+	let historySkillElement = document.createElement("div");
+	if(skillGem.base_item !== null) {
+		gemName = skillGem.base_item.display_name;
+	} else {
+		gemName = skillGem.active_skill.display_name;
+	}
+	historySkillElement.innerHTML = gemRewards[gemName].lang[localStorage.getItem("lang")];
+	
+	// Parent div for display
+	let cropDiv = document.createElement("div");
+	cropDiv.style.width = "38px";
+	cropDiv.style.height = "40px";
+	cropDiv.style.overflow = "hidden";
+	cropDiv.style.borderRadius = "12px";
+	cropDiv.appendChild(historyIconElement);
+	historyElement.appendChild(cropDiv);
+	let colDiv = document.createElement("div");
+	colDiv.style.display = "flex";
+	colDiv.style.flexDirection = "column";
+	colDiv.style.marginLeft = "1em";
+	colDiv.style.textAlign = "left";
+	colDiv.appendChild(historyTitleElement);
+	colDiv.appendChild(historySkillElement);
+	historyElement.appendChild(colDiv);
+	
+	// Add history time element
+	if(timestamp) {
+		let historyTimeElement = document.createElement("div");
+		historyTimeElement.innerHTML = timeSince(timestamp);
+		colDiv.appendChild(historyTimeElement);
+	}
+	
+	// Add the event listener
+	historyElement.addEventListener('click', function (event) {
+		displayParsed(pobData);
+	});
+	return historyElement;
+}
+
+function loadHistory() {
+	clearProfile([DIV_HISTORY]);
+	if(localStorage.getItem("buildHistory")) {
+		let historyList = JSON.parse(localStorage.getItem("buildHistory"));
+		for (let historyBuild of historyList) {
+			let historyElmentButton = fillBuildButton(historyBuild.pobData, historyBuild.timestamp);
+			document.getElementById(DIV_HISTORY).appendChild(historyElmentButton);
+		}
+	}
 }

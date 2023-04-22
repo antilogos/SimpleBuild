@@ -44,6 +44,8 @@
 			} else {
 				displayMenu('search');
 			}
+			displayResult();
+			loadHistory();
 		}
 	}
 	window.onload = function() {
@@ -70,14 +72,6 @@
 		for (let build of listBuild.filter(b => b.pob)) {
 			build.parsed = loadPobData(pobCodeToObject(build.pob));
 		}
-		for (let build of listBuild.filter(b => b.parsed)) {
-			var item = document.createElement("button");
-			item.innerHTML = build.title;
-			item.addEventListener('click', function (event) {
-				displayParsed(build.parsed);
-			});
-			document.getElementById(DIV_RESULT).appendChild(item);
-		}
 		
 		
 		let tagList = new Set(listBuild.flatMap(b => b.tag));
@@ -91,6 +85,12 @@
 		}
 		loadBuildlist = true;
 		waitForLoadAsync();
+	}
+	function displayResult() {
+		for (let build of listBuild.filter(b => b.parsed)) {
+			let item = fillBuildButton(build.parsed);
+			document.getElementById(DIV_RESULT).appendChild(item);
+		}
 	}
 	// Navigation
 	function displayMenu(page) {
@@ -296,7 +296,7 @@
 	</div>
 	<div id="historyPanel"><!-- HITORY -->
 		<h2 id="history_subheader"></h2>
-		<div id="historytDiv"></div>
+		<div id="historyDiv"></div>
 	</div>
 	<!-- Footer -->
 	<div class="footer_filler"></div>
