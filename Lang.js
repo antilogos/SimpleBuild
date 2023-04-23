@@ -121,6 +121,12 @@ const langTranslate=[
 		"fr": "Arrivé aux Entrailles<br />"
 	},{"_id": "history_subheader", 
 		"en": "History", 
-		"fr": "Historique<br />"
+		"fr": "Historique"
+	},{"_id": "classsearch_subheader", 
+		"en": "Class", 
+		"fr": "Classe"
+	},{"_id": "tagsearch_subheader", 
+		"en": "Tag", 
+		"fr": "Tag"
 	}
 ]

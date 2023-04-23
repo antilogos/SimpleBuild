@@ -362,22 +362,22 @@ ul > li {
   position: relative;
   display: inline-block;
 }
-li > button, li > a{
-  font-size: 1em;
+li > button, li > a, .navbutton{
+	font-size: 1em;
 	text-transform: uppercase;
-  text-decoration: none;
-  text-align: left;
-  cursor: pointer;
-  border: none;
-  padding: 0.5rem;
-  display: block;
+	text-decoration: none;
+	text-align: left;
+	cursor: pointer;
+	border: none;
+	padding: 0.5rem;
+	display: block;
 
 	text-shadow: var(--text-shadow);
 	background: var(--text-background);
 	-webkit-background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
-li > button:hover {
+li > button:hover, .navbutton:hover {
 	text-shadow: var(--text-shadow-hover);
 	background: var(--text-background);
   transition: all 0.4s ease-in-out;
@@ -501,9 +501,21 @@ ul li:hover > button > .arrow {
 	display: flex;
 	flex-direction: column;
 }
-#historyDiv button{
+.buildPreview {
 	margin: 1rem;
 	display: inline-flex;
+}
+.cropPreview {
+	width: 38px;
+	height: 38px;
+	overflow: hidden;
+	border-radius: 5px;
+}
+.columnPreview {
+	display: flex;
+	flex-direction: column;
+	margin-left: 1em;
+	text-align: left;
 }
 
 /* Custom select */
@@ -540,7 +552,7 @@ select {
   line-height: 1.1em;
 }
 
-#gemconfDiv button, #treeDiv button, #searchDiv button, #resultDiv button, #inventorySetDiv button {
+#gemconfDiv button, #treeDiv button, #resultDiv button, #inventorySetDiv button, #historyDiv button {
 	transition-duration: 0.4s;
 	background-color: var(--section-highlight);
 	color: var(--text-color);
@@ -549,7 +561,50 @@ select {
 	margin: 0.4em;
 	border-radius: 0.2em;
 }
-#gemconfDiv button:hover, #treeDiv button:hover, #searchDiv button:hover, #resultDiv button:hover, #inventorySetDiv button:hover {
+#gemconfDiv button:hover, #treeDiv button:hover, #resultDiv button:hover, #inventorySetDiv button:hover, #historyDiv button:hover{
+	color: var(--section-highlight);
+	background-color: var(--select-focus);
+}
+
+/* Search */
+
+.imageButton {
+	padding: 0px;
+	margin: 0.4em;
+	border: none;
+	background: none;
+}
+.imageButton:not(.isfilter) {
+	opacity: 0.3;
+}
+.imageButton:hover {
+	opacity: 1;
+}
+.imageButton .isfilter {
+	border: 1px solid var(--select-focus);
+}
+
+.tagButton .isfilter {
+	text-shadow: var(--text-shadow-hover);
+	background: var(--text-background);
+	transition: all 0.4s ease-in-out;
+	border: 1px solid var(--select-focus);
+	background-color: var(--select-focus);
+}
+
+.tagButton {
+	padding: 0.4em;
+	margin: 0.4em;
+	border-radius: 0.2em;
+}
+
+.tagButton:not(.isfilter) {
+	transition-duration: 0.4s;
+	background-color: var(--section-highlight);
+	color: var(--text-color);
+	border: 1px solid var(--select-focus);
+}
+.tagButton:hover{
 	color: var(--section-highlight);
 	background-color: var(--select-focus);
 }

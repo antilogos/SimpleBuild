@@ -18,7 +18,7 @@ const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "ge
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv", DIV_PATHWAY = "pathwayDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
-	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCH = "searchDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
+	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCHCLASS = "searchclassDiv", DIV_SEARCH = "searchtagDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
 const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
  "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
 
@@ -459,22 +459,23 @@ function addHistory(pobData) {
 			prevHistory.splice(prevHistory.indexOf(lookup), 1);
 		}
 	}
-	historyItem = {"pobData": pobData, "timestamp": Date.now()};
+	let lookup = listBuild.find( n => JSON.stringify(pobData, null, 0) == JSON.stringify(n.parsed, null, 0));
+	historyItem = {"pobData": pobData, "timestamp": Date.now(), "title": lookup.title};
 	prevHistory.unshift(historyItem);
 	localStorage.setItem("buildHistory",JSON.stringify(prevHistory, null, 0));
 	loadHistory();
 }
 
-function fillBuildButton(pobData, timestamp) {
+function fillBuildButton(pobData, timestamp, title) {
 	let historyElement = document.createElement("button");
+	historyElement.classList = "buildPreview";
 	// Add class icon element from tree
 	let historyIconElement = document.createElement("img");
 	historyIconElement.src = "./inventory-sprite.png";
 	historyIconElement.style.width = "394px"; // 788/2
 	historyIconElement.style.height = "355px"; // 710/2
 	// Add class title element
-	let historyTitleElement = document.createElement("div");
-	historyTitleElement.innerHTML = "random title";
+	let historyTreeElement = document.createElement("div");
 	// Select the biggest tree and gem to display it
 	var tree;
 	if(pobData.treeGroups.length > 1) {
@@ -483,26 +484,26 @@ function fillBuildButton(pobData, timestamp) {
 			var className = passiveSkillTreeData.classes[treeGroup.startClass].name;
 			var iconPosition = classPosition[treeGroup.startClass];
 			if(treeGroup.ascendClassId > 0) {
-				className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
-				iconPosition = ascendancyPosition[className];
+				className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].name;
+				iconPosition = ascendancyPosition[passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id];
 			}
 			var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
 			return {"className": className, "iconPosition": iconPosition, "passivePoints": passivePoints};
 		}).sort( (a, b) => a.passivePoints - b.passivePoints).slice(-1)[0];
-		historyIconElement.style.margin = "-"+(tree.iconPosition.y/2)+"px 0 0 -" +(tree.iconPosition.x/2)+ "px";
-		historyTitleElement.innerHTML = tree.className + " (" + tree.passivePoints+" points)";
+		historyIconElement.style.margin = "-"+(tree.iconPosition.y/2+2)+"px 0 0 -" +(tree.iconPosition.x/2)+ "px";
+		historyTreeElement.innerHTML = tree.className + " (" + tree.passivePoints+" points)";
 	} else {
 		// Single tree
 		let treeGroup = pobData.treeGroups[0];
 		var className = passiveSkillTreeData.classes[treeGroup.startClass].name;
 		var iconPosition = classPosition[treeGroup.startClass];
 		if(treeGroup.ascendClassId > 0) {
-			className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id;
-			iconPosition = ascendancyPosition[className];
+			className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].name;
+			iconPosition = ascendancyPosition[passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id];
 		}
 		var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
-		historyIconElement.style.margin = "-"+(iconPosition.y/2)+"px 0 0 -" +(iconPosition.x/2)+ "px";
-		historyTitleElement.innerHTML = className + " (" + passivePoints+" points)";
+		historyIconElement.style.margin = "-"+(iconPosition.y/2+2)+"px 0 0 -" +(iconPosition.x/2)+ "px";
+		historyTreeElement.innerHTML = className + " (" + passivePoints+" points)";
 	}
 	// Select the biggest gem to display it
 	var gemName;
@@ -517,27 +518,27 @@ function fillBuildButton(pobData, timestamp) {
 	
 	// Parent div for display
 	let cropDiv = document.createElement("div");
-	cropDiv.style.width = "38px";
-	cropDiv.style.height = "40px";
-	cropDiv.style.overflow = "hidden";
-	cropDiv.style.borderRadius = "12px";
+	cropDiv.classList = "cropPreview";
 	cropDiv.appendChild(historyIconElement);
 	historyElement.appendChild(cropDiv);
 	let colDiv = document.createElement("div");
-	colDiv.style.display = "flex";
-	colDiv.style.flexDirection = "column";
-	colDiv.style.marginLeft = "1em";
-	colDiv.style.textAlign = "left";
-	colDiv.appendChild(historyTitleElement);
-	colDiv.appendChild(historySkillElement);
-	historyElement.appendChild(colDiv);
+	colDiv.classList = "columnPreview";
 	
+	// Add history title element
+	if(title) {
+		let historyTitleElement = document.createElement("div");
+		historyTitleElement.innerHTML = title;
+		colDiv.appendChild(historyTitleElement);
+	}
+	colDiv.appendChild(historyTreeElement);
+	colDiv.appendChild(historySkillElement);
 	// Add history time element
 	if(timestamp) {
 		let historyTimeElement = document.createElement("div");
 		historyTimeElement.innerHTML = timeSince(timestamp);
 		colDiv.appendChild(historyTimeElement);
 	}
+	historyElement.appendChild(colDiv);
 	
 	// Add the event listener
 	historyElement.addEventListener('click', function (event) {
@@ -551,7 +552,7 @@ function loadHistory() {
 	if(localStorage.getItem("buildHistory")) {
 		let historyList = JSON.parse(localStorage.getItem("buildHistory"));
 		for (let historyBuild of historyList) {
-			let historyElmentButton = fillBuildButton(historyBuild.pobData, historyBuild.timestamp);
+			let historyElmentButton = fillBuildButton(historyBuild.pobData, historyBuild.timestamp, historyBuild.title);
 			document.getElementById(DIV_HISTORY).appendChild(historyElmentButton);
 		}
 	}

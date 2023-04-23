@@ -156,7 +156,7 @@ function extractNodesData(jsonData) {
 
 const LARGE_NODE_SIZE = 96, MEDIUM_NODE_SIZE = 58, SMALL_NODE_SIZE = 32, CONNECTION_SIZE = 32, ALLOCATED_NODE = 72, ALLOCATED_PATH = 96;
 const classPosition = [{x:80,y:580},{x:660,y:80},{x:660,y:480},{x:480,y:580},{x:160,y:500},{x:320,y:580},{x:160,y:580}];
-const ascendancyPosition = {'Ascendant':{x:220,y:180}, 'Juggernaut':{x:660,y:0}, 'Berserker':{x:330,y:340}, 'Chieftain':{x:0,y:500}, 'Raider':{x:660,y:400}, 'Deadeye':{x:80,y:500}, 'Pathfinder':{x:660,y:320}, 'Occultist':{x:660,y:240}, 'Elementalist':{x:240,y:500}, 'Necromancer':{x:660,y:160}, 'Slayer':{x:240,y:580}, 'Gladiator':{x:320,y:500}, 'Champion':{x:440,y:420}, 'Inquisitor':{x:560,y:500}, 'Hierophant':{x:480,y:500}, 'Guardian':{x:400,y:500}, 'Assassin':{x:330,y:260}, 'Trickster':{x:400,y:580}, 'Saboteur':{x:0,y:580}};
+const ascendancyPosition = {'Ascendant':{x:220,y:180}, 'Juggernaut':{x:660,y:0}, 'Berserker':{x:330,y:340}, 'Chieftain':{x:0,y:500}, 'Raider':{x:660,y:400}, 'Deadeye':{x:80,y:500}, 'Pathfinder':{x:660,y:320}, 'Occultist':{x:660,y:240}, 'Elementalist':{x:240,y:500}, 'Necromancer':{x:660,y:160}, 'Slayer':{x:240,y:580}, 'Gladiator':{x:320,y:500}, 'Champion':{x:440,y:420}, 'Inquisitor':{x:560,y:500}, 'Hierophant':{x:480,y:500}, 'Guardian':{x:400,y:500}, 'Assassin':{x:330,y:260}, 'Trickster':{x:400,y:580}, 'Saboteur':{x:0,y:580}, 'Scion':{x:80,y:580}, 'Marauder':{x:660,y:80}, 'Ranger':{x:660,y:480}, 'Witch':{x:480,y:580}, 'Duelist':{x:160,y:500}, 'Templar':{x:320,y:580}, 'Shadow':{x:160,y:580}};
 const classImageSize = {x:76,y:80};
 
 function displayedNode(node, classId, ascendClassId) {

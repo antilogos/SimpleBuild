@@ -23,8 +23,9 @@
 	<script src="PobParser.js"></script>
 	<!-- Data for quest reward -->
 	<script src="GemReward.js"></script>
-	<!-- Saved builds -->
+	<!-- Saved builds and search page -->
 	<script src="ListBuild.js"></script>
+	<script src="Search.js"></script>
 	<!-- Fill the different div from a parsed object -->
 	<script src="FormFill.js"></script>
 	<!-- Navigation and page script -->
@@ -32,10 +33,9 @@
 	<script src="itemoverview.js"></script>
 	<script>
 	// Initialization
-	let loadBuildlist = false;
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
 	function waitForLoadAsync() {
-		if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate || !loadBuildlist) return;
+		if(!loadStats || !loadGem || !loadPassive || !loadGemTranslate) return;
 		else {
 			if(currPob) {
 				clearProfile();
@@ -44,7 +44,7 @@
 			} else {
 				displayMenu('search');
 			}
-			displayResult();
+			fillSearch();
 			loadHistory();
 		}
 	}
@@ -61,36 +61,7 @@
 		}
 		// Display loader and load the searchPage
 		displayMenu('loader');
-		setupSearch();
 		waitForLoadAsync();
-	}
-	// List of builds 
-	function setupSearch() {
-		//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
-		//const tagList = ["Proxy", "Trigger", "Minion", "Melee", "Projectile", "Spell", "Domage over time"];
-		// Setup for search and filter build
-		for (let build of listBuild.filter(b => b.pob)) {
-			build.parsed = loadPobData(pobCodeToObject(build.pob));
-		}
-		
-		
-		let tagList = new Set(listBuild.flatMap(b => b.tag));
-		for (let tag of tagList) {
-			var item = document.createElement("button");
-			item.innerHTML = tag;
-			item.addEventListener('click', function (event) {
-				
-			});
-			document.getElementById(DIV_SEARCH).appendChild(item);
-		}
-		loadBuildlist = true;
-		waitForLoadAsync();
-	}
-	function displayResult() {
-		for (let build of listBuild.filter(b => b.parsed)) {
-			let item = fillBuildButton(build.parsed);
-			document.getElementById(DIV_RESULT).appendChild(item);
-		}
 	}
 	// Navigation
 	function displayMenu(page) {
@@ -98,18 +69,6 @@
 	  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
 	  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
 	  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
-	}
-	function parseAndLoadCode() {
-		var input = document.getElementById("pobinput").value.trim();
-		if(input.startsWith("https://pastebin.com")) {
-			window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
-		} else if(input.startsWith("https://pobb.in")) {
-			window.open(input, "_blank");
-		} else if(input.startsWith("https://poe.ninja")) {
-			window.open(input, "_blank");
-		} else {
-			displayBuild(input);
-		}
 	}
 	// Style
 	function selectStyle(theme) {
@@ -285,7 +244,12 @@
 		<div class="page" id="page_search">
 			<h1 id="criteria_header"></h1>
 			<div class="section">
-				<div id="searchDiv" style="width: auto"></div>
+				<div>
+					<h2 id="classsearch_subheader"></h2>
+					<div id="searchclassDiv"></div>
+					<h2 id="tagsearch_subheader"></h2>
+					<div id="searchtagDiv"></div>
+				</div>
 			</div>
 			<h1 id="result_header"></h1>
 			<div class="section">
@@ -295,7 +259,10 @@
 		<!-- Other Page? -->
 	</div>
 	<div id="historyPanel"><!-- HITORY -->
-		<h2 id="history_subheader"></h2>
+		<div style="display: inline-flex">
+			<button class="navbutton" onclick="toggleHistoryPanel();">&#10148;</button>
+			<h2 id="history_subheader"></h2>
+		</div>
 		<div id="historyDiv"></div>
 	</div>
 	<!-- Footer -->
