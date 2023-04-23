@@ -580,16 +580,8 @@ select {
 .imageButton:hover {
 	opacity: 1;
 }
-.imageButton .isfilter {
+.imageButton.isfilter {
 	border: 1px solid var(--select-focus);
-}
-
-.tagButton .isfilter {
-	text-shadow: var(--text-shadow-hover);
-	background: var(--text-background);
-	transition: all 0.4s ease-in-out;
-	border: 1px solid var(--select-focus);
-	background-color: var(--select-focus);
 }
 
 .tagButton {
@@ -597,17 +589,23 @@ select {
 	margin: 0.4em;
 	border-radius: 0.2em;
 }
-
 .tagButton:not(.isfilter) {
 	transition-duration: 0.4s;
 	background-color: var(--section-highlight);
 	color: var(--text-color);
 	border: 1px solid var(--select-focus);
 }
-.tagButton:hover{
+.tagButton:hover, .tagButton.isfilter:hover{
 	color: var(--section-highlight);
 	background-color: var(--select-focus);
 }
+.tagButton.isfilter {
+	background: var(--text-background);
+	transition: all 0.4s ease-in-out;
+	border: 1px solid var(--select-focus);
+	background-color: var(--select-focus);
+}
+
 
 /* Passive tree */
 

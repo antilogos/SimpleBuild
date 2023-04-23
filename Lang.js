@@ -122,6 +122,9 @@ const langTranslate=[
 	},{"_id": "history_subheader", 
 		"en": "History", 
 		"fr": "Historique"
+	},{"_id": "seriesearch_subheader", 
+		"en": "Serie", 
+		"fr": "Série"
 	},{"_id": "classsearch_subheader", 
 		"en": "Class", 
 		"fr": "Classe"

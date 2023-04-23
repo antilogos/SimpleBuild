@@ -1,8 +1,31 @@
-var filter_class = "", filter_tag = [];
+var filter_class = "", filter_tag = [], filter_serie = "";
 
 // Fill search and display div with buttons
 function fillSearch() {
-	clearProfile([DIV_SEARCH, DIV_SEARCHCLASS]);
+	clearProfile([DIV_SEARCHTAG, DIV_SEARCHSERIE, DIV_SEARCHCLASS]);
+	
+	// Add Series
+	let serieList = new Set(listBuild.flatMap(b => b.serie));
+	let serieListDiv = [];
+	for (let serie of serieList) {
+		var item = document.createElement("button");
+		item.classList = "tagButton"
+		item.innerHTML = serie;
+		serieListDiv.push(item);
+		item.addEventListener('click', function (event) {
+			filter_serie = "";
+			for (let serieDiv of serieListDiv) {
+				if(serieDiv === this && !serieDiv.classList.contains("isfilter")) {
+					serieDiv.classList.add("isfilter");
+					filter_serie = serie;
+				} else {
+					serieDiv.classList.remove("isfilter");
+				}
+			}
+			fillResult();
+		});
+		document.getElementById(DIV_SEARCHSERIE).appendChild(item);
+	}
 	
 	// Add class and ascendancies button, only one can be on
 	let classList = passiveSkillTreeData.classes.map(n => n.name).concat(passiveSkillTreeData.classes.flatMap(n => n.ascendancies.map(a => a.name)));
@@ -45,11 +68,7 @@ function fillSearch() {
 		document.getElementById(DIV_SEARCHCLASS).appendChild(item);
 	}
 	
-	// Setup for search and filter build
-	for (let build of listBuild.filter(b => b.pob)) {
-		build.parsed = loadPobData(pobCodeToObject(build.pob));
-	}
-	
+	// Add tags
 	let tagList = new Set(listBuild.flatMap(b => b.tag));
 	for (let tag of tagList) {
 		var item = document.createElement("button");
@@ -65,8 +84,9 @@ function fillSearch() {
 			}
 			fillResult();
 		});
-		document.getElementById(DIV_SEARCH).appendChild(item);
+		document.getElementById(DIV_SEARCHTAG).appendChild(item);
 	}
+	
 	fillResult();
 }
 
@@ -76,6 +96,7 @@ function fillResult() {
 	// Filter list of build by class and tag
 	let filterList = listBuild.filter(b => b.parsed);
 	filterList = filterList.filter(b => filter_tag.length == 0 || b.tag.filter(t => filter_tag.indexOf(t) >= 0).length == filter_tag.length);
+	filterList = filterList.filter(b => filter_serie == '' || b.serie == filter_serie);
 	filterList = filterList.filter(b => 
 		filter_class == '' || b.parsed.treeGroups.filter(treeGroup => 
 			(treeGroup.ascendClassId > 0 && passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].name == filter_class) ||

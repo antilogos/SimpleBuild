@@ -9,6 +9,13 @@ function pobCodeToObject(pobCode) {
 	return parser.parseFromString(xml,"text/xml");
 }
 
+// Complement buildlist with their pobdata
+function loadOnceBuildListPob() {
+	for (let build of listBuild.filter(b => b.pob)) {
+		build.parsed = loadPobData(pobCodeToObject(build.pob));
+	}
+}
+
 // Read pob object and simplify it
 function loadPobData(dataPoB) {
 	// console.log(dataPoB);

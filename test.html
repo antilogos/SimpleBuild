@@ -61,6 +61,7 @@
 		}
 		// Display loader and load the searchPage
 		displayMenu('loader');
+		loadOnceBuildListPob();
 		waitForLoadAsync();
 	}
 	// Navigation
@@ -245,6 +246,8 @@
 			<h1 id="criteria_header"></h1>
 			<div class="section">
 				<div>
+					<h2 id="seriesearch_subheader"></h2>
+					<div id="searchserieDiv"></div>
 					<h2 id="classsearch_subheader"></h2>
 					<div id="searchclassDiv"></div>
 					<h2 id="tagsearch_subheader"></h2>

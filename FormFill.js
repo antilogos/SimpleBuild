@@ -18,7 +18,8 @@ const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "ge
 	DIV_ASCENDANCY = "ascendancyDiv", DIV_TREE = "treeDiv", DIV_MASTERY = "masteryDiv", DIV_PREVIEW = "previewDiv", DIV_KEYSTONE = "keystoneDiv", DIV_PATHWAY = "pathwayDiv",
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
-	DIV_INVENTORYSET = "inventorySetDiv", DIV_SEARCHCLASS = "searchclassDiv", DIV_SEARCH = "searchtagDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
+	DIV_INVENTORYSET = "inventorySetDiv", 
+	DIV_SEARCHSERIE = "searchserieDiv", DIV_SEARCHCLASS = "searchclassDiv", DIV_SEARCHTAG = "searchtagDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
 const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
  "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
 
