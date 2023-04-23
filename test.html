@@ -1,14 +1,11 @@
 <!Doctype html>
 <html lang="en-US">
-<head>
 <!-- TODO -->
-<!-- Add check if empty item, passive, gem, etc. -->
-<!-- Add check if non-readable or empty pob -->
 <!-- Add check everywhere necessary -->
 <!-- Add fetch pob url like pastbin, ninja and other -->
-<!-- Add display of class -->
 <!-- Add higlight in preview when passive-item is hover -->
-<!-- Horadric Helper -->
+<head>
+	<!-- Horadric Helper -->
 	<title>Simple Build Displayer</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
@@ -25,12 +22,11 @@
 	<script src="GemReward.js"></script>
 	<!-- Saved builds and search page -->
 	<script src="ListBuild.js"></script>
-	<script src="Search.js"></script>
+	<script src="SearchLoad.js"></script>
 	<!-- Fill the different div from a parsed object -->
 	<script src="FormFill.js"></script>
 	<!-- Navigation and page script -->
 	<script src="Lang.js"></script>
-	<script src="itemoverview.js"></script>
 	<script>
 	// Initialization
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
@@ -148,10 +144,13 @@
 		</div>
 		<!-- Import Page -->
 		<div class="page" id="page_import">
-		<h1 id="import_header"></h1>
-		<label id="label_pobcode"></label>
-		<input type="text" id="pobinput" size=100 />
-		<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
+			<h1 id="import_header"></h1>
+			<div class="section">
+				<label id="label_pobcode"></label>
+				<input type="text" id="pobinput" />
+				<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
+			</div>
+			<div class="section" id="importDiv"></div>
 		</div>
 		<!-- Display Page -->
 		<div class="page" id="page_display">

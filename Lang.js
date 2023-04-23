@@ -131,5 +131,8 @@ const langTranslate=[
 	},{"_id": "tagsearch_subheader", 
 		"en": "Tag", 
 		"fr": "Tag"
+	},{"_id": "import_helptext", 
+		"en": "You did not provide the pob code. Copy the pob code from your url (a frame is available opposite) into the form. The image will show you where you can find the pob code.", 
+		"fr": "Vous n'avez pas renseigné un code pob. Copiez le code depuis l'url que vous avez fourni (un cadre est disponible ci-contre) dans le formulaire. L'image indique où trouver le code pob."
 	}
 ]

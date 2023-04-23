@@ -19,7 +19,7 @@ const DIV_NOTES = "notesDiv", DIV_SETUP = "setupDiv", DIV_GEMCONFIGURATION = "ge
 	DIV_MAINHAND = "mainHand", DIV_OFFHAND = "offHand", DIV_CHEST = "chest", DIV_HELM = "helm", DIV_GLOVES = "gloves", DIV_BOOTS = "boots", 
 	DIV_AMULET = "amulet", DIV_RING1 = "leftRing", DIV_RING2 = "rightRing", DIV_BELT = "belt", DIV_FLASK1 = "flask1", DIV_FLASK2 = "flask2", DIV_FLASK3 = "flask3", DIV_FLASK4 = "flask4", DIV_FLASK5 = "flask5",
 	DIV_INVENTORYSET = "inventorySetDiv", 
-	DIV_SEARCHSERIE = "searchserieDiv", DIV_SEARCHCLASS = "searchclassDiv", DIV_SEARCHTAG = "searchtagDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
+	DIV_IMPORT = "importDiv", DIV_SEARCHSERIE = "searchserieDiv", DIV_SEARCHCLASS = "searchclassDiv", DIV_SEARCHTAG = "searchtagDiv", DIV_RESULT = "resultDiv", DIV_HISTORY = "historyDiv";
 const mapSlotToDiv = {"Weapon 1": DIV_MAINHAND, "Weapon 2": DIV_OFFHAND, "Body Armour": DIV_CHEST, "Helmet": DIV_HELM, "Gloves": DIV_GLOVES, "Boots": DIV_BOOTS,
  "Amulet": DIV_AMULET, "Ring 1": DIV_RING1, "Ring 2": DIV_RING2, "Belt": DIV_BELT, "Flask 1": DIV_FLASK1, "Flask 2": DIV_FLASK2, "Flask 3": DIV_FLASK3, "Flask 4" : DIV_FLASK4, "Flask 5": DIV_FLASK5};
 
@@ -431,15 +431,6 @@ function clearProfile(divList) {
 	}
 }
 
-function displayBuild(build) {
-	var pobObject = pobCodeToObject(build);
-	if(pobObject !== undefined) {
-		displayParsed(loadPobData(pobObject));
-	} else {
-		//TODO display error message
-	}
-}
-
 function displayParsed(pobData) {
 	// If valid code, clear before load
 	addHistory(pobData);
@@ -472,7 +463,7 @@ function fillBuildButton(pobData, timestamp, title) {
 	historyElement.classList = "buildPreview";
 	// Add class icon element from tree
 	let historyIconElement = document.createElement("img");
-	historyIconElement.src = "./inventory-sprite.png";
+	historyIconElement.src = "./img/inventory-sprite.png";
 	historyIconElement.style.width = "394px"; // 788/2
 	historyIconElement.style.height = "355px"; // 710/2
 	// Add class title element

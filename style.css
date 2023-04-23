@@ -1,7 +1,7 @@
 /* Theme */
 
 body.dark {
-	--body-bg: url("./BackgroundAmbient_PoE_Crucible.png");
+	--body-bg: url("./img/BackgroundAmbient_PoE_Crucible.png");
 	--nav-bg: #000;
 	
 	--section-bg: #111C;
@@ -32,7 +32,7 @@ body.dark {
 }
 
 body.light {
-	--body-bg: url("./BackgroundAmbient_PoE_Crucible.png");
+	--body-bg: url("./img/BackgroundAmbient_PoE_Crucible.png");
 	--nav-bg: #0c343d;
 	
 	--section-bg: #efefefcc;
@@ -172,27 +172,27 @@ footer {
 }
 
 .socketColourGreen {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -105px -70px;
 }
 
 .socketColourBlue {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -35px -70px;
 }
 
 .socketColourRed {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -70px -105px;
 }
 
 .socketColourWhite {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -140px -35px;
 }
 
 .socketColourIntegrated {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -70px -35px;
 }
 
@@ -460,18 +460,18 @@ ul li:hover > button > .arrow {
     height: 35px;
 }
 #toc_notes {
-	background: url(./favicon.ico) no-repeat;
+	background: url(./img/favicon.ico) no-repeat;
 }
 #toc_gem {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -70px -35px;
 }
 #toc_tree {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -105px -140px;
 }
 #toc_item {
-	background: url(./socket.png) no-repeat;
+	background: url(./img/socket.png) no-repeat;
     background-position: -140px -140px;
 }
 
@@ -568,6 +568,10 @@ select {
 
 /* Search */
 
+#page_import input {
+	width: 80%;
+}
+
 .imageButton {
 	padding: 0px;
 	margin: 0.4em;
@@ -605,7 +609,6 @@ select {
 	border: 1px solid var(--select-focus);
 	background-color: var(--select-focus);
 }
-
 
 /* Passive tree */
 

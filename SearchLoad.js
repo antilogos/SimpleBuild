@@ -43,7 +43,7 @@ function fillSearch() {
 		item.classList = "imageButton";
 		// Parent div for display
 		let iconElement = document.createElement("img");
-		iconElement.src = "./inventory-sprite.png";
+		iconElement.src = "./img/inventory-sprite.png";
 		iconElement.style.width = "394px"; // 788/2
 		iconElement.style.height = "355px"; // 710/2
 		iconElement.style.margin = "-"+(iconPosition.y/2+2)+"px 0 0 -" +(iconPosition.x/2)+ "px";
@@ -132,14 +132,49 @@ function filterResult() {
 // Parse and load build
 
 function parseAndLoadCode() {
+	clearProfile([DIV_IMPORT]);
 	var input = document.getElementById("pobinput").value.trim();
-	if(input.startsWith("https://pastebin.com")) {
-		window.open(input.replaceAll("https://pastebin.com/","https://pastebin.com/raw/"), "_blank");
-	} else if(input.startsWith("https://pobb.in")) {
-		window.open(input, "_blank");
-	} else if(input.startsWith("https://poe.ninja")) {
-		window.open(input, "_blank");
+	if(input.startsWith("http")) {
+		var divHelp = document.createElement("div");
+		divHelp.style.display = "flex";
+		divHelp.style.flexDirection = "column";
+		// Help message
+		var spanHelp = document.createElement("span");
+		spanHelp.id = "import_helptext";
+		spanHelp.innerHTML = langTranslate.find( l => l._id == spanHelp.id)[localStorage.getItem("lang")];
+		spanHelp.minWidth = "100%";
+		divHelp.appendChild(spanHelp);
+		// Help image
+		var imgHelp = document.createElement("img");
+		console.log(document.getElementById(DIV_IMPORT).clientWidth);
+		imgHelp.width = document.getElementById(DIV_IMPORT).clientWidth/2-80;
+		if(input.startsWith("https://pastebin.com")) {
+			imgHelp.src = "./img/importPastebin.png";
+		} else if(input.startsWith("https://pobb.in")) {
+			imgHelp.src = "./img/importPobin.png";
+		} else if(input.startsWith("https://poe.ninja")) {
+			imgHelp.src = "./img/importPoeninja.png";
+		}	
+		divHelp.appendChild(imgHelp);
+		document.getElementById(DIV_IMPORT).appendChild(divHelp);
+		// IFrame of website
+		var frameImport = document.createElement("iframe");
+		frameImport.src = input;
+		frameImport.width = "50%";
+		frameImport.height = document.body.clientHeight;
+		document.getElementById(DIV_IMPORT).appendChild(frameImport);
 	} else {
 		displayBuild(input);
+	}
+}
+
+function displayBuild(build) {
+	var pobObject = pobCodeToObject(build);
+	console.log(pobObject);
+	if(pobObject !== undefined) {
+		console.log(loadPobData(pobObjet));
+		displayParsed(loadPobData(pobObject));
+	} else {
+		//TODO display error message
 	}
 }

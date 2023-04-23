@@ -411,7 +411,7 @@ function depthFromStart(nodes, classStart, parentTree) {
 
 function buildClassIcon(elementId, node, ascendClassNode) {
 	var svg = document.getElementById(elementId).firstChild;
-	let imageUrl = "./inventory-sprite.png";
+	let imageUrl = "./img/inventory-sprite.png";
 	let zoom = 10;
 	// Base class image clip
 	let offsetClipX = classPosition[node.classStartIndex].x + node.x/zoom;
