@@ -2,6 +2,7 @@
 var hhData = Array();
 // Tag that should not be displayed
 const GEM_TAG_FILTER = ["active_skill", "dexterity", "intelligence", "strength", "low_max_level"];
+// TODO replace with skill-3.png
 const baseImgUrl = "https://poe.ninja/cdn/"
 
 function displayMode(elem, type) {
@@ -103,7 +104,7 @@ function getItemIconFromPob(innerText) {
 			}
 		}
 	}
-	if(extract) return itemIcon["en"][extract];
+	if(extract && itemIcon[extract]) return itemIcon[extract].icon;
 	else return "";
 }
 
@@ -121,12 +122,13 @@ function loadItemData(itemGroups) {
 		//console.log("loaded items");
 	});
 }
+
 // Add gems HH config
 function loadGemData(gemGroups) {
 	gemGroups.forEach( (gemGroup, k) => {
 		gemGroup.groups.forEach( (s, i) => {
 			s.gems.forEach( (g, j) => {
-				var config = [], gemData = [], gemSection = [];
+				var config = [], config2 = [], gemData = [], gemSection = [];
 				var skillGem = allGem[g.skill];
 				if(skillGem) {
 					// Try to get the name of the gem and find the data in gemRewards for translation and icon
@@ -139,7 +141,7 @@ function loadGemData(gemGroups) {
 						gemSection.properties = [].concat(skillGem.active_skill.types.filter(t => GEM_TAG_FILTER.indexOf(t) < 0).join(", "));
 					}
 					// Skip all gems not found (skill not from gem, and vaal, altqual, awakened gems)
-					if(skillGem && skillGem.base_item && gemRewards[gemNameId] !== undefined) {
+					if(skillGem) {
 						var skillModifiers = [];
 						if(skillGem.active_skill !== undefined) {
 							// Active skill gem
@@ -203,23 +205,29 @@ function loadGemData(gemGroups) {
 
 						if(skillModifiers.length > 0) gemSection.modifiers = skillModifiers.flat();
 						gemData.rarity = "Gem";
-						gemData.name = gemRewards[gemNameId].lang[localStorage.getItem("lang")];
+						if(gemRewards[gemNameId]) {
+							gemData.name = gemRewards[gemNameId].lang[localStorage.getItem("lang")];
+							config.iconUrl = gemRewards[gemNameId].icon;
+							config2.iconUrl = gemRewards[gemNameId].icon;
+						} else {
+							gemData.name = gemNameId;
+							config.iconUrl = gemRewards["Portal"].icon;
+							config2.iconUrl = gemRewards["Portal"].icon;
+						}
 						gemData.sections = gemSection;
 						config.reference = "gem_" + k + "_" + i + "_" + j;
 						config.data = gemData;
-						config.iconUrl = gemRewards[gemNameId].icon;
 						hhData.push(config);
 						// Second gem description for roadmap
-						var config2 = [];
 						config2.reference = "gem_" + gemNameId.replaceAll(" ", "_");
 						config2.data = gemData;
-						config2.iconUrl = gemRewards[gemNameId].icon;
 						hhData.push(config2);
-						//console.log("loaded gem", config);
 					} else {
 						// Skill not from gem (enchant, object, ascendancy, etc.)
+						console.log("not from gem or not in translation", g.skill, skillGem);
 					}
 				} else {
+					// Skill missing from RePoE
 					console.log("not in skill list ", g.skill);
 				}
 			})

@@ -69,17 +69,19 @@ function fillSearch() {
 	}
 	
 	// Add tags
-	let tagList = new Set(listBuild.flatMap(b => b.tag));
+	let tagList = ["tagsearch_attack", "tagsearch_spell", "tagsearch_dot", "tagsearch_proxy", "tagsearcg_trigger", "tagsearch_minion", "tagsearch_support"];
 	for (let tag of tagList) {
 		var item = document.createElement("button");
-		item.classList = "tagButton"
-		item.innerHTML = tag;
+		item.classList = "tagButton";
+		item.id = tag;
+		item.innerHTML = dynamicDico[tag][localStorage.getItem("lang")];
+		if(dynamicDico[tag+"_tooltip"] !== undefined) item.title = dynamicDico[tag+"_tooltip"][localStorage.getItem("lang")];
 		item.addEventListener('click', function (event) {
 			if(this.classList.contains("isfilter")) {
 				filter_tag.splice(filter_tag.indexOf(this.innerHTML), 1);
 				this.classList.remove("isfilter");
 			} else {
-				filter_tag.push(this.innerHTML);
+				filter_tag.push(this.id.substring(10));
 				this.classList.add("isfilter");
 			}
 			fillResult();
@@ -90,7 +92,8 @@ function fillSearch() {
 	fillResult();
 }
 
-// Fill result div with button that display their build
+// Filter and display result
+
 function fillResult() {
 	clearProfile([DIV_RESULT]);
 	// Filter list of build by class and tag
@@ -117,15 +120,6 @@ function fillResult() {
 	for (let build of filterList) {
 		let item = fillBuildButton(build.parsed, null, build.title);
 		seriesDiv[build.serie].appendChild(item);
-	}
-}
-
-// Filter and display result
-
-function filterResult() {
-	for (let build of listBuild.filter(b => b.parsed)) {
-		let item = fillBuildButton(build.parsed, null, build.title);
-		document.getElementById(DIV_RESULT).appendChild(item);
 	}
 }
 

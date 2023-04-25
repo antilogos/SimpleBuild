@@ -119,10 +119,12 @@ function fillGemProfile(gemGroup, index, references) {
 		})
 		div.appendChild(divSocketColor);
 		// Each gem
-		k.gems.filter( g => allGem[g.skill] != undefined ).forEach( (g, j) => {
+		k.gems.forEach( (g, j) => {
 			let skillGem = allGem[g.skill];
 			var gemName;
-			if(skillGem.base_item !== null) {
+			if(skillGem === undefined) {
+				gemName = g.skill;
+			} else if(skillGem.base_item !== null) {
 				gemName = skillGem.base_item.display_name;
 			} else {
 				gemName = skillGem.active_skill.display_name;
@@ -146,18 +148,23 @@ function fillGemProfile(gemGroup, index, references) {
 				}
 			}
 			// Add to roadmap if available or the condition to get it
-			if(skillGem.per_level && gemRewards[gemName] && g.qualityId == "Default") {
-				roadmap[gemName] = {"reward": gemRewards[gemName].rewards, "level": skillGem.per_level["1"].required_level, "vendor": gemRewards[gemName].vendor};
-			} else if(g.qualityId != "Default") {
-				// TODO add to Heist
-			} else if(gemName.startsWith("Awakened")) {
-				// TODO add to Maven
-			} else if(gemName.startsWith("Vaal")) {
-				// TODO add to Vaal
+			if(skillGem !== undefined) {
+				if(skillGem.per_level && gemRewards[gemName] && g.qualityId == "Default") {
+					roadmap[gemName] = {};
+					roadmap[gemName].level = skillGem.per_level["1"].required_level;
+					if(gemRewards[gemName].rewards) roadmap[gemName].reward = gemRewards[gemName].rewards;
+					if(gemRewards[gemName].vendor) roadmap[gemName].vendor = gemRewards[gemName].vendor;
+				} else if(g.qualityId != "Default") {
+					// TODO add to Heist
+				} else if(gemName.startsWith("Awakened")) {
+					// TODO add to Maven
+				} else if(gemName.startsWith("Vaal")) {
+					// TODO add to Vaal
+				}
 			}
 			itemDiv.appendChild(item);
+			document.getElementById(DIV_SETUP).appendChild(div);
 		});
-		document.getElementById(DIV_SETUP).appendChild(div);
 	});
 	// Change roadmap
 	currRoadMapStat.gemGroup = roadmap;
@@ -370,8 +377,8 @@ function fillRoadmapProfile() {
 		gemVendor[quest.level] = [];
 		// Regroup level 1 and 2 together
 		for (let gem of Object.entries(currRoadMapStat.gemGroup).filter(g => g[1].level == quest.level || (g[1].level == 1 && quest.level ==2))) {
-			if(gem[1].reward.indexOf(currRoadMapStat.startingClass) >= 0) gemReward[quest.level].push(gem[0]);
-			else if(gem[1].vendor.indexOf(currRoadMapStat.startingClass) >= 0) gemVendor[quest.level].push(gem[0]);
+			if(gem[1].reward && gem[1].reward.indexOf(currRoadMapStat.startingClass) >= 0) gemReward[quest.level].push(gem[0]);
+			else if(gem[1].vendor && gem[1].vendor.indexOf(currRoadMapStat.startingClass) >= 0) gemVendor[quest.level].push(gem[0]);
 			else gemOut.push(gem[0]);
 		}
 	}

@@ -28,6 +28,12 @@
 	<!-- Navigation and page script -->
 	<script src="Lang.js"></script>
 	<script src="Dat_Items.js"></script>
+	<script src="unique_weapon.js"></script>
+	<script src="unique_armour.js"></script>
+	<script src="unique_flask.js"></script>
+	<script src="unique_jewel.js"></script>
+	<script src="unique_accessory.js"></script>
+	<script src="gems_itemoverview.js"></script>
 	<script>
 	// Initialization
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
@@ -39,7 +45,7 @@
 				hhData = [];
 				fillProfile(currPob);
 			} else {
-				displayMenu('search');
+				if(document.getElementById("page_loader").style.display == "block") displayMenu('search');
 			}
 			fillSearch();
 			loadHistory();
@@ -67,6 +73,7 @@
 	  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
 	  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
 	  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
+	  document.getElementById("page_about").style.display = (page == "about") ? "block" : "none";
 	}
 	// Style
 	function selectStyle(theme) {
@@ -126,6 +133,7 @@
 				<li><button class="hideOnLight" onclick="selectStyle('light');">Mode &#9728;</button></li>
 				<li><button id="lang_fr" class="lang" onclick="selectLang('fr');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/FR.png" alt="Français"></button></li>
 				<li><button id="lang_en" class="lang" onclick="selectLang('en');"><img src="https://raw.githubusercontent.com/madebybowtie/FlagKit/master/Assets/PNG/GB.png" alt="English"></button></li>
+				<li><button onclick="displayMenu('about');">?</button></li>
 				<li><button onclick="toggleHistoryPanel();">&#8635;</button></li>
 				<!--li><a id="googlesite" href="http://sites.google.com/view/poefr/"></a></li-->
 				<!--li id="menu_test"><button>Menu<span class="arrow"></span></button>
@@ -259,7 +267,16 @@
 				<div id="resultDiv"></div>
 			</div>
 		</div>
-		<!-- Other Page? -->
+		<!-- About Page -->
+		<div class="page" id="page_about">
+			<h1 id="about_header"></h1>
+			<div class="section">
+				<div>
+					<div id="about_content"></div>
+					<div id="submit_content"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div id="historyPanel"><!-- HITORY -->
 		<div style="display: inline-flex">
