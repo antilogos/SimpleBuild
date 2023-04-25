@@ -295,8 +295,8 @@ function fillProfile(pobObject) {
 	// TODO a link to the official tree
 	for (let tree of pobObject.treeGroups) {
 		let optionElement = document.createElement("button");
-		let points =  tree.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
-		let ascendancyPoints =  tree.nodes.filter(n => !treeNodes[n].isAscendancyStart && treeNodes[n].ascendancyName).length;
+		let points = countPassivePoint(tree.nodes);
+		let ascendancyPoints =  tree.nodes.map(n => treeNodes[n]).filter(n => n).map(n => !n.isAscendancyStart && n.ascendancyName).length;
 		var title = (tree.title? tree.title : "par défaut") + " (" + points + " points, " + ascendancyPoints + " ascendances)";
 		optionElement.innerHTML = title;
 		optionElement.addEventListener('click', function (event) {
@@ -452,7 +452,8 @@ function addHistory(pobData) {
 		}
 	}
 	let lookup = listBuild.find( n => JSON.stringify(pobData, null, 0) == JSON.stringify(n.parsed, null, 0));
-	historyItem = {"pobData": pobData, "timestamp": Date.now(), "title": lookup.title};
+	historyItem = {"pobData": pobData, "timestamp": Date.now()}
+	if(lookup) historyItem.title = lookup.title;
 	prevHistory.unshift(historyItem);
 	localStorage.setItem("buildHistory",JSON.stringify(prevHistory, null, 0));
 	loadHistory();
@@ -479,7 +480,7 @@ function fillBuildButton(pobData, timestamp, title) {
 				className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].name;
 				iconPosition = ascendancyPosition[passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id];
 			}
-			var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
+			var passivePoints = countPassivePoint(treeGroup.nodes);
 			return {"className": className, "iconPosition": iconPosition, "passivePoints": passivePoints};
 		}).sort( (a, b) => a.passivePoints - b.passivePoints).slice(-1)[0];
 		historyIconElement.style.margin = "-"+(tree.iconPosition.y/2+2)+"px 0 0 -" +(tree.iconPosition.x/2)+ "px";
@@ -493,7 +494,7 @@ function fillBuildButton(pobData, timestamp, title) {
 			className = passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].name;
 			iconPosition = ascendancyPosition[passiveSkillTreeData.classes[treeGroup.startClass].ascendancies[treeGroup.ascendClassId-1].id];
 		}
-		var passivePoints = treeGroup.nodes.filter(n => !treeNodes[n].classStartIndex && !treeNodes[n].ascendancyName).length;
+		var passivePoints = countPassivePoint(treeGroup.nodes);
 		historyIconElement.style.margin = "-"+(iconPosition.y/2+2)+"px 0 0 -" +(iconPosition.x/2)+ "px";
 		historyTreeElement.innerHTML = className + " (" + passivePoints+" points)";
 	}

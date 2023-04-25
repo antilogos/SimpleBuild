@@ -18,7 +18,6 @@ function loadOnceBuildListPob() {
 
 // Read pob object and simplify it
 function loadPobData(dataPoB) {
-	// console.log(dataPoB);
 	// Map of each gems
 	var gemGroups = [];
 	// Filter skill from tree (ascendancy)

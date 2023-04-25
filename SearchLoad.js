@@ -170,10 +170,12 @@ function parseAndLoadCode() {
 
 function displayBuild(build) {
 	var pobObject = pobCodeToObject(build);
-	console.log(pobObject);
 	if(pobObject !== undefined) {
-		console.log(loadPobData(pobObjet));
-		displayParsed(loadPobData(pobObject));
+		if(loadPobData(pobObject) !== undefined) {
+			displayParsed(loadPobData(pobObject));
+		} else {
+			//TODO display error message
+		}
 	} else {
 		//TODO display error message
 	}

@@ -1,4 +1,4 @@
-var gemRewards = {
+const gemRewards = {
     "Added Chaos Damage Support": {
         "rewards": [],
         "vendor": [],

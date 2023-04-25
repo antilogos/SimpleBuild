@@ -387,6 +387,11 @@ function buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, custom
 
 /* Other utility */
 
+// Does not count class starting index and ascendancy starting index, but still count ointment and cluster
+function countPassivePoint(nodes) {
+	return nodes.filter(n => !(treeNodes[n] && treeNodes[n].classStartIndex) && !(treeNodes[n] && treeNodes[n].ascendancyName)).length
+}
+
 function recurseFillDepth(nodes, depthNodes, i) {
 	if(i > 1000) { console.log("something went wrong"); return -1;}
 	var currNodes = nodes.filter(n => depthNodes[n.skill] == i);
