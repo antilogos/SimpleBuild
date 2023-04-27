@@ -10,30 +10,25 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.umd.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/meta-is-beta/horadric-helper@v0.13/dist/poe/horadric-helper-poe.css"/>
-	<script src="HoradricLoader.js"></script>
+	<script src="lib/HoradricLoader.js"></script>
 	<!-- Passive Skill Tree parser -->
-	<script src="TreeParser.js"></script>
+	<script src="lib/TreeParser.js"></script>
 	<!-- External files for mods from RePoE -->
-	<script src="Repoe.js"></script>
+	<script src="lib/Repoe.js"></script>
 	<!-- Translate pob code into javascript object with pako library to unzip (from https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js) -->
-	<script src="pako.min.js"></script>
-	<script src="PobParser.js"></script>
+	<script src="lib/pako.min.js"></script>
+	<script src="lib/PobParser.js"></script>
 	<!-- Data for quest reward -->
-	<script src="GemReward.js"></script>
+	<script src="dat/Dat_GemReward.js"></script>
 	<!-- Saved builds and search page -->
-	<script src="ListBuild.js"></script>
-	<script src="SearchLoad.js"></script>
+	<script src="dat/Dat_ListBuild.js"></script>
+	<script src="lib/SearchLoad.js"></script>
 	<!-- Fill the different div from a parsed object -->
-	<script src="FormFill.js"></script>
+	<script src="lib/FormFill.js"></script>
 	<!-- Navigation and page script -->
-	<script src="Lang.js"></script>
-	<script src="Dat_Items.js"></script>
-	<script src="unique_weapon.js"></script>
-	<script src="unique_armour.js"></script>
-	<script src="unique_flask.js"></script>
-	<script src="unique_jewel.js"></script>
-	<script src="unique_accessory.js"></script>
-	<script src="gems_itemoverview.js"></script>
+	<script src="dat/Dat_Lang.js"></script>
+	<script src="dat/Dat_Items.js"></script>
+	<script src="dat/Dat_UniqueItems.js"></script>
 	<script>
 	// Initialization
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
@@ -83,22 +78,6 @@
 	function toggleHistoryPanel() {
 		if(document.getElementById("historyPanel").classList.length == 0) document.getElementById("historyPanel").classList.add("openPanel");
 		else document.getElementById("historyPanel").classList = "";
-	}
-	// Language
-	function selectLang(lang) {
-		// Get only code A2 from browser lang
-		if (lang.length > 2) lang = lang.substring(0,2).toLowerCase();
-		localStorage.setItem("lang", lang);
-		// Change style of flags
-		for (let l of ["fr", "en"]) document.getElementById("lang_"+l).classList = "lang";
-		document.getElementById("lang_"+lang).classList.add("selectedLang");
-		// Load all div text
-		for (let l of langTranslate) {
-			if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
-		}
-		// Force reload on tree passives
-		loadPassive = false;
-		fetchTreeData(lang).then(data => waitForLoadAsync());
 	}
 	</script>
 	<!-- Style -->
@@ -253,7 +232,7 @@
 		<div class="page" id="page_search">
 			<h1 id="criteria_header"></h1>
 			<div class="section">
-				<div>
+				<div id="criteriaDiv">
 					<h2 id="seriesearch_subheader"></h2>
 					<div id="searchserieDiv"></div>
 					<h2 id="classsearch_subheader"></h2>
@@ -269,11 +248,14 @@
 		</div>
 		<!-- About Page -->
 		<div class="page" id="page_about">
-			<h1 id="about_header"></h1>
 			<div class="section">
 				<div>
+					<h2 id="about_header"></h2>
 					<div id="about_content"></div>
-					<div id="submit_content"></div>
+					<h2 id="info_header"></h2>
+					<div id="info_content"></div>
+					<h2 id="contribute_header"></h2>
+					<div id="contribute_content"></div>
 				</div>
 			</div>
 		</div>

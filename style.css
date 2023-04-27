@@ -616,6 +616,14 @@ select {
 #page_import input {
 	width: 80%;
 }
+#criteriaDiv {
+	display: inline-flex;
+}
+@media only screen and (max-width:800px) {
+	#criteriaDiv {
+		display: block;
+	}
+}
 
 .imageButton {
 	padding: 0px;

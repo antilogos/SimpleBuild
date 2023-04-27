@@ -134,12 +134,24 @@ const langTranslate=[
 	},{"_id": "import_helptext", 
 		"en": "You did not provide the pob code. Copy the pob code from your url (a frame is available opposite) into the form. The image will show you where you can find the pob code.", 
 		"fr": "Vous n'avez pas renseigné un code pob. Copiez le code depuis l'url que vous avez fourni (un cadre est disponible ci-contre) dans le formulaire. L'image indique où trouver le code pob."
-	},{"_id": "about_header", 
+	},{"_id": "info_header", 
 		"en": "About", 
 		"fr": "À Propos"
+	},{"_id": "info_content", 
+		"en": "This site allow you to visualize code from Path of Building, and browse those I have approved of. It currently does not completly support French and does not support description for support gem, and does not compute stats like would do poe.ninja or pobb.in. It's mainly here for visual convenience and displaying builds from my community.", 
+		"fr": "Ce site vous permet de visualiser des codes de Path of Building et de parcourir ceux que j'ai approuvé. Il ne supporte pas complètement la langue Française ni la description des gemmes de soutien, et ne fait aucun calcul de caractérisitques comme poe.ninja ou pobb.in. Il sert principalement comme une alternative plus visuelle et pour montrer les constructions de ma communauté."
+	},{"_id": "contribute_header", 
+		"en": "Contribute", 
+		"fr": "Contribuer"
+	},{"_id": "contribute_content", 
+		"en": "If you want to submit content, you can send a PoB code as a merge request on the github (file to modify: dat/Dat_ListBuild.js) or contact me via <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">google form</a> or <a href=\"https://discord.gg/brNDd44\">discord</a>.</br>Notes in Path of building are used to inject text in the different part of a build display, using a specific line starting code: </br>«#_gem_X_Y_Z», where X is the index of the <b>Skill set</b>, Y the index of the <b>Socket group</b>, and Z the index of the gem (_Y and _Z are optionnal if you want a title for a group or skill set)</br>«#_node_X», where X is the id of the <b>tree node</b>()</br>«#_mastery_X», where X is the id of the <b>mastery choice</b>()</br>«#_item_X», where X is the index of the item in the <b>All items</b> list.<br />End of such line must end with «#_». Colours code are kept.",
+		"fr": "Si vous voulez sousmettre votre propre contenu, vous pouvez m'envoyer un code PoB en tant que <i>merge request</i> sur le github (fichier à modifer: dat/Dat_ListBuild.js) ou me contacter par <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">formulaire google</a> ou <a href=\"https://discord.gg/brNDd44\">discord</a>.</br>La partie Notes dans Path of Building est utilisé pour injecter du texte à differents endroits de la présentation du personnage, en utilisant des codes en début de ligne: </br>«#_gem_X_Y_Z», où X est l'index du <b>Skill set</b>, Y celui du <b>Socket group</b>, et Z l'index de la gemme (_Y et _Z sont optionnels si vous voulez ajouter des titres sur les groupes ou skill set)</br>«#_node_X», où X est l'identifiant du <b>point de talent passif de l'arbre</b>()</br>«#_mastery_X», où X est l'identifiant de la <b>maîtrise choisie</b>()</br>«#_item_X», où X est l'index de l'objet dans la liste <b>All items</b>.<br />Les lignes de ce genre doivent terminer par «#_». Les codes couleurs sont conservés."
+	},{"_id": "about_header", 
+		"en": "Sources", 
+		"fr": "Sources"
 	},{"_id": "about_content", 
-		"en": "This site is directly hosted on github by github.io, the project can be found <a href=\"https://github.com/antilogos/SimpleBuild\">here</a>.<br />This site use data from <a href=\"\">RePoE</a> and <a href=\"https://github.com/brather1ng/RePoE\">poe.ninja</a>, and the framework <a href=\"http://poe.ninja/\">Horadric Helper</a> for displaying item.", 
-		"fr": "Ce site est directement hébergé sur github par github.io, le projet peut être trouvé <a href=\"https://github.com/antilogos/SimpleBuild\">ici</a>.<br />Ce site utilise des données provenant de <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> et <a href=\"http://poe.ninja/\">poe.ninja</a> et utilise aussi le framework <a href=\"\">Horadric Helper</a> pour l'affichage des objets."
+		"en": "This site is directly hosted on <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> by github.io.<br />This site use data from <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> and <a href=\"http://poe.ninja/\">poe.ninja</a>, and the framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> for displaying item.<br />PoB code comes from and are used with the software <a href=\"https://pathofbuilding.community\">Path of building community project</a>.", 
+		"fr": "Ce site est directement hébergé sur <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> par github.io.<br />Ce site utilise des données provenant de <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> et <a href=\"http://poe.ninja/\">poe.ninja</a> et utilise aussi le framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> pour l'affichage des objets.<br />Les codes PoB proviennent et sont utilisés par le logiciel <a href=\"https://pathofbuilding.community\">Path of building community</a>."
 	}
 ]
 const dynamicDico = {
@@ -183,3 +195,20 @@ const dynamicDico = {
 		"en": "Supports characters are not meant to do content solo but within a party.", 
 		"fr": "Les personnages Soutiens ne sont pas sensé faire du contenu seul, mais en groupe."}
 };
+
+// Language selection
+function selectLang(lang) {
+	// Get only code A2 from browser lang
+	if (lang.length > 2) lang = lang.substring(0,2).toLowerCase();
+	localStorage.setItem("lang", lang);
+	// Change style of flags
+	for (let l of ["fr", "en"]) document.getElementById("lang_"+l).classList = "lang";
+	document.getElementById("lang_"+lang).classList.add("selectedLang");
+	// Load all div text
+	for (let l of langTranslate) {
+		if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
+	}
+	// Force reload on tree passives
+	loadPassive = false;
+	fetchTreeData(lang).then(data => waitForLoadAsync());
+}
