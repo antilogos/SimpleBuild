@@ -23,10 +23,10 @@
 		height: 100vh;
 	}
 	</style>
-	<script src="pako.min.js"></script>
-	<script src="PobParser.js"></script>
-	<script src="ListBuild.js"></script>
-	<script src="TreeParser.js"></script>
+	<script src="lib/pako.min.js"></script>
+	<script src="lib/PobParser.js"></script>
+	<script src="lib/TreeParser.js"></script>
+	<script src="dat/Dat_ListBuild.js"></script>
 	<script>
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
 	fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-321.json").then(response => response.json()).then(parsed => {
