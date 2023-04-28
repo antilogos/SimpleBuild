@@ -1,5 +1,95 @@
 // Need unique, jewel, flask, talisman, etc.
 const itemIcon = {
+    "Quartz Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvcGhhc2VmbGFzazAxIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/6266d738e1/phaseflask01.png",
+        "en": "Quartz Flask",
+        "fr": "Flacon de quartz"
+    },
+    "Amethyst Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQW1ldGh5c3QiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/0f93f9050a/Amethyst.png",
+        "en": "Amethyst Flask",
+        "fr": "Flacon d'améthyste"
+    },
+    "Quicksilver Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc3ByaW50IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/aa66be180b/sprint.png",
+        "en": "Quicksilver Flask",
+        "fr": "Flacon de vif-argent"
+    },
+    "Iron Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvV2FyZGZsYXNrMDEiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/19bbf3a214/Wardflask01.png",
+        "en": "Iron Flask",
+        "fr": "Flacon de fer"
+    },
+    "Gold Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvR29sZEZsYXNrIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/0669496bc6/GoldFlask.png",
+        "en": "Gold Flask",
+        "fr": "Flacon d'or"
+    },
+    "Silver Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc2lsdmVyIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/a2143b575d/silver.png",
+        "en": "Silver Flask",
+        "fr": "Flacon d'argent"
+    },
+    "Basalt Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc3RvbmUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/00261d09db/stone.png",
+        "en": "Basalt Flask",
+        "fr": "Flacon de basalte"
+    },
+    "Jade Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvZXZhc2lvbmZsYXNrMDEiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/8ead4435df/evasionflask01.png",
+        "en": "Jade Flask",
+        "fr": "Flacon de jade"
+    },
+    "Granite Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvZ3Jhbml0ZSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/101bce8899/granite.png",
+        "en": "Granite Flask",
+        "fr": "Flacon de granite"
+    },
+    "Diamond Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvZGlhbW9uZCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/98bf48b8dd/diamond.png",
+        "en": "Diamond Flask",
+        "fr": "Flacon de diamant"
+    },
+    "Ruby Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvcnVieSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/0d582b3f83/ruby.png",
+        "en": "Ruby Flask",
+        "fr": "Flacon de rubis"
+    },
+    "Sulphur Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvZ29sZCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/74568fc9b9/gold.png",
+        "en": "Sulphur Flask",
+        "fr": "Flacon de soufre"
+    },
+    "Sapphire Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc2FwcGhpcmUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/1545bc9f68/sapphire.png",
+        "en": "Sapphire Flask",
+        "fr": "Flacon de saphir"
+    },
+    "Stibnite Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3Mvc3RpYm5pdGUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/35fbc2f198/stibnite.png",
+        "en": "Stibnite Flask",
+        "fr": "Flacon de stibnite"
+    },
+    "Topaz Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvdG9wYXoiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/2a6d920bc1/topaz.png",
+        "en": "Topaz Flask",
+        "fr": "Flacon de topaze"
+    },
+    "Bismuth Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvYmlzbXV0aCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/fbda460273/bismuth.png",
+        "en": "Bismuth Flask",
+        "fr": "Flacon de bismuth"
+    },
+    "Corundum Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQW50aVN0dW5GbGFzayIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/4df2dac26a/AntiStunFlask.png",
+        "en": "Corundum Flask",
+        "fr": "Flacon de corindon"
+    },
+    "Aquamarine Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvYXF1YW1hcmluZSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/b48851db23/aquamarine.png",
+        "en": "Aquamarine Flask",
+        "fr": "Flacon d'aigue-marine"
+    },
     "Walnut Spirit Shield": {
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZEludDIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/99b47eb1fa/ShieldInt2.png",
         "en": "Walnut Spirit Shield",
