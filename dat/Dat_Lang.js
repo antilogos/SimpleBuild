@@ -62,9 +62,15 @@ const langTranslate=[
 	},{"_id": "set_subheader", 
 		"en": "Items Sets", 
 		"fr": "Ensemble d'équipements"
-	},{"_id": "jewel_subheader", 
+	},{"_id": "jewelTree_subheader", 
 		"en": "Jewels", 
 		"fr": "Joyaux"
+	},{"_id": "jewelAbyss_subheader", 
+		"en": "Jewels on equipment", 
+		"fr": "Joyaux sur l'équipement"
+	},{"_id": "weaponswap_subheader", 
+		"en": "Weapon swap", 
+		"fr": "Configuration d'arme secondaire"
 	},{"_id": "criteria_header", 
 		"en": "Search tags", 
 		"fr": "Critères de recherche"

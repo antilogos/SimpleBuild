@@ -108,8 +108,15 @@ a:visited {
 	margin: 2rem;
 	padding: 2rem;
 	background: var(--section-bg);
-	display: flex;    
+	display: block;    
 	border-radius: 5em;
+}
+.splitSection {
+	display: inline-flex;
+	width: 100%;
+}
+.splitSection > div:first-child {
+	width: 100%;
 }
 .filling {
 }
@@ -142,6 +149,27 @@ footer {
 }
 .label_footer {
 	display: inline-block;
+}
+
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+	.section {
+		padding: 0.1em;
+		margin: 0.1em;
+		border-radius: 0.1em;
+	}
+	.splitSection {
+		display: block;
+	}
+	h1 {
+		margin: 0.1em;
+		font-size: 1.5em;
+	}
+	h2 {
+		margin: 0.1em;
+		font-size: 1.1em;
+	}
+
 }
 
 /* Specific part of display */
@@ -212,8 +240,8 @@ footer {
 .inventory {
 	display: grid;
 	gap: 0.5em;
-	grid-template-columns: 6em 6em 6em 6em 6em 6em 6em 6em;
-	grid-template-rows: 6em 6em 6em 6em 6em 6em 6em 6em;
+	grid-template-columns: 5em 5em 5em 5em 5em 5em 5em 5em;
+	grid-template-rows: 5em 5em 5em 5em 5em 5em 5em 5em;
 	justify-content: center;
 	width: 100%;
 }
@@ -278,44 +306,15 @@ footer {
   grid-area: 1 / 5 / 3 / 6;
 }
 
-.classIconRound {
-	border-radius: 100em;
-	height: 2em;
-	width: 1em;
-	object-fit: cover;
-}
-
-/* Responsive adaptation */
-
-.sideGem {
-	max-width: 40%;
-}
-.sideTree {
-	display: block;
-	max-width: 30%;
-}
-
 @media only screen and (max-width:800px) {
-  /* For tablets: */
-	.section {
-		display: block;
-		padding: 0.1em;
-		margin: 0.1em;
-		border-radius: 0.1em;
-	}
-	.sideGem, .sideTree {
+	.inventory {
+		display: grid;
+		gap: 0.5em;
+		grid-template-columns: 5em 5em 5em 5em 5em 5em;
+		grid-template-rows: 5em 5em 5em 5em 5em 5em 5em 5em;
+		justify-content: center;
 		width: 100%;
-		max-width: 100%;
 	}
-	h1 {
-		margin: 0.1em;
-		font-size: 1.5em;
-	}
-	h2 {
-		margin: 0.1em;
-		font-size: 1.1em;
-	}
-	
 	.inventory #mainHand {
 	  grid-area: 1 / 1 / 5 / 3;
 	}
@@ -351,10 +350,32 @@ footer {
 	}
 }
 
-@media only screen and (max-width:500px) {
-  /* For mobile phones: */
-  
+
+.classIconRound {
+	border-radius: 100em;
+	height: 2em;
+	width: 1em;
+	object-fit: cover;
 }
+
+/* Responsive adaptation */
+
+.sideGem {
+	max-width: 40%;
+}
+.sideTree {
+	display: block;
+	max-width: 30%;
+}
+
+@media only screen and (max-width:800px) {
+  /* For tablets: */
+	.sideGem, .sideTree {
+		width: 100%;
+		max-width: 100%;
+	}
+}
+
 
 /* Loader */
 
@@ -386,6 +407,7 @@ footer {
   background: var(--nav-bg);
   display: flex;
   padding: 0.5rem;
+  z-index: 1;
 }
 .navigation_home {
   min-width: 40%;
