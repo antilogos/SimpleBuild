@@ -13,38 +13,49 @@ How:
 
 TODO:
 * 🔧 find out how to extract data from the game files so we can get description for support gem, better translation support, and uptadable path to image
-* 🔧 see if possible to read an account from official website and support it
 
 # Files
 
-* PobParser.js
+* lib/FormFill.js
+Construct all the divs elements to display a build.
+
+* lib/HoradricLoader.js
+Used to transform the JsObject of a pob into horadric-helper datas. Need the stats of the gems from RePoE and the passive skill tree data.
+
+* lib/pako.min.js
+Base64 decoder lib for js.
+
+* lib/PobParser.js
 Just decrompress the XML pob code and transform relevant points into a JsObject.
 
-* Repoe.js
+* lib/Repoe.js
 Import all files needed for gem stats from RePoE.
 
-* TreeParser.js
+* lib/SearchLoad.js
+Construct all the divs elements to display the list of build, with history and filter function.
+
+* lib/TreeParser.js
 Read the json passive skill tree data and build a svg image. Can also add a path over it from a character's passive skill tree to visualize it.
 
-* HoradricLoader.js
-Used to transform the jsobject of a pob into horadric-helper datas. Need the stats of the gems from RePoE and the passive skill tree data.
+* dat/Dat_GemReward.js
+Reference to name and icon for all unique items and if and when gems are available for classes.
 
-* Dat_Item.js
-Reference to name and icon for all items (except gems, only has basic item for now).
+* dat/Dat_Item.js
+Reference to name and icon for all non-gem base items.
 
-* GemReward.js
-Which gems are available or not for the current class (also translation of gem names).
-
-* Lang.js
+* dat/Dat_Lang.js
 Multilang support (EN and FR for now).
 
-* ListBuild.js
+* dat/Dat_ListBuild.js
 Used to store builds to display on the search page, just flat pob code with some additional meta-field.
+
+* dat/Dat_UniqueItem.js
+Reference to name and icon for all unique items.
 
 * style.css
 Stylesheet for everything.
 
-* test.html
+* index.html
 Entry and global layout of the page.
 
 # Other files

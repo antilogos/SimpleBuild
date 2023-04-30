@@ -180,14 +180,15 @@ footer {
 
 /* Specific part of display */
 
-.socketGroup {
+.slotSocketGroup {
 	background: var(--section-highlight);
 	border-radius: 1.5em;
     padding: 1em;
     margin: 1em;
+	display: block;
 }
 
-.socketGroup .socketGem {
+.socketGem {
 	display: inline-block;
 }
 

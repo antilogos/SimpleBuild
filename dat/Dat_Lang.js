@@ -125,6 +125,9 @@ const langTranslate=[
 	},{"_id": "label_quest_belly", 
 		"en": "Enter the belly of the beast", 
 		"fr": "Arrivé aux Entrailles"
+	},{"_id": "label_quest_droponly", 
+		"en": "Drop only", 
+		"fr": "Uniquement en butin"
 	},{"_id": "label_quest_alternate", 
 		"en": "By completing unsual gems's blueprint", 
 		"fr": "Dans les plans de gemmes inhabituelles"
@@ -214,7 +217,64 @@ const dynamicDico = {
 		"fr": "Divergente"},
 	"quality_Alternate3": {
 		"en": "Phantasmal",
-		"fr": "Fantasmatique"}
+		"fr": "Fantasmatique"},
+	"time_component_y": {
+		"fr": " années", 
+		"en": " years"},
+	"time_component_M": {
+		"fr": " mois", 
+		"en": " month"}, 
+	"time_component_d": {
+		"fr": " jours", 
+		"en": " days"},
+	"time_component_h": {
+		"fr": " heures", 
+		"en": " hours"},
+	"time_component_m": {
+		"fr": " minutes", 
+		"en": " minutes"}, 
+	"time_component_s": {
+		"fr": " secondes", 
+		"en": " seconds"},
+	"inventoryslot_mainHand": {
+		"fr": "Main principale",
+		"en": "Main hand"},
+	"inventoryslot_offHand": {
+		"fr": "Main secondaire",
+		"en": "Off hand"},
+	"inventoryslot_mainHandSwap": {
+		"fr": "Main principale - Permutation",
+		"en": "Main hand - Swap"},
+	"inventoryslot_offHandSwap": {
+		"fr": "Main secondaire - Permutation",
+		"en": "Off hand - Swap"},
+	"inventoryslot_chest": {
+		"fr": "Torse",
+		"en": "Chest"},
+	"inventoryslot_helm": {
+		"fr": "Casque",
+		"en": "Helm"},
+	"inventoryslot_gloves": {
+		"fr": "Gants",
+		"en": "Gloves"},
+	"inventoryslot_boots": {
+		"fr": "Bottes",
+		"en": "Boots"},
+	"inventoryslot_amulet": {
+		"fr": "Amulette",
+		"en": "Amulet"},
+	"inventoryslot_leftRing": {
+		"fr": "Bague de gauche",
+		"en": "Left ring"},
+	"inventoryslot_rightRing": {
+		"fr": "Bague de droite",
+		"en": "Right ring"},
+	"inventoryslot_belt": {
+		"fr": "Ceinture",
+		"en": "Belt"},
+	"inventoryslot_none": {
+		"fr": "Emplacement non-spécifié",
+		"en": "Unknow slot"}
 };
 
 // Language selection
