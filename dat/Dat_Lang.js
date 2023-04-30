@@ -199,7 +199,16 @@ const dynamicDico = {
 		"fr": "Les Créatures sont d'autre entités que vous avec leurs Stats offensives et défensives."},
 	"tagsearch_support_tooltip": {
 		"en": "Supports characters are not meant to do content solo but within a party.", 
-		"fr": "Les personnages Soutiens ne sont pas sensé faire du contenu seul, mais en groupe."}
+		"fr": "Les personnages Soutiens ne sont pas sensé faire du contenu seul, mais en groupe."},
+	"quality_Alternate1": {
+		"en": "Anomalous",
+		"fr": "Anormale"},
+	"quality_Alternate2": {
+		"en": "Divergent",
+		"fr": "Divergente"},
+	"quality_Alternate3": {
+		"en": "Phantasmal",
+		"fr": "Fantasmatique"}
 };
 
 // Language selection

@@ -151,6 +151,12 @@ footer {
 	display: inline-block;
 }
 
+.submitForm {
+	width: 100%;
+	display: inline-flex;
+	margin-bottom: 2em;
+}
+
 @media only screen and (max-width:800px) {
   /* For tablets: */
 	.section {
@@ -350,7 +356,6 @@ footer {
 	}
 }
 
-
 .classIconRound {
 	border-radius: 100em;
 	height: 2em;
@@ -375,7 +380,6 @@ footer {
 		max-width: 100%;
 	}
 }
-
 
 /* Loader */
 

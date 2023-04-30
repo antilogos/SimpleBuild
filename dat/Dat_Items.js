@@ -4229,5 +4229,20 @@ const itemIcon = {
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHdvSGFuZE1hY2UxIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/5977f27334/TwoHandMace1.png",
         "en": "Driftwood Maul",
         "fr": "Massue en bois flotté"
+    },
+    "Large Cluster Jewel": {
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/db35e60885/NewGemBase3.png",
+        "en": "Large Cluster Jewel",
+        "fr": "Grand Joyau de ramification"
+    },
+    "Medium Cluster Jewel": {
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/78f6bf8356/NewGemBase2.png",
+        "en": "Medium Cluster Jewel",
+        "fr": "Moyen Joyau de ramification"
+    },
+    "Small Cluster Jewel": {
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05ld0dlbUJhc2UxIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/0eb1a9d981/NewGemBase1.png",
+        "en": "Small Cluster Jewel",
+        "fr": "Petit Joyau de ramification"
     }
 }

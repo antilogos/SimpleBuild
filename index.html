@@ -127,18 +127,20 @@
 		</div>
 		<!-- Loader Page -->
 		<div class="page" id="page_loader">
-		<h1 id="loading_header"></h1>
-		<div class="loader"></div>
+			<h1 id="loading_header"></h1>
+			<div class="loader"></div>
 		</div>
 		<!-- Import Page -->
 		<div class="page" id="page_import">
 			<h1 id="import_header"></h1>
 			<div class="section">
-				<label id="label_pobcode"></label>
-				<input type="text" id="pobinput" />
-				<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
+				<div class="submitForm">
+					<label id="label_pobcode"></label>
+					<input type="text" id="pobinput" />
+					<button id="label_submit" type="submit" onclick="parseAndLoadCode();"></button>
+				</div>
+				<div class="splitSection" id="importDiv"></div>
 			</div>
-			<div class="section" id="importDiv"></div>
 		</div>
 		<!-- Display Page -->
 		<div class="page" id="page_display">
