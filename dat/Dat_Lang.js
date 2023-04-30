@@ -124,7 +124,13 @@ const langTranslate=[
 		"fr": "Arrivé aux Mines<br />"
 	},{"_id": "label_quest_belly", 
 		"en": "Enter the belly of the beast", 
-		"fr": "Arrivé aux Entrailles<br />"
+		"fr": "Arrivé aux Entrailles"
+	},{"_id": "label_quest_alternate", 
+		"en": "By completing unsual gems's blueprint", 
+		"fr": "Dans les plans de gemmes inhabituelles"
+	},{"_id": "label_quest_awakened", 
+		"en": "In Maven's crucible", 
+		"fr": "Dans le creuset de la Prodige"
 	},{"_id": "history_subheader", 
 		"en": "History", 
 		"fr": "Historique"
