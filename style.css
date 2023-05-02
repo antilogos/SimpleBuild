@@ -575,7 +575,24 @@ ul li:hover > button > .arrow {
 #historyDiv {
 	display: flex;
 	flex-direction: column;
+	overflow: auto;
 }
+#historyDiv::-webkit-scrollbar {
+  width: 10px;
+}
+
+#historyDiv::-webkit-scrollbar-track {
+  background: var(--section-bg); 
+}
+ 
+#historyDiv::-webkit-scrollbar-thumb {
+  background: var(--select-focus); 
+}
+
+#historyDiv::-webkit-scrollbar-thumb:hover {
+  background: var(--select-focus); 
+}
+
 .buildPreview {
 	margin: 1rem;
 	display: inline-flex;
