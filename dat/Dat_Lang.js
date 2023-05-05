@@ -274,7 +274,13 @@ const dynamicDico = {
 		"en": "Belt"},
 	"inventoryslot_none": {
 		"fr": "Emplacement non-spécifié",
-		"en": "Unknow slot"}
+		"en": "Unknow slot"},
+	"gemdescription_level": {
+		"fr": "Niveau : ",
+		"en": "Level: "},
+	"gemdescription_quality": {
+		"fr": "Qualité : ",
+		"en": "Quality: "}
 };
 
 // Language selection
