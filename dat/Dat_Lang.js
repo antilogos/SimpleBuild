@@ -80,15 +80,6 @@ const langTranslate=[
 	},{"_id": "result_header", 
 		"en": "Results", 
 		"fr": "Résultats"
-	},{"_id": "complement_gem_option", 
-		"en": " (optionnal)", 
-		"fr": " (optionnel)"
-	},{"_id": "label_default_title", 
-		"en": "default", 
-		"fr": "par défaut"
-	},{"_id": "complement_tree_points", 
-		"en": " points", 
-		"fr": " points"
 	},{"_id": "label_footer", 
 		"en": "This site is fan made and isn't official. It isn't affiliated with or endorsed by Grinding Gear Games in any way.", 
 		"fr": "Ce site est réalisé par un fan et n'est pas officiel. Il n'est pas affilié à ou approuvé par Grinding Gear Game."
@@ -289,7 +280,22 @@ const dynamicDico = {
 		"en": "Level: "},
 	"gemdescription_quality": {
 		"fr": "Qualité : ",
-		"en": "Quality: "}
+		"en": "Quality: "},
+	"label_default_title": {
+		"en": "default", 
+		"fr": "par défaut"},
+	"complement_tree_skillpoints": {
+		"en": " points", 
+		"fr": " points"},
+	"complement_tree_ascendancypoints": {
+		"en": " ascendancies points", 
+		"fr": " points d'ascendances"},
+	"complement_gem_option": {
+		"en": " (optionnal)", 
+		"fr": " (optionnel)"},
+	"complement_tree_fromparent": {
+		"en": "From", 
+		"fr": "À partir de"}
 };
 
 // Language selection
