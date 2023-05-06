@@ -2,6 +2,9 @@ const langTranslate=[
 	{"_id": "home", 
 		"en": "Home", 
 		"fr": "Accueil"
+	},{"_id": "search", 
+		"en": "List", 
+		"fr": "Liste"
 	},{"_id": "import", 
 		"en": "Import", 
 		"fr": "Importer"
