@@ -1,5 +1,155 @@
 // Need unique, jewel, flask, talisman, etc.
 const itemIcon = {
+    "Small Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/b764885739/manaflask1.png",
+        "en": "Small Mana Flask",
+        "fr": "Flacon mineur de mana"
+    },
+    "Medium Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMiIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/3c612edd38/manaflask2.png",
+        "en": "Medium Mana Flask",
+        "fr": "Flacon moyen de mana"
+    },
+    "Large Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMyIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/36c890e698/manaflask3.png",
+        "en": "Large Mana Flask",
+        "fr": "Flacon majeur de mana"
+    },
+    "Greater Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrNCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/54e8624da7/manaflask4.png",
+        "en": "Greater Mana Flask",
+        "fr": "Flacon considérable de mana"
+    },
+    "Grand Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrNSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MSwiZHVwbGljYXRlZCI6dHJ1ZX1d/e3996bc999/manaflask5.png",
+        "en": "Grand Mana Flask",
+        "fr": "Flacon immense de mana"
+    },
+    "Giant Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrNiIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/61993fdd4b/manaflask6.png",
+        "en": "Giant Mana Flask",
+        "fr": "Flacon gigantesque de mana"
+    },
+    "Colossal Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrNyIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/da16d2d8c3/manaflask7.png",
+        "en": "Colossal Mana Flask",
+        "fr": "Flacon colossal de mana"
+    },
+    "Sacred Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrOCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MSwiZnJhY3R1cmVkIjp0cnVlfV0/5a075f27d4/manaflask8.png",
+        "en": "Sacred Mana Flask",
+        "fr": "Flacon sacré de mana"
+    },
+    "Hallowed Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrOSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/8ef0a39c9d/manaflask9.png",
+        "en": "Hallowed Mana Flask",
+        "fr": "Flacon béni de mana"
+    },
+    "Sanctified Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMTAiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/437e6be59d/manaflask10.png",
+        "en": "Sanctified Mana Flask",
+        "fr": "Flacon sanctifié de mana"
+    },
+    "Divine Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMTEiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/9313e55ff4/manaflask11.png",
+        "en": "Divine Mana Flask",
+        "fr": "Flacon divin de mana"
+    },
+    "Eternal Mana Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbWFuYWZsYXNrMTIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/6146902646/manaflask12.png",
+        "en": "Eternal Mana Flask",
+        "fr": "Flacon éternel de mana"
+    },
+    "Small Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/a7ca6503d9/lifeflask1.png",
+        "en": "Small Life Flask",
+        "fr": "Flacon mineur de vie"
+    },
+    "Medium Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMiIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/c06020a713/lifeflask2.png",
+        "en": "Medium Life Flask",
+        "fr": "Flacon moyen de vie"
+    },
+    "Large Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMyIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/35b22b6cc3/lifeflask3.png",
+        "en": "Large Life Flask",
+        "fr": "Flacon majeur de vie"
+    },
+    "Greater Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrNCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/2601beea57/lifeflask4.png",
+        "en": "Greater Life Flask",
+        "fr": "Flacon considérable de vie"
+    },
+    "Grand Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrNSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/52f0b42c56/lifeflask5.png",
+        "en": "Grand Life Flask",
+        "fr": "Flacon immense de vie"
+    },
+    "Giant Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrNiIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/13cd1c8a08/lifeflask6.png",
+        "en": "Giant Life Flask",
+        "fr": "Flacon gigantesque de vie"
+    },
+    "Colossal Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrNyIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/a3a05678ea/lifeflask7.png",
+        "en": "Colossal Life Flask",
+        "fr": "Flacon colossal de vie"
+    },
+    "Sacred Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrOCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/1c24a51fc4/lifeflask8.png",
+        "en": "Sacred Life Flask",
+        "fr": "Flacon sacré de vie"
+    },
+    "Hallowed Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrOSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/67262f06f5/lifeflask9.png",
+        "en": "Hallowed Life Flask",
+        "fr": "Flacon béni de vie"
+    },
+    "Sanctified Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMTAiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/c32c443453/lifeflask10.png",
+        "en": "Sanctified Life Flask",
+        "fr": "Flacon sanctifié de vie"
+    },
+    "Divine Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMTEiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/54ba3c70ae/lifeflask11.png",
+        "en": "Divine Life Flask",
+        "fr": "Flacon divin de vie"
+    },
+    "Eternal Life Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvbGlmZWZsYXNrMTIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/7be2c09015/lifeflask12.png",
+        "en": "Eternal Life Flask",
+        "fr": "Flacon éternel de vie"
+    },
+    "Small Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2sxIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/88dca03c78/hybridflask1.png",
+        "en": "Small Hybrid Flask",
+        "fr": "Flacon mineur hybride"
+    },
+    "Medium Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2syIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/7ac2158cdf/hybridflask2.png",
+        "en": "Medium Hybrid Flask",
+        "fr": "Flacon moyen hybride"
+    },
+    "Large Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2s0IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxLCJkdXBsaWNhdGVkIjp0cnVlfV0/0b7a07818f/hybridflask4.png",
+        "en": "Large Hybrid Flask",
+        "fr": "Flacon majeur hybride"
+    },
+    "Colossal Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2sxIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/88dca03c78/hybridflask1.png",
+        "en": "Colossal Hybrid Flask",
+        "fr": "Flacon colossal hybride"
+    },
+    "Sacred Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2syIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/7ac2158cdf/hybridflask2.png",
+        "en": "Sacred Hybrid Flask",
+        "fr": "Flacon sacré hybride"
+    },
+    "Hallowed Hybrid Flask": {
+        "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvaHlicmlkZmxhc2s0IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxLCJkdXBsaWNhdGVkIjp0cnVlfV0/0b7a07818f/hybridflask4.png",
+        "en": "Hallowed Hybrid Flask",
+        "fr": "Flacon béni hybride"
+    },
     "Quartz Flask": {
         "icon": "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvcGhhc2VmbGFzazAxIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/6266d738e1/phaseflask01.png",
         "en": "Quartz Flask",
