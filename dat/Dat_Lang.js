@@ -91,49 +91,55 @@ const langTranslate=[
 		"fr": "Ce site est réalisé par un fan et n'est pas officiel. Il n'est pas affilié à ou approuvé par Grinding Gear Game."
 	},{"_id": "label_quest_lyoneye", 
 		"en": "Enter Lyoneye's Watch", 
-		"fr": "Arrivé au Guet<br />"
+		"fr": "Arrivé au Guet"
 	},{"_id": "label_quest_submerged", 
 		"en": "Enter Submerged passage", 
-		"fr": "Arrivé aux Souterrains<br />"
+		"fr": "Arrivé aux Souterrains"
 	},{"_id": "label_quest_prison", 
 		"en": "Enter Axiom's prison", 
-		"fr": "Arrivé à la Prison<br />"
+		"fr": "Arrivé à la Prison"
 	},{"_id": "label_quest_brutus", 
 		"en": "Kill Brutus", 
-		"fr": "Tuer Brutus<br />"
+		"fr": "Tuer Brutus"
 	},{"_id": "label_quest_cavern", 
 		"en": "Enter Merveil's Caverns", 
-		"fr": "Arrivé aux Cavernes<br />"
+		"fr": "Arrivé aux Cavernes"
 	},{"_id": "label_quest_balefulgem", 
 		"en": "Pickup the Baleful Gem", 
-		"fr": "Récupérer Gemme maléfique<br />"
+		"fr": "Récupérer Gemme maléfique"
 	},{"_id": "label_quest_maligarospike", 
 		"en": "Pickup Maligaro's spike", 
-		"fr": "Récupérer Pic de Maligaro<br />"
+		"fr": "Récupérer Pic de Maligaro"
 	},{"_id": "label_quest_tolman", 
 		"en": "Pickup Tolman's bracelet", 
-		"fr": "Récupérer Bracelet de Tolman<br />"
+		"fr": "Récupérer Bracelet de Tolman"
 	},{"_id": "label_quest_gravicius", 
 		"en": "Kill Gravicius", 
-		"fr": "Tuer Gravicius<br />"
+		"fr": "Tuer Gravicius"
 	},{"_id": "label_quest_archives", 
 		"en": "Pickup the golden pages", 
-		"fr": "Récupérer les pages des archives<br />"
+		"fr": "Récupérer les pages des archives"
 	},{"_id": "label_quest_mines", 
 		"en": "Enter the mines", 
-		"fr": "Arrivé aux Mines<br />"
+		"fr": "Arrivé aux Mines"
 	},{"_id": "label_quest_belly", 
 		"en": "Enter the belly of the beast", 
 		"fr": "Arrivé aux Entrailles"
 	},{"_id": "label_quest_droponly", 
 		"en": "Drop only", 
 		"fr": "Uniquement en butin"
+	},{"_id": "label_quest_vaal", 
+		"en": "In Vaal area or Corruption effect", 
+		"fr": "Dans les zones vaal ou effet de Corruption"
 	},{"_id": "label_quest_alternate", 
 		"en": "By completing unsual gems's blueprint", 
 		"fr": "Dans les plans de gemmes inhabituelles"
 	},{"_id": "label_quest_awakened", 
 		"en": "In Maven's crucible", 
 		"fr": "Dans le creuset de la Prodige"
+	},{"_id": "label_quest_outofclass", 
+		"en": "Out of class", 
+		"fr": "Hors classe"
 	},{"_id": "history_subheader", 
 		"en": "History", 
 		"fr": "Historique"
