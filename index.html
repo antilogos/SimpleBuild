@@ -43,8 +43,15 @@
 			} else {
 				// If was still on loading page, switch to diplay or current page
 				if(document.getElementById("page_loader").style.display == "block") {
-					if(window.location.hash.length > 0) displayMenu(window.location.hash.substring(1));
-					else displayMenu('search');
+					if(window.location.hash.length > 0) {
+						if(listBuild.find( b => encodeURI(b.title).toUpperCase() == window.location.hash.substring(1).toUpperCase()) >= 0) {
+							displayMenu('home');
+						} else {
+							displayMenu(window.location.hash.substring(1));
+						}
+					} else {
+						displayMenu('search');
+					}
 				}
 			}
 			fillSearch();
@@ -69,14 +76,15 @@
 	}
 	// Navigation
 	function displayMenu(page) {
-	  document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
-	  document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
-	  document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
-	  document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
-	  document.getElementById("page_about").style.display = (page == "about") ? "block" : "none";
-	  if(page != "loader") {
-		window.location.hash = page;
-	  }
+		document.getElementById("page_display").style.display = (page == "home") ? "block" : "none";
+		document.getElementById("page_import").style.display = (page == "import") ? "block" : "none";
+		document.getElementById("page_search").style.display = (page == "search") ? "block" : "none";
+		document.getElementById("page_loader").style.display = (page == "loader") ? "block" : "none";
+		document.getElementById("page_about").style.display = (page == "about") ? "block" : "none";
+		// Don't change hash of location if displaying loader or a build
+		if(page != "loader" && page != "home") {
+			window.location.hash = page;
+		}
 	}
 	// Style
 	function selectStyle(theme) {
