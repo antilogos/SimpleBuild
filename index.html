@@ -86,6 +86,12 @@
 			window.location.hash = page;
 		}
 	}
+	function scrollToPart(part) {
+		if(part == "notes") document.getElementById("notes_header").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+		else if(part == "gem") document.getElementById("gem_header").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+		else if(part == "tree") document.getElementById("tree_header").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+		else if(part == "item") document.getElementById("item_header").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+	}
 	// Style
 	function selectStyle(theme) {
 	  document.body.classList = "";
@@ -247,10 +253,10 @@
 				</div>
 			</div>
 			<div class="toc"><!-- TOC -->
-				<a id="toc_notes" href="#notes_header"></a>
-				<a id="toc_gem" href="#gem_header"></a>
-				<a id="toc_tree" href="#tree_header"></a>
-				<a id="toc_item" href="#item_header"></a>
+				<a id="toc_notes" onclick="scrollToPart('notes')"></a>
+				<a id="toc_gem" onclick="scrollToPart('gem')"></a>
+				<a id="toc_tree" onclick="scrollToPart('tree')"></a>
+				<a id="toc_item" onclick="scrollToPart('item')"></a>
 			</div>
 		</div>
 		<!-- Search Page -->
