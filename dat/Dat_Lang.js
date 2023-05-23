@@ -85,19 +85,19 @@ const langTranslate=[
 		"fr": "Ce site est réalisé par un fan et n'est pas officiel. Il n'est pas affilié à ou approuvé par Grinding Gear Game."
 	},{"_id": "label_quest_lyoneye", 
 		"en": "Enter Lyoneye's Watch", 
-		"fr": "Arrivé au Guet"
+		"fr": "Arriver au Guet"
 	},{"_id": "label_quest_submerged", 
 		"en": "Enter Submerged passage", 
-		"fr": "Arrivé aux Souterrains"
+		"fr": "Arriver aux Souterrains"
 	},{"_id": "label_quest_prison", 
 		"en": "Enter Axiom's prison", 
-		"fr": "Arrivé à la Prison"
+		"fr": "Arriver à la Prison"
 	},{"_id": "label_quest_brutus", 
 		"en": "Kill Brutus", 
 		"fr": "Tuer Brutus"
 	},{"_id": "label_quest_cavern", 
 		"en": "Enter Merveil's Caverns", 
-		"fr": "Arrivé aux Cavernes"
+		"fr": "Arriver aux Cavernes"
 	},{"_id": "label_quest_balefulgem", 
 		"en": "Pickup the Baleful Gem", 
 		"fr": "Récupérer Gemme maléfique"
@@ -114,11 +114,11 @@ const langTranslate=[
 		"en": "Pickup the golden pages", 
 		"fr": "Récupérer les pages des archives"
 	},{"_id": "label_quest_mines", 
-		"en": "Enter the mines", 
-		"fr": "Arrivé aux Mines"
+		"en": "Open the mines", 
+		"fr": "Ouvir les Mines"
 	},{"_id": "label_quest_belly", 
-		"en": "Enter the belly of the beast", 
-		"fr": "Arrivé aux Entrailles"
+		"en": "Open the belly of the beast", 
+		"fr": "Ouvrir le ventre de la bête"
 	},{"_id": "label_quest_droponly", 
 		"en": "Drop only", 
 		"fr": "Uniquement en butin"
