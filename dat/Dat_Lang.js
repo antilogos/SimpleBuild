@@ -308,7 +308,7 @@ function selectLang(lang) {
 	document.getElementById("lang_"+lang).classList.add("selectedLang");
 	// Load all div text
 	for (let l of langTranslate) {
-		if(document.getElementById(l._id)) document.getElementById(l._id).innerHTML = l[lang];
+		if(document.getElementById(l._id)) document.getElementById(l._id).textContent = l[lang];
 	}
 	// Force reload on tree passives
 	loadPassive = false;
