@@ -652,17 +652,25 @@ select {
   line-height: 1.1em;
 }
 
-#gemconfDiv button, #treeDiv button, #resultDiv button, #inventorySetDiv button, #historyDiv button {
-	transition-duration: 0.4s;
-	background-color: var(--section-highlight);
-	color: var(--text-color);
-	border: 1px solid var(--select-focus);
+button.selectable {
 	padding: 0.4em;
 	margin: 0.4em;
 	border-radius: 0.2em;
 }
-#gemconfDiv button:hover, #treeDiv button:hover, #resultDiv button:hover, #inventorySetDiv button:hover, #historyDiv button:hover{
+button.selectable:not(.pressed) {
+	transition-duration: 0.4s;
+	background-color: var(--section-highlight);
+	color: var(--text-color);
+	border: 1px solid var(--select-focus);
+}
+button.selectable:hover, button.pressed:hover{
 	color: var(--section-highlight);
+	background-color: var(--select-focus);
+}
+button.pressed {
+	background: var(--text-background);
+	transition: all 0.4s ease-in-out;
+	border: 1px solid var(--select-focus);
 	background-color: var(--select-focus);
 }
 
@@ -686,37 +694,16 @@ select {
 	border: none;
 	background: none;
 }
-.imageButton:not(.isfilter) {
+.imageButton:not(.pressed) {
 	opacity: 0.3;
 }
 .imageButton:hover {
 	opacity: 1;
 }
-.imageButton.isfilter {
+.imageButton.pressed {
 	border: 1px solid var(--select-focus);
 }
 
-.tagButton {
-	padding: 0.4em;
-	margin: 0.4em;
-	border-radius: 0.2em;
-}
-.tagButton:not(.isfilter) {
-	transition-duration: 0.4s;
-	background-color: var(--section-highlight);
-	color: var(--text-color);
-	border: 1px solid var(--select-focus);
-}
-.tagButton:hover, .tagButton.isfilter:hover{
-	color: var(--section-highlight);
-	background-color: var(--select-focus);
-}
-.tagButton.isfilter {
-	background: var(--text-background);
-	transition: all 0.4s ease-in-out;
-	border: 1px solid var(--select-focus);
-	background-color: var(--select-focus);
-}
 
 /* Passive tree */
 
