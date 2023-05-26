@@ -33,8 +33,11 @@
 		passiveSkillTreeData = parsed;
 		treeNodes = extractNodesData(parsed);
 		loadPassive = true;
+		console.log(document.getElementById("maindiv").getBoundingClientRect());		
+		document.getElementById("maindiv").addEventListener('DOMContentLoaded', (event) => {
+		  console.log("then it is loaded");
+		});
 	}).then(data => init());
-	
 	const urlParams = new URLSearchParams(window.location.search);
 	const MAINDIV = "maindiv";
 	const stylePerStep = [{"stroke":"#C90","width":96}, 
