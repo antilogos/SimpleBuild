@@ -711,9 +711,24 @@ button.pressed {
 
 /* Passive tree */
 
+#previewDiv {
+	display: flex;
+}
+
+#previewDiv:before {
+	/* For height equal to width */
+	content: "";
+	padding-top: 100%;
+	float: left;
+}
+.panControls {
+	position: absolute;
+	bottom: 0;
+	left: 0;	
+}
 .skillTree {
+	flex: 1;
 	background-image: var(--tree-radiant-background);
 	border-radius: 25%;
 	width: 100%;
-	height: 100vh;
 }

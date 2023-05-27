@@ -39,8 +39,8 @@
 			if(currPob) {
 				clearProfile();
 				hhData = [];
-				fillProfile(currPob);
 				if(document.getElementById("page_loader").style.display == "block") displayMenu('home');
+				fillProfile(currPob);
 			} else {
 				// If was still on loading page, switch to diplay or current page
 				if(document.getElementById("page_loader").style.display == "block") {

@@ -6,6 +6,8 @@
 	<link rel="shortcut icon" type="image/png" href="https://docs.google.com/drawings/d/e/2PACX-1vRmsUqz_w0baXylHjox1oadVVCB2B0kq8LtyvLEx9M7rZTjSr18UDf0IaDljbf5db3uUkd2Fi9MRwHX/pub?w=51&h=50"/>
 	<style>
 	body {	
+		--section-bg: #efefefcc;
+		--text-color: #000;
 		--tree-connector: #000;
 		--tree-node-small: #222;
 		--tree-node-medium: #f00;
@@ -19,8 +21,12 @@
 	.skillTree {
 		background-image: var(--tree-radiant-background);
 		border-radius: 25%;
-		width: 100%;
+		width: 100vh;
 		height: 100vh;
+		display: inline-block;
+	}
+	#maindiv {
+		text-align: center;
 	}
 	</style>
 	<script src="lib/pako.min.js"></script>
@@ -67,6 +73,9 @@
 			buildContext(MAINDIV, labels, tutorial[urlParams.get("draw")].labelPos);
 			// Draw the icon of the class
 			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n, startClassAscend));
+			
+			// Add mouse wheel event
+			addZommAnimation(document.getElementById(MAINDIV).firstChild, document.getElementById(MAINDIV).firstChild.firstChild);
 		}
 	}
 	</script>
