@@ -718,7 +718,7 @@ button.pressed {
 #previewDiv:before {
 	/* For height equal to width */
 	content: "";
-	padding-top: 100%;
+	padding-top: min(100%, 80vh);
 	float: left;
 }
 .panControls {
