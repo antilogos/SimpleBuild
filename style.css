@@ -14,8 +14,8 @@ body.dark {
 	--box-shadow: 0.1em 0.1em 0.5em 0.1em #0003 inset;
 
 	--tree-connector: #999;
-	--tree-node-small: #fff;
-	--tree-node-medium: #fff;
+	--tree-node-small: #bbb;
+	--tree-node-medium: #bbb;
 	--tree-node-large: #990;
 	--tree-node-str: #966;
 	--tree-node-int: #669;
