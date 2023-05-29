@@ -103,7 +103,10 @@ a:visited {
 .notesReferences {
 	white-space: pre-line;
 }
-
+.linkref {
+	cursor:pointer;
+	text-decoration:underline;
+}
 .page {
 	display: none;
 	margin-top: 4rem;
@@ -467,7 +470,7 @@ li > button, li > a, .navbutton{
 li > button:hover, .navbutton:hover {
 	text-shadow: var(--text-shadow-hover);
 	background: var(--text-background);
-  transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out;
 }
 li > .lefSide {
 	
@@ -490,11 +493,11 @@ li > .lefSide {
   transition: height ease 0.4s;
 }
 #menu_config button{
-  font-size: 1em;
+	font-size: 1em;
 	text-transform: uppercase;
-  text-decoration: none;
-  text-align: left;
-  cursor: pointer;
+	text-decoration: none;
+	text-align: left;
+	cursor: pointer;
 	min-width: 2em;
 }
 #menu_test:hover .dropmenu {
@@ -535,17 +538,18 @@ ul li:hover > button > .arrow {
 .toc {
 	background: var(--nav-bg);
 	position: fixed;
-	top: 30vh;
+	top: 40vh;
 	display: block;
 	float: left;
-	height: 140px;
-	align-items: center;
 }
 .toc > a {
-	display: block;
-	width: 35px;
-    height: 35px;
+	display: flex;
+	width: auto;
+	align-items: center;
+	text-align: center;
+	margin: 0.5em;
 }
+/* Search for icons?
 #toc_notes {
 	background: url(./img/favicon.ico) no-repeat;
 }
@@ -561,6 +565,7 @@ ul li:hover > button > .arrow {
 	background: url(./img/socket.png) no-repeat;
     background-position: -140px -140px;
 }
+*/
 
 /* History panel */
 
@@ -729,6 +734,6 @@ button.pressed {
 .skillTree {
 	flex: 1;
 	background-image: var(--tree-radiant-background);
-	border-radius: 25%;
+	border-radius: 10%;
 	width: 100%;
 }

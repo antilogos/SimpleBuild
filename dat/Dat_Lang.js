@@ -159,14 +159,26 @@ const langTranslate=[
 		"en": "Contribute", 
 		"fr": "Contribuer"
 	},{"_id": "contribute_content", 
-		"en": "If you want to submit content, you can send a PoB code as a merge request on the github (file to modify: dat/Dat_ListBuild.js) or contact me via <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">google form</a> or <a href=\"https://discord.gg/brNDd44\">discord</a>.</br>Notes in Path of building are used to inject text in the different part of a build display, using a specific line starting code: </br>«#_gem_X_Y_Z», where X is the index of the <b>Skill set</b>, Y the index of the <b>Socket group</b>, and Z the index of the gem (_Y and _Z are optionnal if you want a title for a group or skill set)</br>«#_node_X», where X is the id of the <b>tree node</b>()</br>«#_mastery_X», where X is the id of the <b>mastery choice</b>()</br>«#_item_X», where X is the index of the item in the <b>All items</b> list.<br />End of such line must end with «#_». Colours code are kept.",
-		"fr": "Si vous voulez sousmettre votre propre contenu, vous pouvez m'envoyer un code PoB en tant que <i>merge request</i> sur le github (fichier à modifer: dat/Dat_ListBuild.js) ou me contacter par <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">formulaire google</a> ou <a href=\"https://discord.gg/brNDd44\">discord</a>.</br>La partie Notes dans Path of Building est utilisé pour injecter du texte à differents endroits de la présentation du personnage, en utilisant des codes en début de ligne: </br>«#_gem_X_Y_Z», où X est l'index du <b>Skill set</b>, Y celui du <b>Socket group</b>, et Z l'index de la gemme (_Y et _Z sont optionnels si vous voulez ajouter des titres sur les groupes ou skill set)</br>«#_node_X», où X est l'identifiant du <b>point de talent passif de l'arbre</b>()</br>«#_mastery_X», où X est l'identifiant de la <b>maîtrise choisie</b>()</br>«#_item_X», où X est l'index de l'objet dans la liste <b>All items</b>.<br />Les lignes de ce genre doivent terminer par «#_». Les codes couleurs sont conservés."
+		"en": "If you want to submit content, you can send a PoB code as a merge request on the github (file to modify: dat/Dat_ListBuild.js) or contact me via <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">google form</a> or <a href=\"https://discord.gg/brNDd44\">discord</a>.\r\nNotes in Path of building are used to inject text in the different part of a build display, using a specific line starting code: \r\n«#_gem_X_Y_Z», where X is the index of the <b>Skill set</b>, Y the index of the <b>Socket group</b>, and Z the index of the gem (_Y and _Z are optionnal if you want a title for a group or skill set)\r\n«#_node_X», where X is the id of the <b>tree node</b>()\r\n«#_mastery_X», where X is the id of the <b>mastery choice</b>()</br>«#_item_X», where X is the index of the item in the <b>All items</b> list.\r\nEnd of such line must end with «#_». Colours code are kept.",
+		"fr": "Si vous voulez sousmettre votre propre contenu, vous pouvez m'envoyer un code PoB en tant que <i>merge request</i> sur le github (fichier à modifer: dat/Dat_ListBuild.js) ou me contacter par <a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfB4wQkVmWikMUyYxz3iicEOlOZ8IDwovzC3-3yoqoTTOYDIw/viewform?usp=sf_link\">formulaire google</a> ou <a href=\"https://discord.gg/brNDd44\">discord</a>.\r\nLa partie Notes dans Path of Building est utilisé pour injecter du texte à differents endroits de la présentation du personnage, en utilisant des codes en début de ligne: \r\n«#_gem_X_Y_Z», où X est l'index du <b>Skill set</b>, Y celui du <b>Socket group</b>, et Z l'index de la gemme (_Y et _Z sont optionnels si vous voulez ajouter des titres sur les groupes ou skill set)\r\n«#_node_X», où X est l'identifiant du <b>point de talent passif de l'arbre</b>()\r\n«#_mastery_X», où X est l'identifiant de la <b>maîtrise choisie</b>()\r\n«#_item_X», où X est l'index de l'objet dans la liste <b>All items</b>.\r\nLes lignes de ce genre doivent terminer par «#_». Les codes couleurs sont conservés."
 	},{"_id": "about_header", 
 		"en": "Sources", 
 		"fr": "Sources"
 	},{"_id": "about_content", 
-		"en": "This site is directly hosted on <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> by github.io.<br />This site use data from <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> and <a href=\"http://poe.ninja/\">poe.ninja</a>, and the framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> for displaying item.<br />PoB code comes from and are used with the software <a href=\"https://pathofbuilding.community\">Path of building community project</a>.", 
-		"fr": "Ce site est directement hébergé sur <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> par github.io.<br />Ce site utilise des données provenant de <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> et <a href=\"http://poe.ninja/\">poe.ninja</a> et utilise aussi le framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> pour l'affichage des objets.<br />Les codes PoB proviennent et sont utilisés par le logiciel <a href=\"https://pathofbuilding.community\">Path of building community</a>."
+		"en": "This site is directly hosted on <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> by github.io.\r\nThis site use data from <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> and <a href=\"http://poe.ninja/\">poe.ninja</a>, and the framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> for displaying item.\r\nPoB code comes from and are used with the software <a href=\"https://pathofbuilding.community\">Path of building community project</a>.", 
+		"fr": "Ce site est directement hébergé sur <a href=\"https://github.com/antilogos/SimpleBuild\">github</a> par github.io.\r\nCe site utilise des données provenant de <a href=\"https://github.com/brather1ng/RePoE\">RePoE</a> et <a href=\"http://poe.ninja/\">poe.ninja</a> et utilise aussi le framework <a href=\"https://github.com/meta-is-beta/horadric-helper\">Horadric Helper</a> pour l'affichage des objets.\r\nLes codes PoB proviennent et sont utilisés par le logiciel <a href=\"https://pathofbuilding.community\">Path of building community</a>."
+	}, {"_id": "toc_notes",
+		"en": "Notes",
+		"fr": "Notes"		
+	}, {"_id": "toc_gem",
+		"en": "Gems",
+		"fr": "Gemmes"		
+	}, {"_id": "toc_tree",
+		"en": "Passives",
+		"fr": "Passifs"		
+	}, {"_id": "toc_item",
+		"en": "Items",
+		"fr": "Objets"		
 	}
 ]
 const dynamicDico = {
@@ -298,6 +310,53 @@ const dynamicDico = {
 		"fr": "À partir de"}
 };
 
+// Translate html text to multiple text content div
+function htmlContentToText(divElement, str) {
+	while(divElement.firstChild) {
+		divElement.removeChild(divElement.firstChild);
+	}
+	divElement.classList.add("notesReferences");
+	var extract = str.match(/<.*?\/[^>"]+>/g);
+	var sequence = str;
+	if(extract) {
+		// Create div for each part
+		extract.forEach( part => {
+			var firstPart = sequence.substr(0, sequence.indexOf(part));
+			if(firstPart.length > 0) {
+				var firstPartDiv = document.createElement("span");
+				firstPartDiv.textContent = firstPart;
+				divElement.appendChild(firstPartDiv);
+			}
+			var secondPart = sequence.substr(sequence.indexOf(part), part.length);
+			// Create content from element that match the tag
+			var secondPartDiv = document.createElement("span");
+			var tag = secondPart.replaceAll(/<([^>]*)>.*/g, "$1");
+			switch(tag.substring(0,1)) {
+				case 'b': secondPartDiv.style.fontWeight = "bold";
+					break;
+				case 'c': secondPartDiv.style.color = tag.replaceAll(/color "(.*)"/g, "$1");
+					break;
+				case 'i': secondPartDiv.style.fontStyle = "italic";
+					break;
+				case 'a': let url = tag.replaceAll(/a href="(.*)"/g, "$1")
+					secondPartDiv.onclick = function() {
+						window.open(url, "_blank");
+					};
+					secondPartDiv.classList.add("linkref");
+					secondPartDiv.title = url;
+					break;
+				default : 
+					break;
+			}
+			secondPartDiv.textContent = secondPart.replaceAll(/<[^>]*>(.*?)<.*>/g, "$1");
+			divElement.appendChild(secondPartDiv);
+			sequence = sequence.substring(sequence.indexOf(part) + part.length);
+		});
+	} else {
+		divElement.textContent = str;
+	}
+}
+
 // Language selection
 function selectLang(lang) {
 	// Get only code A2 from browser lang
@@ -308,7 +367,9 @@ function selectLang(lang) {
 	document.getElementById("lang_"+lang).classList.add("selectedLang");
 	// Load all div text
 	for (let l of langTranslate) {
-		if(document.getElementById(l._id)) document.getElementById(l._id).textContent = l[lang];
+		if(document.getElementById(l._id)) {
+			htmlContentToText(document.getElementById(l._id), l[lang]);
+		} 
 	}
 	// Force reload on tree passives
 	loadPassive = false;
