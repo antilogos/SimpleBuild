@@ -1,7 +1,7 @@
 const langTranslate=[
 	{"_id": "home", 
-		"en": "Home", 
-		"fr": "Accueil"
+		"en": "Selected", 
+		"fr": "Sélection"
 	},{"_id": "search", 
 		"en": "List", 
 		"fr": "Liste"
