@@ -22,6 +22,7 @@ body.dark {
 	--tree-node-dex: #696;
 	--tree-node-path: #6ff;
 	--tree-node-oldpath: #099;
+	--tree-node-hover: #a0a;
 	--tree-radiant-background: conic-gradient(#11111A, #111a11 120deg, #1a1111 240deg, #11111a);
 	
 	--select-border: #777;
@@ -53,6 +54,7 @@ body.light {
 	--tree-node-dex: #0f0;
 	--tree-node-path: #6ff;
 	--tree-node-oldpath: #099;
+	--tree-node-hover: #fa6;
 	--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
 	
 	--select-border: #777;
@@ -719,7 +721,6 @@ button.pressed {
 #previewDiv {
 	display: flex;
 }
-
 #previewDiv:before {
 	/* For height equal to width */
 	content: "";
@@ -736,4 +737,52 @@ button.pressed {
 	background-image: var(--tree-radiant-background);
 	border-radius: 10%;
 	width: 100%;
+}
+#treePopup {
+	position: fixed;
+	width: auto;
+	height: auto;
+	float: left;
+}
+
+
+.skillPopupContainer {
+    text-align: center;
+    min-width: 262.88032px;
+    pointer-events: none;
+}
+.skillPopup, .masteryPopup {
+    background: rgba(0,0,0,.8);
+    color: #7f7f7f;
+    margin: 0px 7px;
+}
+.skillPopup .skillHeader {
+    padding: 0 30px;
+    white-space: nowrap;
+    color: #f9e6ca;
+}.skillPopup .skillName {
+    display: inline-block;
+    font-size: 22.8px;
+    line-height: 2em;
+    height: 53px;
+}
+.skillPopup .skillName .lc {
+    padding: 5px;
+}	
+.skillPopup .content {
+    padding: 1em 0.3em;
+    font-size: 1.2em;
+    text-align: left;
+}
+.explicitMod, .implicitMod, .utilityMod {
+    color: #88f;
+}
+.skillPopup .lc, .masteryPopup .lc {
+	white-space: pre-line;
+    padding: 0px 6.08519px;
+}.skillPopup .descrText, .masteryPopup .descrText {
+    font-style: italic;
+}.flavourText {
+    font-style: italic;
+	color: #af6025;
 }

@@ -15,7 +15,7 @@
 		--tree-node-str: #f00;
 		--tree-node-int: #00f;
 		--tree-node-dex: #0f0;
-		--tree-node-path: #6ff;
+		--tree-node-hover: #6ff;
 		--tree-radiant-background: conic-gradient(#dddde9, #dde9dd 120deg, #e9dddd 240deg, #dddde9);
 	}
 	.skillTree {
@@ -28,6 +28,13 @@
 	#maindiv {
 		text-align: center;
 	}
+	#treePopup {
+		position: fixed;
+		width: auto;
+		height: auto;
+		float: left;
+		pointer-events: none;
+	}
 	</style>
 	<script src="lib/pako.min.js"></script>
 	<script src="lib/PobParser.js"></script>
@@ -39,7 +46,6 @@
 		passiveSkillTreeData = parsed;
 		treeNodes = extractNodesData(parsed);
 		loadPassive = true;
-		console.log(document.getElementById("maindiv").getBoundingClientRect());		
 		document.getElementById("maindiv").addEventListener('DOMContentLoaded', (event) => {
 		  console.log("then it is loaded");
 		});
@@ -81,7 +87,7 @@
 	</script>
 </head>
 	<body height="100vh">
-		<div id="maindiv" height="100vh">
-		</div>
+		<div id="maindiv" height="100vh"></div>
+		<div id="treePopup" height="100vh"></div>
 	</body>
 </html>
