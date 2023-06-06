@@ -779,9 +779,13 @@ button.pressed {
 .explicitMod, .implicitMod, .utilityMod {
 	color: #88f;
 }
-.skillPopup .lc, .masteryPopup .lc {
+.skillHeader .lc, .masteryPopup .lc {
 	white-space: pre-line;
 	padding: 0px 6.08519px;
+}
+.skillPopup .textContainer {
+	white-space: pre-line;
+	padding: 0.5em;
 }
 .skillPopup .descrText, .masteryPopup .descrText {
 	font-style: italic;
