@@ -628,6 +628,9 @@ ul li:hover > button > .arrow {
 	margin-left: 1em;
 	text-align: left;
 }
+.ascendancyPreview {
+	border-radius: 5em;
+}
 
 /* Custom select */
 
