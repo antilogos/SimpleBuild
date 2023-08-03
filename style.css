@@ -550,6 +550,8 @@ ul li:hover > button > .arrow {
 	align-items: center;
 	text-align: center;
 	margin: 0.5em;
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
 }
 /* Search for icons?
 #toc_notes {
