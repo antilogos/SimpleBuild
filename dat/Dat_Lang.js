@@ -352,6 +352,12 @@ function htmlContentToText(divElement, str) {
 			divElement.appendChild(secondPartDiv);
 			sequence = sequence.substring(sequence.indexOf(part) + part.length);
 		});
+		// Last part
+		if(sequence.length > 0) {
+			var lastPartDiv = document.createElement("span");
+			lastPartDiv.textContent = sequence;
+			divElement.appendChild(lastPartDiv);
+		}
 	} else {
 		divElement.textContent = str;
 	}
