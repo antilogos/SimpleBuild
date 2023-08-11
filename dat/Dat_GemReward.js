@@ -13222,6 +13222,218 @@ const gemRewards = {
             "fr": "Cyclone vaal"
         }
     },
+    "Devour Support": {
+        "rewards": [
+            3
+        ],
+        "vendor": [
+            6,
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Devour Support",
+            "fr": "Soutien : Dévoration"
+        }
+    },
+    "Flamewood Support": {
+        "rewards": [
+            1
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Flamewood Support",
+            "fr": "Soutien : Bois incandescent"
+        }
+    },
+    "Locus Mine Support": {
+        "rewards": [
+            2
+        ],
+        "vendor": [
+            3,
+            6,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Locus Mine Support",
+            "fr": "Soutien : Mine locus"
+        }
+    },
+    "Fresh Meat Support": {
+        "rewards": [
+            3
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Fresh Meat Support",
+            "fr": "Soutien : Viande fraîche"
+        }
+    },
+    "Sadism Support": {
+        "rewards": [
+            4,
+            0
+        ],
+        "vendor": [
+            1,
+            2,
+            3,
+            5,
+            6
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Sadism Support",
+            "fr": "Soutien : Sadisme"
+        }
+    },
+    "Volatility Support": {
+        "rewards": [
+            1
+        ],
+        "vendor": [
+            5,
+            4,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Volatility Support",
+            "fr": "Soutien : Instabilité"
+        }
+    },
+    "Controlled Blaze Support": {
+        "rewards": [
+            1
+        ],
+        "vendor": [
+            5,
+            4,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Controlled Blaze Support",
+            "fr": "Soutien : Brasier contrôlé"
+        }
+    },
+    "Corrupting Cry Support": {
+        "rewards": [
+            1,
+            4
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Corrupting Cry Support",
+            "fr": "Soutien : Cri corrupteur"
+        }
+    },
+    "Guardian's Blessing Support": {
+        "rewards": [
+            5
+        ],
+        "vendor": [
+            3,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Guardian's Blessing Support",
+            "fr": "Soutien : Bénédiction du gardien"
+        }
+    },
+    "Sacrifice Support": {
+        "rewards": [
+            3
+        ],
+        "vendor": [
+            5,
+            6,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Sacrifice Support",
+            "fr": "Soutien : Sacrifice"
+        }
+    },
+    "Frigid Bond Support": {
+        "rewards": [
+            5,
+            0
+        ],
+        "vendor": [
+            3
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Flamewood Support",
+            "fr": "Soutien : Lien frigorifiant"
+        }
+    },
+    "Returning Projectiles Support": {
+        "rewards": [
+            2,
+            6,
+            0
+        ],
+        "vendor": [
+            1,
+            3,
+            4,
+            5
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Returning Projectiles Support",
+            "fr": "Soutien : Retour des projectiles"
+        }
+    },
+    "Spellblade Support": {
+        "rewards": [
+            5
+        ],
+        "vendor": [
+            3,
+            6,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Spellblade Support",
+            "fr": "Soutien : Lame ensorcelée"
+        }
+    },
+    "Trauma Support": {
+        "rewards": [
+            1,
+            4
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "lang": {
+            "en": "Flamewood Support",
+            "fr": "Soutien : Traumatisme"
+        }
+    },
     "Portal": {
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Qb3J0YWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/179ddc4cbd/Portal.png",
         "lang": {
