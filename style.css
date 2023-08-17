@@ -384,6 +384,13 @@ footer {
 	object-fit: cover;
 }
 
+.exportCode {
+	height: 9.9em;
+	overflow-x: hidden;
+	overflow-y: auto;
+	font-size: x-small;
+}
+
 /* Responsive adaptation */
 
 .sideGem {

@@ -63,7 +63,7 @@
 	function init() {
 		// Draw a tutorial skill tree
 		if(urlParams.get("draw")) {
-			let tutorialBuild = loadPobData(pobCodeToObject(tutorial[urlParams.get("draw")].build.pob));
+			let tutorialBuild = loadPobData(tutorial[urlParams.get("draw")].build.pob);
 			let startingClass = tutorialBuild.treeGroups[1].startClass;
 			let ascendClassId = passiveSkillTreeData.classes[startingClass].ascendancies[tutorialBuild.treeGroups[1].ascendClassId-1].id;
 			let startClassAscend = Object.values(passiveSkillTreeData.nodes).find(n => n.isAscendancyStart && n.ascendancyName == ascendClassId);

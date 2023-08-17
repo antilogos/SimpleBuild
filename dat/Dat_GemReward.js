@@ -5329,7 +5329,7 @@ const gemRewards = {
         ],
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1RyaW5pdHlTdXBwb3J0R2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f547899752/TrinitySupportGem.png",
         "lang": {
-            "fr": "Soutien : Trinité",
+            "fr": "Soutien : Trinité",
             "en": "Trinity Support"
         }
     },

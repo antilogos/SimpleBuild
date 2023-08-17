@@ -20,6 +20,9 @@ const langTranslate=[
 	},{"_id": "label_pobcode", 
 		"en": "POB code:", 
 		"fr": "code POB :"
+	},{"_id": "codePob_header", 
+		"en": "Code to put in Path of Building", 
+		"fr": "Code à mettre dans Path of Building"
 	},{"_id": "label_submit", 
 		"en": "Submit", 
 		"fr": "Valider"
@@ -179,6 +182,9 @@ const langTranslate=[
 	}, {"_id": "toc_item",
 		"en": "Items",
 		"fr": "Objets"		
+	}, {"_id": "toc_pob",
+		"en": "Export",
+		"fr": "Exporter"		
 	}
 ]
 const dynamicDico = {
