@@ -1,7 +1,7 @@
 /* Theme */
 
 body.dark {
-	--body-bg: url("./img/BackgroundAmbient_PoE_Crucible.png");
+	--body-bg: url("./img/Background.png");
 	--nav-bg: #000;
 	
 	--section-bg: #111C;
@@ -33,7 +33,7 @@ body.dark {
 }
 
 body.light {
-	--body-bg: url("./img/BackgroundAmbient_PoE_Crucible.png");
+	--body-bg: url("./img/Background.png");
 	--nav-bg: #0c343d;
 	
 	--section-bg: #efefefcc;
@@ -72,6 +72,7 @@ body.light {
 }
 body {
 	background-image: var(--body-bg);
+	background-size: cover;
 	color: var(--text-color);
 	transition: background 0.2s linear;
 	height: 100vh;
@@ -557,8 +558,6 @@ ul li:hover > button > .arrow {
 	align-items: center;
 	text-align: center;
 	margin: 0.5em;
-	writing-mode: vertical-rl;
-	transform: rotate(180deg);
 }
 /* Search for icons?
 #toc_notes {
