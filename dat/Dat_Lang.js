@@ -313,7 +313,10 @@ const dynamicDico = {
 		"fr": " (optionnel)"},
 	"complement_tree_fromparent": {
 		"en": "From", 
-		"fr": "À partir de"}
+		"fr": "À partir de"},
+	"official_site_url": {
+		"en": "https://pathofexile.com/",
+		"fr": "https://fr.pathofexile.com/"}
 };
 
 // Translate html text to multiple text content div

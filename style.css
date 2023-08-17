@@ -557,6 +557,8 @@ ul li:hover > button > .arrow {
 	width: auto;
 	align-items: center;
 	text-align: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
 	margin: 0.5em;
 }
 /* Search for icons?
