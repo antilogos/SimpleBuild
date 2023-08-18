@@ -35,6 +35,10 @@
 		float: left;
 		pointer-events: none;
 	}
+	.skillPopup, .masteryPopup {
+		background: rgba(0,0,0,.8);
+		margin: 0px 7px;
+	}
 	</style>
 	<script src="lib/pako.min.js"></script>
 	<script src="lib/PobParser.js"></script>
@@ -42,7 +46,7 @@
 	<script src="dat/Dat_ListBuild.js"></script>
 	<script>
 	var passiveSkillTreeData, treeNodes, loadPassive = false;
-	fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-321.json").then(response => response.json()).then(parsed => {
+	fetch("https://raw.githubusercontent.com/antilogos/SimpleFiltre/master/TreeParser/data-322.json").then(response => response.json()).then(parsed => {
 		passiveSkillTreeData = parsed;
 		treeNodes = extractNodesData(parsed);
 		loadPassive = true;
