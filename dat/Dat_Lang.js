@@ -314,6 +314,9 @@ const dynamicDico = {
 	"complement_tree_fromparent": {
 		"en": "From", 
 		"fr": "À partir de"},
+	"parsing_pob_error": {
+		"en": "Invalide code", 
+		"fr": "Ce code n'est pas valide"},
 	"official_site_url": {
 		"en": "https://pathofexile.com/",
 		"fr": "https://fr.pathofexile.com/"}
@@ -343,7 +346,9 @@ function htmlContentToText(divElement, str) {
 			switch(tag.substring(0,1)) {
 				case 'b': secondPartDiv.style.fontWeight = "bold";
 					break;
-				case 'c': secondPartDiv.style.color = tag.replaceAll(/color "(.*)"/g, "$1");
+				case 'c': 
+				console.log(tag, "into", tag.replaceAll(/color "(.*)"/g, "$1"));
+				secondPartDiv.style.color = tag.replaceAll(/color "(.*)"/g, "$1");
 					break;
 				case 'i': secondPartDiv.style.fontStyle = "italic";
 					break;
