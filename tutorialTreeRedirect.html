@@ -20,7 +20,7 @@
 			if(urlParams.get("step")) {
 				let tutorialStep = step[urlParams.get("step")];
 				console.log(tutorialBuild, tutorialStep);
-				let tree = loadPobData(tutorialBuild.pob).getElementsByTagName("Spec")[tutorialStep].getElementsByTagName("URL")[0].textContent.trim();
+				let tree = pobCodeToDocument(tutorialBuild.pob).getElementsByTagName("Spec")[tutorialStep].getElementsByTagName("URL")[0].textContent.trim();
 				console.log(tree);
 				window.location.href = tree.replaceAll("www.pathofexile.com/passive-skill-tree","fr.pathofexile.com/fullscreen-passive-skill-tree");
 				const redirectText = "Vous allez être redirigez vers " + tree;
