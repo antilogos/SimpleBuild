@@ -346,9 +346,7 @@ function htmlContentToText(divElement, str) {
 			switch(tag.substring(0,1)) {
 				case 'b': secondPartDiv.style.fontWeight = "bold";
 					break;
-				case 'c': 
-				console.log(tag, "into", tag.replaceAll(/color "(.*)"/g, "$1"));
-				secondPartDiv.style.color = tag.replaceAll(/color "(.*)"/g, "$1");
+				case 'c': secondPartDiv.style.color = tag.replaceAll(/color "(.*)"/g, "$1");
 					break;
 				case 'i': secondPartDiv.style.fontStyle = "italic";
 					break;
