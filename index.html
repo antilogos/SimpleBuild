@@ -43,7 +43,7 @@
 				// If was still on loading page, switch to diplay or current page
 				if(document.getElementById("page_loader").style.display == "block") {
 					if(window.location.hash.length > 0) {
-						if(listBuild.find( b => encodeURI(b.title).toUpperCase() == window.location.hash.substring(1).toUpperCase()) >= 0) {
+						if(listBuild.find( b => encodeURIComponent(b.title).toUpperCase() == window.location.hash.substring(1).toUpperCase()) >= 0) {
 							displayMenu('home');
 						} else {
 							displayMenu(window.location.hash.substring(1));
