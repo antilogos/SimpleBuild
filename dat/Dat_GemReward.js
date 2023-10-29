@@ -13231,7 +13231,7 @@ const gemRewards = {
             5,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0Rldm91ciIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/3c8b4acc1b/Devour.png",
         "lang": {
             "en": "Devour Support",
             "fr": "Soutien : Dévoration"
@@ -13245,7 +13245,7 @@ const gemRewards = {
             5,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0ZsYW1ld29vZCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/83ebdeea1c/Flamewood.png",
         "lang": {
             "en": "Flamewood Support",
             "fr": "Soutien : Bois incandescent"
@@ -13260,7 +13260,7 @@ const gemRewards = {
             6,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0xvY3VzTWluZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/81e9dcb0a5/LocusMine.png",
         "lang": {
             "en": "Locus Mine Support",
             "fr": "Soutien : Mine locus"
@@ -13274,7 +13274,7 @@ const gemRewards = {
             5,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0ZyZXNoTWVhdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/aad1cf4139/FreshMeat.png",
         "lang": {
             "en": "Fresh Meat Support",
             "fr": "Soutien : Viande fraîche"
@@ -13292,7 +13292,7 @@ const gemRewards = {
             5,
             6
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1NhZGlzbSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/13cc734252/Sadism.png",
         "lang": {
             "en": "Sadism Support",
             "fr": "Soutien : Sadisme"
@@ -13307,7 +13307,7 @@ const gemRewards = {
             4,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1ZvbGF0aWxpdHkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/89efd990e3/Volatility.png",
         "lang": {
             "en": "Volatility Support",
             "fr": "Soutien : Instabilité"
@@ -13322,7 +13322,7 @@ const gemRewards = {
             4,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0NvbnRyb2xsZWRCbGF6ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/da0249157e/ControlledBlaze.png",
         "lang": {
             "en": "Controlled Blaze Support",
             "fr": "Soutien : Brasier contrôlé"
@@ -13337,7 +13337,7 @@ const gemRewards = {
             5,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0NvcnJ1cHRpbmdDcnkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/27dd12964c/CorruptingCry.png",
         "lang": {
             "en": "Corrupting Cry Support",
             "fr": "Soutien : Cri corrupteur"
@@ -13351,7 +13351,7 @@ const gemRewards = {
             3,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0d1YXJkaWFuc0JsZXNzaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/bd80e27bb7/GuardiansBlessing.png",
         "lang": {
             "en": "Guardian's Blessing Support",
             "fr": "Soutien : Bénédiction du gardien"
@@ -13366,7 +13366,7 @@ const gemRewards = {
             6,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1NhY3JpZmljZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/7797a594a9/Sacrifice.png",
         "lang": {
             "en": "Sacrifice Support",
             "fr": "Soutien : Sacrifice"
@@ -13380,7 +13380,7 @@ const gemRewards = {
         "vendor": [
             3
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0ZyaWdpZEJvbmQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e595841550/FrigidBond.png",
         "lang": {
             "en": "Flamewood Support",
             "fr": "Soutien : Lien frigorifiant"
@@ -13398,7 +13398,7 @@ const gemRewards = {
             4,
             5
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1JldHVyblByb2plY3RpbGVzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/76e59b7e35/ReturnProjectiles.png",
         "lang": {
             "en": "Returning Projectiles Support",
             "fr": "Soutien : Retour des projectiles"
@@ -13413,7 +13413,7 @@ const gemRewards = {
             6,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1NwZWxsQmxhZGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6f4a6cf751/SpellBlade.png",
         "lang": {
             "en": "Spellblade Support",
             "fr": "Soutien : Lame ensorcelée"
@@ -13428,7 +13428,7 @@ const gemRewards = {
             5,
             0
         ],
-        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9WYWFsR2Vtcy9WYWFsQ3ljbG9uZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77057062b9/VaalCyclone.png",
+        "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L1RyYXVtYSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/f1642bf8e3/Trauma.png",
         "lang": {
             "en": "Flamewood Support",
             "fr": "Soutien : Traumatisme"
