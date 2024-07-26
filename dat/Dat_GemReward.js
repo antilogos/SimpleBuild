@@ -2976,11 +2976,15 @@ const gemRewards = {
     },
     "Shield Charge": {
         "rewards": [
-            1
+            1, 
+			4, 
+			5, 
+			0
         ],
         "vendor": [
-            4,
-            5
+            2,
+            3,
+			6
         ],
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TaGllbGRDaGFyZ2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/1749dcaa1d/ShieldCharge.png",
         "lang": {
@@ -4213,15 +4217,12 @@ const gemRewards = {
     },
     "Steelskin": {
         "rewards": [
-            1,
+            1
+        ],
+        "vendor": [,
             4,
             5,
             0
-        ],
-        "vendor": [
-            2,
-            3,
-            6
         ],
         "icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9RdWlja0d1YXJkR2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7dcb756463/QuickGuardGem.png",
         "lang": {
@@ -13447,5 +13448,172 @@ const gemRewards = {
             "en": "Detonate Mines",
             "fr": "Activation des Mines"
         }
-    }
+    },
+	"Crushing Fist": {
+		 "rewards": [
+            1,
+            4
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/CrushingFist.png",
+        "lang": {
+            "en": "Crushing Fist",
+            "fr": "Poing écrasant"
+        }
+	},
+	"Glacial Shield Swipe": {
+		 "rewards": [
+            4
+        ],
+        "vendor": [
+			1,
+            2,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/GlacialShieldSwipe.png",
+        "lang": {
+            "en": "Glacial Shield Swipe",
+            "fr": "Balayage de bouclier glacial"
+        }
+	},
+	"Divine Retribution": {
+		 "rewards": [
+            5
+        ],
+        "vendor": [
+            3,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/DivineRetribution.png",
+        "lang": {
+            "en": "Divine Retribution",
+            "fr": "Rétribution divine"
+        }
+	},
+	"Swordstorm": {
+		 "rewards": [
+            4
+        ],
+        "vendor": [
+            1,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/Swordstorm.png",
+        "lang": {
+            "en": "Swordstorm",
+            "fr": "Tempête d'épées"
+        }
+	},
+	"Eviscerate": {
+		 "rewards": [
+            1,
+			4
+        ],
+        "vendor": [
+            5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/Eviscerate.png",
+        "lang": {
+            "en": "Eviscerate",
+            "fr": "Éviscération"
+        }
+	},
+	"Vengeful Cry": {
+		 "rewards": [
+            1
+        ],
+        "vendor": [
+            4,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/VengefulCry.png",
+        "lang": {
+            "en": "Vengeful Cry",
+            "fr": "Cri vengeur"
+        }
+	},
+	"Expert Retaliation Support": {
+		 "rewards": [
+            4
+        ],
+        "vendor": [
+            1,
+			5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/ExpertRetaliationSupport.png",
+        "lang": {
+            "en": "Expert Retaliation Support",
+            "fr": "Soutien : Riposte maîtrisée"
+        }
+	},
+	"Rupture Support": {
+		 "rewards": [
+            2
+        ],
+        "vendor": [
+            1,
+			4,
+			5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/RuptureSupport.png",
+        "lang": {
+            "en": "Rupture Support",
+            "fr": "Soutien : Rupture"
+        }
+	},
+	"Overexertion Support": {
+		 "rewards": [
+            1
+        ],
+        "vendor": [
+			4,
+			5,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0724/gems/OverexertionSupport.png",
+        "lang": {
+            "en": "Overexertion Support",
+            "fr": "Soutien : Surstimulation"
+        }
+	},
+	"Automation": {
+		 "rewards": 
+        ],
+        "vendor": [
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0327/gems/Automation.png",
+        "lang": {
+            "en": "Automation",
+            "fr": "Automatisation"
+        }
+	},
+	"Sacred Wisp Support": {
+		 "rewards": [
+            3
+        ],
+        "vendor": [
+			2,
+			5,
+			6,
+            0
+        ],
+        "icon": "https://web.poecdn.com/public/news/2024-0327/gems/SacredWispsSupport.png",
+        "lang": {
+            "en": "Sacred Wisp Support",
+            "fr": "Soutien : Flammeroles sacrées"
+        }
+	}
 }
