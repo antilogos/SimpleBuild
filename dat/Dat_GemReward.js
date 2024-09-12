@@ -13583,7 +13583,7 @@ const gemRewards = {
         }
 	},
 	"Automation": {
-		 "rewards": 
+		 "rewards": [ 
         ],
         "vendor": [
 			1,
