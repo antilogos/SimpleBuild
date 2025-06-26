@@ -87,6 +87,21 @@
 			
 			// Add mouse wheel event
 			addZommAnimation(document.getElementById(MAINDIV).firstChild, document.getElementById(MAINDIV).firstChild.firstChild);
+		} else if(urlParams.get("hash")) {
+			let hashBuild = parseUrl(urlParams.get("hash"));
+			let startingClass = hashBuild.startingClass;
+			let ascendClassId = passiveSkillTreeData.classes[startingClass].ascendancies[hashBuild.ascendClassId-1].id;
+			let startClassAscend = Object.values(passiveSkillTreeData.nodes).find(n => n.isAscendancyStart && n.ascendancyName == ascendClassId);
+			buildSvgTree(MAINDIV, treeNodes, startingClass, ascendClassId);
+				
+			buildPath(hashBuild, MAINDIV, treeNodes, passiveSkillTreeData, stylePerStep[0]);
+			// Draw the icon of the class
+			Object.values(passiveSkillTreeData.nodes).filter(n => n.classStartIndex == startingClass).forEach(n => buildClassIcon(MAINDIV, n, startClassAscend));
+			
+			// Add mouse wheel event
+			addZommAnimation(document.getElementById(MAINDIV).firstChild, document.getElementById(MAINDIV).firstChild.firstChild);
+			// buildPath(nodesObject, elementId, nodeMap, passiveSkillTreeData, customStyle)
+			//buildPath(parseUrl(urlParams.get("hash")), {"stroke":"#00F","width":128},svg,nodes,passiveSkillTreeData.constants.skillsPerOrbit, passiveSkillTreeData.constants.orbitRadii);
 		}
 	}
 	</script>
