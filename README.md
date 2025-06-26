@@ -13,6 +13,7 @@ How:
 
 TODO:
 * 🔧 find out how to extract data from the game files so we can get description for support gem, better translation support, and uptadable path to image
+* lighter background image in mobile mode
 
 UPDATE PROCESS:
 * filling out new gems into Dat_GemReward.js with gem name and gem icon when available, same with unique?
