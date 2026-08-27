@@ -13615,5 +13615,211 @@ const gemRewards = {
             "en": "Sacred Wisp Support",
             "fr": "Soutien : Flammeroles sacrées"
         }
+	},
+	"Conflagration": {
+		"rewards" : [2
+		],
+		"vendor":[2],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Db25mbGFncmF0aW9uU2tpbGxHZW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/5fa013145a/ConflagrationSkillGem.png",
+		"lang": {
+			"en": "Conflagration",
+			"fr": "Déluge incendiaire"
+		}
+	},
+	"Thunderstorm": {
+		"rewards" : [2,4
+		],
+		"vendor":[2,4,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Db25mbGFncmF0aW9uU2tpbGxHZW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/5fa013145a/ConflagrationSkillGem.png",
+		"lang": {
+			"en": "Thunderstorm",
+			"fr": "Orage"
+		}
+	},
+	"Kinetic Rain": {
+		"rewards" : [3
+		],
+		"vendor":[5,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9LaW5ldGljUmFpblNraWxsR2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/568245b6d1/KineticRainSkillGem.png",
+		"lang": {
+			"en": "Kinetic Rain",
+			"fr": "Pluie cinétique"
+		}
+	},
+	"Somatic Shell": {
+		"rewards" : [3
+		],
+		"vendor":[3,5,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9LaW5ldGljRnVsbGlzYWRlU2tpbGxHZW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/78f8aa0e70/KineticFullisadeSkillGem.png",
+		"lang": {
+			"en": "Somatic Shell",
+			"fr": "Carapace somatique"
+		}
+	},
+	"Kinetic Fusillade": {
+		"rewards" : [
+		],
+		"vendor":[3,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9LaW5ldGljRnVsbGlzYWRlU2tpbGxHZW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/78f8aa0e70/KineticFullisadeSkillGem.png",
+		"lang": {
+			"en": "Kinetic Fusillade",
+			"fr": "Fusillade cinétique"
+		}
+	},
+	"Wall of Force": {
+		"rewards" : [3
+		],
+		"vendor":[3,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TaGllbGRvZkxpZ2h0R2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/114d24b122/ShieldofLightGem.png",
+		"lang": {
+			"en": "Wall of Force",
+			"fr": "Mur de force"
+		}
+	},
+	"Windburst Support": {
+		"rewards" : [2,4
+		],
+		"vendor":[2,4,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TaGllbGRvZkxpZ2h0R2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/114d24b122/ShieldofLightGem.png",
+		"lang": {
+			"en": "Soutien : Rafale de vent",
+			"fr": "Windburst Support"
+		}
+	},
+	"Living Lightning Support": {
+		"rewards" : [3
+		],
+		"vendor":[3,5,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TaGllbGRvZkxpZ2h0R2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/114d24b122/ShieldofLightGem.png",
+		"lang": {
+			"en": "Living Lightning Support",
+			"fr": "Soutien : Foudre vivante"
+		}
+	},
+	"Holy Hammers": {
+		"rewards" : [5
+		],
+		"vendor":[],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Ib2x5SGFtbWVycyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/72c03568c4/HolyHammers.png",
+		"lang": {
+			"en": "Holy Hammers",
+			"fr": "Marteaux sacrés"
+		}
+	},
+	"Shield of Light": {
+		"rewards" : [5
+		],
+		"vendor":[0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TaGllbGRvZkxpZ2h0R2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/114d24b122/ShieldofLightGem.png",
+		"lang": {
+			"en": "Shield of Light",
+			"fr": "Bouclier de lumière"
+		}
+	},
+	"Holy Strike": {
+		"rewards" : [5
+		],
+		"vendor":[0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9Ib2x5U3RyaWtlR2VtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/e65ca586b8/HolyStrikeGem.png",
+		"lang": {
+			"en": "Holy Strike",
+			"fr": "Frappe sacrée"
+		}
+	},
+	"Divine Blast": {
+		"rewards" : [5
+		],
+		"vendor":[1,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9EaXNjdXNTbGFtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/cea2ba6319/DiscusSlam.png",
+		"lang": {
+			"en": "Divine Blast",
+			"fr": "Déflagration divine"
+		}
+	},
+	"Blessed Call Support": {
+		"rewards" : [5
+		],
+		"vendor":[1,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9NYW5hSW5mdXNlZFN0YWZmIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7b8d781c05/ManaInfusedStaff.png",
+		"lang": {
+			"en": "Blessed Call Support",
+			"fr": "Soutien : Cri béni"
+		}
+	},
+	"Excommunicate Support": {
+		"rewards" : [5
+		],
+		"vendor":[1,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9NYW5hSW5mdXNlZFN0YWZmIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7b8d781c05/ManaInfusedStaff.png",
+		"lang": {
+			"en": "Excommunicate Support",
+			"fr": "Soutien : Excommunication"
+		}
+	},
+	"Exemplar Support": {
+		"rewards" : [5
+		],
+		"vendor":[3,0],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9NYW5hSW5mdXNlZFN0YWZmIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7b8d781c05/ManaInfusedStaff.png",
+		"lang": {
+			"en": "Exemplar Support",
+			"fr": "Soutien : Exemple"
+		}
+	},
+	"Mana-Infused Staff": {
+		"rewards" : [5
+		],
+		"vendor":[3,6],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9NYW5hSW5mdXNlZFN0YWZmIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7b8d781c05/ManaInfusedStaff.png",
+		"lang": {
+			"en": "Mana-Infused Staff",
+			"fr": "Bâton imprégné de Mana"
+		}
+	},	
+	"Kinetic Instability Support": {
+		"rewards" : [3
+		],
+		"vendor":[3,6,0],
+		"icon": "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9TdXBwb3J0L0tpbmV0aWNJbnN0YWJpbGl0eVN1cHBvcnRHZW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c6d844a555/KineticInstabilitySupportGem.png",
+		"lang": {
+			"en": "Kinetic Instability Support",
+			"fr": "Soutien : Instabilité cinétique"
+		}
+	},
+	"Pact of Beidat": {
+		"rewards" : [],
+		"vendor":[],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9QYWN0b2ZCZWlkYXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/b003de9a0b/PactofBeidat.png",
+		"lang": {
+			"en": "Pact of Beidat",
+			"fr": "Pacte de Beidat"
+		}
+	},
+	"Pact of K'Tash": {
+		"rewards" : [],
+		"vendor":[],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9QYWN0b2ZLdGFzaCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/a66435c0b5/PactofKtash.png",
+		"lang": {
+			"en": "Pact of K'Tash",
+			"fr": "Pacte de K'Tash"
+		}
+	},
+	"Pact of Ghorr": {
+		"rewards" : [],
+		"vendor":[],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9QYWN0b2ZHaG9yciIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/1c290384f6/PactofGhorr.png",
+		"lang": {
+			"en": "Pact of Ghorr",
+			"fr": "Pacte de Ghorr"
+		}
+	},
+	"Pact of Lycia": {
+		"rewards" : [],
+		"vendor":[],
+		"icon": "https://web.poecdn.com/gen/image/WzMwLDE0LHsiZiI6IjJESXRlbXMvR2Vtcy9QYWN0b2ZMeWNpYSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/e2c766b7d9/PactofLycia.png",
+		"lang": {
+			"en": "Pact of Lycia",
+			"fr": "Pacte de Lycia"
+		}
 	}
 }
