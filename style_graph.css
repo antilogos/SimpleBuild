@@ -1,0 +1,56 @@
+body {
+        margin: 0;
+        overflow: hidden;
+        font-family: "Segoe UI", sans-serif;
+        background: #f0f2f5;
+    }
+
+    #tooltip {
+        position: absolute;
+        display: none;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 8px 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        font-size: 13px;
+        pointer-events: none;
+    }
+
+    svg {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .department {
+        opacity: 0.15;
+        stroke-width: 3;
+    }
+
+    .person-card rect {
+        fill: white;
+        stroke: #cfd8dc;
+        stroke-width: 2;
+        rx: 12;
+    }
+
+    .person-name {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .person-title {
+        font-size: 12px;
+        fill: #666;
+    }
+
+    .link {
+        fill: none;
+        stroke-width: 3;
+        cursor: pointer;
+    }
+
+    .department-title {
+        font-size: 18px;
+        font-weight: bold;
+    }

@@ -1,0 +1,27 @@
+<!Doctype html>
+<html lang="fr">
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <title>Characters Graph Chart</title>
+    <script src="lib/DrawChart.js"></script>
+    <script src="dat/Dat_CharGraph.js"></script>
+	<link rel="stylesheet" href="style_graph.css">
+</head>
+<body>
+    <div id="tooltip"></div>
+    <div id="graph_chart_svg"></div>
+    <div id="infoPopup"></div>
+    <script>
+        // Loading data from file
+        data = {};
+        data.domains = struct_domain_list;
+        data.factions = struct_faction_list;
+        data.groups = struct_group_list;
+        data.characters = struct_character_list;
+        data.relations = struct_relation_list;
+        // Construction du svg
+        buildSvgChartRoot("graph_chart_svg", data);
+
+    </script>
+</body>
+</html>
