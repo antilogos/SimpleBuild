@@ -123,6 +123,17 @@ const struct_domain_list = [
             color: "#C40",
             icon: ""
         }
+    },
+    {
+        id: "Eternal",
+        name: {
+            en: "Eternal",
+            fr: "Éternel"
+        },
+        style: {
+            color: "#999",
+            icon: ""
+        }
     }
 ]
 
@@ -132,17 +143,6 @@ const struct_faction_list = [
         name: {
             en: "Faridun",
             fr: "Faridun"
-        },
-        style: {
-            color: "",
-            icon: ""
-        }
-    },
-    {
-        id: "Eternal",
-        name: {
-            en: "Eternal",
-            fr: "Éternel"
         },
         style: {
             color: "",
@@ -375,13 +375,200 @@ const struct_group_list = [
 ]
 
 const struct_character_list = [
+    // //////////////   KARUI   //////////////// //
     {
         id: "Kaom",
         name: {},
         title: {
-            en: "King",
-            fr: "Roi"
+            en: "King, Chieftain of the Ngamahu tribe",
+            fr: "Roi, Chef de la tribu Ngamahu"
         },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: ["Purity Rebellion"],
+        relation: [{"Hyrri Ngamaky": {"en": "Niece", "fr": "Nièce"}}]
+    },
+    {
+        id: "Hyrri Ngamaku",
+        name: {},
+        title: {
+            en: "Queen",
+            fr: "Reine"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Rakiata",
+        name: {},
+        title: {
+            en: "Chieftain of the Tasalio tribe",
+            fr: "Chef de la tribu Tasalio"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Ikiaho",
+        name: {},
+        title: {
+            en: "Chieftain of the Aronhongui tribe",
+            fr: "Chef de la tribu Aronhongui"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Kiloava",
+        name: {},
+        title: {
+            en: "Chieftain of the Valako tribe",
+            fr: "Chef de la tribu Valako"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Tawhanuku",
+        name: {},
+        title: {
+            en: "Chieftain of the Hinekora tribe",
+            fr: "Chef de la tribu Hinekora"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Maata",
+        name: {},
+        title: {
+            en: "Chieftain of the Tawhoa tribe",
+            fr: "Chef de la tribu Tawhoa"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Kahuturoa",
+        name: {},
+        title: {
+            en: "Chieftain of the Rongokurai tribe",
+            fr: "Chef de la tribu Rongokurai"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Utula",
+        name: {},
+        title: {
+            en: "Chieftain of the Kitava tribe",
+            fr: "Chef de la tribu Kitava"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Ahuana",
+        name: {},
+        title: {
+            en: "Chieftain of the Ramako tribe",
+            fr: "Chef de la tribu Ramako"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Akoya",
+        name: {},
+        title: {
+            en: "Chieftain of the Tukohama tribe",
+            fr: "Chef de la tribu Tukohama"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Haku",
+        name: {},
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: ["Immortals Syndicate"]
+    },
+    {
+        id: "Maramoa",
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Siosa",
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Lani",
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Wakano",
+        title: {
+            en: "The Barber",
+            fr: "Le barbier"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: ["The Circle"]
+    },
+    {
+        id: "Lavianga",
+        title: {
+            en: "Advisor to Kaom",
+            fr: "Conseiller de Kaom"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Tane Octavius",
+        icon: "",
+        domain: "Karui",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Navali",
         icon: "",
         domain: "Karui",
         factions: [],
@@ -396,9 +583,130 @@ const struct_character_list = [
         },
         icon: "",
         domain: "Karui",
-        factions: ["Divinity"],
+        factions: ["God"],
         groups: []
     },
+    {
+        id: "Ngamahu",
+        name: {},
+        title: {
+            en: "Father of Fire",
+            fr: "Père du feu"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Tasalio",
+        name: {},
+        title: {
+            en: "Father of Water",
+            fr: "Père de l'eau"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Arohongui",
+        name: {},
+        title: {
+            en: "Mother of the Moon",
+            fr: "Mère de la lune"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Valako",
+        name: {},
+        title: {
+            en: "Father of Thunder",
+            fr: "Père de la foudre"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Tawhoa",
+        name: {},
+        title: {
+            en: "Father of the Forest",
+            fr: "Père de la forêt"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Kitava",
+        name: {},
+        title: {
+            en: "Father of Hunger, Chaos, and Corruption",
+            fr: "Père de la faim, du chaos, et de la corruption"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Hinekora",
+        name: {},
+        title: {
+            en: "Mother of Death",
+            fr: "Mère de la mort"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Rongokurai",
+        name: {},
+        title: {
+            en: "Father of the Night",
+            fr: "Père de la nuit"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Ramako",
+        name: {},
+        title: {
+            en: "Mother of the Moon",
+            fr: "Mère de la lune"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    {
+        id: "Tukohama",
+        name: {},
+        title: {
+            en: "Father of War",
+            fr: "Père de la guerre"
+        },
+        icon: "",
+        domain: "Karui",
+        factions: ["God"],
+        groups: []
+    },
+    // //////////////   ANCIENT  ////////////// //
     {
         id: "Uzaza",
         title: {
@@ -485,6 +793,254 @@ const struct_character_list = [
         factions: [],
         groups: ["Lightless"]
     },
+    // //////////////   AZMERI  ////////////// //
+    {
+        id: "Yeena",
+        domain: "Azmeri",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Greust",
+        domain: "Azmeri",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Silk",
+        name: {
+            en: "Silk",
+            fr: "Fil-de-soie"
+        },
+        domain: "Azmeri",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Oshabi",
+        domain: "Azmeri",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Eramir",
+        domain: "Azmeri",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Egrin",
+        domain: "Azmeri",
+        factions: [],
+        groups: ["Order of the Djinn"]
+    },
+    // //////////////   ETERNAL  ////////////// //
+    {
+        id: "Tarcus Veruso",
+        title: {
+            en: "Prima Imperialis",
+            fr: "Prima Imperialis"
+        },
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Chiara",
+        domain: "Eternal",
+        factions: [],
+        groups: [],
+        relation: [{"Tarcus Veruso": {"en": "Husband", "fr": "Mari"}}]
+    },
+    {
+        id: "Caspiro",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Alano Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Romira Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Tyndarus Phrecius",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Izaro Phrecius",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Chitus Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Sigmund Fairgraves",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Marceus Lioneye",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Gaius Sentari",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Lazhwar",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Malachai",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Icius Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Cadiro Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Dialla",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Maligaro",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Shavronne",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Doedre",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Geofri",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Raulo (Fidelitas)",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Hector Titucius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Ondar",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Alsarus",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Victario Nevalius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Marylene",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Prospero",
+        domain: "Eternal",
+        factions: [],
+        groups: ["God"]
+    },
+    // //////////////   TEMPLAR  ////////////// //
+    {
+        id: "Voll",
+        title: {
+            en: "Emperor of Purity",
+            fr: "Empereur de la pureté"
+        },
+        domain: "TEMPLAR",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Valdo Caesarus",
+        name: {
+            en: "Valdo Caesarus (The Shaper)",
+            fr: "Valdo Caesarus (Le Façonneur)"
+        },
+        title: {
+            en: "Chief Arkon",
+            fr: "Archon en chef"
+        },
+        icon: "",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    // //////////////   EZOMYTE  ////////////// //
+    {
+        id: "Skothe",
+        name: {},
+        title: {
+            en: "King",
+            fr: "Roi"
+        },
+        icon: "",
+        domain: "Ezomyte",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
     {
         id: "Rigwald",
         name: {},
@@ -497,7 +1053,7 @@ const struct_character_list = [
         factions: [],
         groups: ["Purity Rebellion"]
     },
-    // MARAKETH //
+    // //////////////   MARAKETH  ////////////// //
     {
         id: "Deshret",
         name: {},
@@ -656,7 +1212,7 @@ const struct_character_list = [
         factions: [],
         groups: ["Faridun"]
     },
-    // VAAL //
+    // //////////////   VAAL  ////////////// //
     {
         id: "Xibaqua",
         icon: "",
@@ -997,22 +1553,6 @@ const struct_character_list = [
         factions: [],
         groups: []
     },
-    // TEMPLAR //
-    {
-        id: "Valdo Caesarus",
-        name: {
-            en: "Valdo Caesarus (The Shaper)",
-            fr: "Valdo Caesarus (Le Façonneur)"
-        },
-        title: {
-            en: "Chief Arkon",
-            fr: "Archon en chef"
-        },
-        icon: "",
-        domain: "Templar",
-        factions: [],
-        groups: []
-    },
     {
         id: "Johan",
         name: {},
@@ -1036,6 +1576,35 @@ const struct_character_list = [
         domain: "Extraplanar",
         factions: [],
         groups: ["Servant of Decay"]
+    },
+    // //////////////   TRARTHAN  ////////////// //
+    {
+        id: "Ixan Keita",
+        icon: "",
+        domain: "Trarthan",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Quilon Bardiya",
+        icon: "",
+        domain: "Trarthan",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Kylian Cyaxan",
+        icon: "",
+        domain: "Trarthan",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Ratha Azadi",
+        icon: "",
+        domain: "Trarthan",
+        factions: [],
+        groups: []
     }
 ]
 
