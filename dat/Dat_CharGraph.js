@@ -37,17 +37,6 @@ const struct_domain_list = [
         }
     },
     {
-        id: "Azmeri",
-        name: {
-            en: "Azmeri",
-            fr: "Azméri"
-        },
-        style: {
-            color: "#CBA",
-            icon: ""
-        }
-    },
-    {
         id: "Templar",
         name: {
             en: "Templar",
@@ -92,10 +81,10 @@ const struct_domain_list = [
         }
     },
     {
-        id: "Ancient",
+        id: "Other",
         name: {
-            en: "Other pre-historical",
-            fr: "Autre pré-histoire"
+            en: "Others folks",
+            fr: "Autres peuples"
         },
         style: {
             color: "#57F",
@@ -223,6 +212,17 @@ const struct_faction_list = [
         },
         style: {
             color: "",
+            icon: ""
+        }
+    },
+    {
+        id: "Azmeri",
+        name: {
+            en: "Azmeri",
+            fr: "Azméri"
+        },
+        style: {
+            color: "#CBA",
             icon: ""
         }
     },
@@ -713,7 +713,7 @@ const struct_character_list = [
             en: "The first king",
             fr: "Le premier roi"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: ["Primeval"],
         groups: []
     },
@@ -723,7 +723,7 @@ const struct_character_list = [
             en: "King",
             fr: "Roi"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: ["Primeval"],
         groups: []
     },
@@ -733,7 +733,7 @@ const struct_character_list = [
             en: "The last king",
             fr: "Le dernier roi"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: ["Primeval"],
         groups: []
     },
@@ -743,13 +743,13 @@ const struct_character_list = [
             en: "The Clayshaper",
             fr: "La façonneuse d'argile"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: [],
         groups: ["Order of the Djinn"]
     },
     {
         id: "Kulemak",
-        domain: "Ancient",
+        domain: "Other",
         factions: ["Lightless"],
         groups: []
     },
@@ -759,7 +759,7 @@ const struct_character_list = [
             en: "Lich lord",
             fr: "Seigneur liche"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: [],
         groups: ["Lightless", "Abyss"]
     },
@@ -769,7 +769,7 @@ const struct_character_list = [
             en: "Lich lord",
             fr: "Seigneur liche"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: [],
         groups: ["Lightless", "Delve"]
     },
@@ -779,7 +779,7 @@ const struct_character_list = [
             en: "Lich lord",
             fr: "Seigneur liche"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: [],
         groups: ["Lightless", "Abyss"]
     },
@@ -789,22 +789,21 @@ const struct_character_list = [
             en: "Lich lord",
             fr: "Seigneur liche"
         },
-        domain: "Ancient",
+        domain: "Other",
         factions: [],
         groups: ["Lightless"]
     },
-    // //////////////   AZMERI  ////////////// //
     {
         id: "Yeena",
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: []
+        groups: ["Azmeri"]
     },
     {
         id: "Greust",
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: []
+        groups: ["Azmeri"]
     },
     {
         id: "Silk",
@@ -812,27 +811,67 @@ const struct_character_list = [
             en: "Silk",
             fr: "Fil-de-soie"
         },
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: []
+        groups: ["Azmeri"]
     },
     {
         id: "Oshabi",
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: []
+        groups: ["Azmeri"]
     },
     {
         id: "Eramir",
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: []
+        groups: ["Azmeri"]
     },
     {
         id: "Egrin",
-        domain: "Azmeri",
+        domain: "Other",
         factions: [],
-        groups: ["Order of the Djinn"]
+        groups: ["Azmeri", "Order of the Djinn"]
+    },
+    {
+        id: "Solaris",
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
+    },
+    {
+        id: "Lunaris",
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
+    },
+    {
+        id: "Viridi",
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
+    },
+    {
+        id: "Tangmazu",
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
+    },
+    {
+        id: "Ryslatha",
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
+    },
+    {
+        id: "Tsoagoth",
+        name: {
+            "en": "The Brine King",
+            "fr": "Roi des embruns"
+        }
+        domain: "Other",
+        factions: [],
+        groups: ["Azmeri", "God"]
     },
     // //////////////   ETERNAL  ////////////// //
     {
@@ -841,6 +880,24 @@ const struct_character_list = [
             en: "Prima Imperialis",
             fr: "Prima Imperialis"
         },
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Fausta Veruso",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Hadrius Veruso",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Titiana Veruso",
         domain: "Eternal",
         factions: [],
         groups: []
@@ -869,6 +926,30 @@ const struct_character_list = [
         domain: "Eternal",
         factions: [],
         groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Albanus Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Valerius Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Iris Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Fabricia Phrecia",
+        domain: "Eternal",
+        factions: [],
+        groups: []
     },
     {
         id: "Tyndarus Phrecius",
@@ -913,6 +994,12 @@ const struct_character_list = [
         groups: []
     },
     {
+        id: "Xirgil",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
         id: "Malachai",
         domain: "Eternal",
         factions: [],
@@ -929,6 +1016,96 @@ const struct_character_list = [
         domain: "Eternal",
         factions: [],
         groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Drusia Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Julius Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Kostian Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Medici Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Quintio Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Actaeo Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Darsia Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Tantalo Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Junith Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Lucilius Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Stasius Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Milo Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Victario Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Elano (Perandus)",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Janus Perandus",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Immortals Syndicate"]
     },
     {
         id: "Dialla",
@@ -953,12 +1130,6 @@ const struct_character_list = [
         domain: "Eternal",
         factions: [],
         groups: []
-    },
-    {
-        id: "Geofri",
-        domain: "Eternal",
-        factions: [],
-        groups: ["Purity Rebellion"]
     },
     {
         id: "Raulo (Fidelitas)",
@@ -991,6 +1162,30 @@ const struct_character_list = [
         groups: ["Purity Rebellion"]
     },
     {
+        id: "Julius Nevalius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Lilius Nevalius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Marius Nevalius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Octavius Nevalius",
+        domain: "Eternal",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
         id: "Marylene",
         domain: "Eternal",
         factions: [],
@@ -1002,6 +1197,30 @@ const struct_character_list = [
         factions: [],
         groups: ["God"]
     },
+    {
+        id: "Asinia Grattus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Draven Grattus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Legius Grattus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Tyche Grattus",
+        domain: "Eternal",
+        factions: [],
+        groups: []
+    },
     // //////////////   TEMPLAR  ////////////// //
     {
         id: "Voll",
@@ -1009,9 +1228,187 @@ const struct_character_list = [
             en: "Emperor of Purity",
             fr: "Empereur de la pureté"
         },
-        domain: "TEMPLAR",
+        domain: "Templar",
         factions: [],
         groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Geofri",
+        title: {
+            en: "Arcbichop",
+            fr: "Archévèque"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Maxarius (Innocence)",
+        title: {
+            en: "Hight Templar",
+            fr: "Haut Templier"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: ["God"]
+    },
+    {
+        id: "Dominus",
+        title: {
+            en: "Hight Templar",
+            fr: "Haut Templier"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Avarius",
+        title: {
+            en: "Hight Templar",
+            fr: "Haut Templier"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Sanctus Vox",
+        title: {
+            en: "Cardinal",
+            fr: "Cardinal"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Corutino",
+        title: {
+            en: "Saint",
+            fr: "Saint"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Sin",
+        name: {
+            en: "Sin",
+            fr: "Pêché"
+        },
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Piety (Vilenta)",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Arteri",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Gravicius",
+        domain: "Templar",
+        factions: [],
+        groups: ["Immortals Syndicates"]
+    },
+    {
+        id: "Petarus",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Vilenta",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Banon (Innocence)",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Niles",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Huck",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Enoch",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Divinia",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Lycia",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Elreon",
+        domain: "Templar",
+        factions: [],
+        groups: ["Immortals Syndicate"]
+    },
+    {
+        id: "Cassia",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Baran",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Herules",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Gomin",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Landren",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Galhad",
+        domain: "Templar",
+        factions: [],
+        groups: []
     },
     {
         id: "Valdo Caesarus",
@@ -1024,6 +1421,18 @@ const struct_character_list = [
             fr: "Archon en chef"
         },
         icon: "",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Zana Caesarus",
+        domain: "Templar",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Caesarus (???)",
         domain: "Templar",
         factions: [],
         groups: []
@@ -1042,6 +1451,12 @@ const struct_character_list = [
         groups: ["Purity Rebellion"]
     },
     {
+        id: "Lysanda",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
         id: "Rigwald",
         name: {},
         title: {
@@ -1052,6 +1467,74 @@ const struct_character_list = [
         domain: "Ezomyte",
         factions: [],
         groups: ["Purity Rebellion"]
+    },
+    {
+        id: "Grigor",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Einhar Frey",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Jorgin",
+        title: {
+            en: "The Banished, Thane",
+            fr: "Le Bani, Thane"
+        },
+        domain: "Ezomyte",
+        factions: [],
+        groups: ["Immortals Syndicate"]
+    },
+    {
+        id: "Weylin",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Hrimnor",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Agnar",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Geonor",
+        title: {
+            en: "Count",
+            fr: "Compte"
+        },
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Agnar",
+        domain: "Ezomyte",
+        factions: [],
+        groups: ["Order of the Djinn"]
+    },
+    {
+        id: "Greatwolf",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Agnar",
+        domain: "Ezomyte",
+        factions: [],
+        groups: []
     },
     // //////////////   MARAKETH  ////////////// //
     {
@@ -1553,6 +2036,23 @@ const struct_character_list = [
         factions: [],
         groups: []
     },
+    // //////////////   KALGUR  ////////////// //
+    {
+        id: "Cardigan III",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Cardigan IV",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
     {
         id: "Johan",
         name: {},
@@ -1564,6 +2064,94 @@ const struct_character_list = [
         domain: "Kalguur",
         factions: [],
         groups: ["Kingsmarch"]
+    },
+    {
+        id: "Medved",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Vorana",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Annest",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Tujen",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Gwenen",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Revna",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Dannig",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Uthred",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Owen",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Orlorth",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
+    },
+    {
+        id: "Rog",
+        name: {},
+        icon: "",
+        domain: "Kalguur",
+        factions: [],
+        groups: []
     },
     {
         id: "Elder",
